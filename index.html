@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>比特云矿 — 专业 BTC 云矿机平台 | 一键云挖矿 每日结算</title>
+<meta name="description" content="比特云矿是专业比特币云矿机平台,提供真实算力、每日结算、零硬件成本的云端挖矿服务。无需购买矿机,一键开启 BTC 云挖矿。">
+<style>
+/* ========== 基础重置与变量 ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e1a;
+  --bg-2:#111726;
+  --bg-3:#1a2236;
+  --orange:#F7931A;
+  --orange-light:#FFB347;
+  --orange-dark:#E07B00;
+  --gold:#FFD700;
+  --text:#e8ecf4;
+  --text-dim:#9aa5b8;
+  --text-mute:#6b7589;
+  --border:rgba(247,147,26,0.15);
+  --card:rgba(26,34,54,0.6);
+  --radius:16px;
+  --maxw:1200px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+section{position:relative}
+
+/* ========== 导航栏 ========== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:all .3s ease;
+  padding:18px 0;
+}
+.nav.scrolled{
+  background:rgba(10,14,26,0.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:12px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800}
+.logo-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;box-shadow:0 4px 14px rgba(247,147,26,0.4);
+}
+.logo-text{background:linear-gradient(90deg,var(--orange-light),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nav-menu{display:flex;gap:32px;align-items:center}
+.nav-menu a{color:var(--text-dim);font-size:15px;font-weight:500;transition:color .2s}
+.nav-menu a:hover{color:var(--orange-light)}
+.nav-cta{
+  padding:9px 22px;border-radius:30px;font-size:14px;font-weight:600;
+  background:linear-gradient(90deg,var(--orange),var(--orange-dark));
+  color:#fff;transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 16px rgba(247,147,26,0.35);
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(247,147,26,0.5)}
+.nav-toggle{display:none;font-size:26px;background:none;border:none;color:var(--text);cursor:pointer}
+
+/* ========== Hero ========== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 0 60px;position:relative;overflow:hidden;
+}
+#particles{position:absolute;inset:0;z-index:0}
+.hero-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(247,147,26,0.18),transparent 70%);
+  top:-100px;right:-100px;filter:blur(40px);z-index:0;
+}
+.hero-glow.two{
+  width:500px;height:500px;top:auto;bottom:-150px;left:-100px;
+  background:radial-gradient(circle,rgba(255,215,0,0.1),transparent 70%);
+}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr 0.9fr;gap:50px;align-items:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:30px;font-size:13px;font-weight:600;
+  background:rgba(247,147,26,0.12);border:1px solid var(--border);
+  color:var(--orange-light);margin-bottom:24px;
+}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 8px var(--orange)}
+.hero h1{font-size:56px;line-height:1.15;font-weight:800;letter-spacing:-1px;margin-bottom:22px}
+.hero h1 .hl{background:linear-gradient(90deg,var(--orange),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.sub{font-size:18px;color:var(--text-dim);margin-bottom:36px;max-width:520px}
+.hero-stats{display:flex;gap:36px;margin-bottom:36px}
+.hero-stat .num{font-size:28px;font-weight:800;color:var(--orange-light)}
+.hero-stat .lbl{font-size:13px;color:var(--text-mute)}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  padding:14px 32px;border-radius:30px;font-size:15px;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-primary{
+  background:linear-gradient(90deg,var(--orange),var(--orange-dark));color:#fff;
+  box-shadow:0 6px 22px rgba(247,147,26,0.4);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(247,147,26,0.55)}
+.btn-ghost{background:rgba(255,255,255,0.06);color:var(--text);border:1px solid rgba(255,255,255,0.15)}
+.btn-ghost:hover{transform:translateY(-2px);background:rgba(255,255,255,0.1)}
+
+/* hero 右侧手机预览 */
+.hero-phone{display:flex;justify-content:center;position:relative}
+.phone-float{animation:floatY 5s ease-in-out infinite}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+
+/* ========== 通用区块标题 ========== */
+.section{padding:90px 0}
+.section-head{text-align:center;max-width:680px;margin:0 auto 56px}
+.section-tag{
+  display:inline-block;padding:5px 16px;border-radius:30px;font-size:13px;font-weight:600;
+  background:rgba(247,147,26,0.12);color:var(--orange-light);
+  border:1px solid var(--border);margin-bottom:18px;
+}
+.section-head h2{font-size:38px;font-weight:800;letter-spacing:-0.5px;margin-bottom:14px}
+.section-head p{color:var(--text-dim);font-size:16px}
+
+/* ========== 产品介绍 ========== */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:70px}
+.step{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:34px 28px;text-align:center;position:relative;
+  transition:transform .3s,border-color .3s;
+}
+.step:hover{transform:translateY(-6px);border-color:rgba(247,147,26,0.4)}
+.step-num{
+  position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  color:#fff;font-weight:700;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(247,147,26,0.4);
+}
+.step-icon{font-size:42px;margin-bottom:16px}
+.step h3{font-size:19px;margin-bottom:10px}
+.step p{color:var(--text-dim);font-size:14px}
+
+.advantages{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.adv{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:30px 24px;transition:transform .3s,background .3s;
+}
+.adv:hover{transform:translateY(-6px);background:rgba(247,147,26,0.06)}
+.adv-icon{
+  width:52px;height:52px;border-radius:14px;margin-bottom:18px;
+  background:linear-gradient(135deg,rgba(247,147,26,0.2),rgba(247,147,26,0.05));
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+}
+.adv h3{font-size:17px;margin-bottom:8px}
+.adv p{color:var(--text-dim);font-size:14px}
+
+/* ========== 套餐 ========== */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch}
+.plan{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:38px 30px;position:relative;transition:transform .3s,border-color .3s;
+  display:flex;flex-direction:column;
+}
+.plan:hover{transform:translateY(-8px)}
+.plan.popular{
+  border-color:var(--orange);
+  background:linear-gradient(180deg,rgba(247,147,26,0.08),var(--card));
+  box-shadow:0 12px 40px rgba(247,147,26,0.15);
+}
+.plan-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  padding:5px 18px;border-radius:30px;font-size:12px;font-weight:700;
+  background:linear-gradient(90deg,var(--orange),var(--gold));color:#0a0e1a;
+  white-space:nowrap;
+}
+.plan h3{font-size:22px;margin-bottom:6px}
+.plan .plan-sub{color:var(--text-mute);font-size:13px;margin-bottom:22px}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.plan-price .cur{font-size:20px;color:var(--orange-light);font-weight:600}
+.plan-price .amount{font-size:42px;font-weight:800;color:#fff}
+.plan-price .unit{color:var(--text-mute);font-size:14px}
+.plan-tagline{color:var(--text-dim);font-size:13px;margin-bottom:24px}
+.plan-features{list-style:none;margin-bottom:28px;flex:1}
+.plan-features li{
+  padding:9px 0;font-size:14px;color:var(--text-dim);
+  display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.plan-features li:last-child{border-bottom:none}
+.plan-features .check{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.plan .btn{width:100%;justify-content:center}
+.plan:not(.popular) .btn-primary{background:rgba(247,147,26,0.15);color:var(--orange-light);box-shadow:none}
+.plan:not(.popular) .btn-primary:hover{background:rgba(247,147,26,0.25)}
+
+/* ========== App 截图 ========== */
+.app-shots{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.shot{
+  border-radius:18px;overflow:hidden;position:relative;
+  transition:transform .35s;
+}
+.shot:hover{transform:translateY(-8px) scale(1.02)}
+.shot-label{
+  text-align:center;margin-top:14px;font-size:14px;color:var(--text-dim);font-weight:500;
+}
+.shot-label strong{color:var(--orange-light);display:block;font-size:15px;margin-bottom:2px}
+
+/* ========== 数据 + 证言 ========== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:70px}
+.stat{text-align:center;padding:30px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.stat .num{font-size:40px;font-weight:800;background:linear-gradient(90deg,var(--orange),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lbl{color:var(--text-dim);font-size:14px;margin-top:6px}
+
+.testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.testi{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:30px 26px;transition:transform .3s;
+}
+.testi:hover{transform:translateY(-5px)}
+.stars{color:var(--gold);font-size:16px;margin-bottom:14px;letter-spacing:2px}
+.testi p{color:var(--text-dim);font-size:14px;margin-bottom:20px;font-style:italic}
+.testi-user{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;
+}
+.testi-user .name{font-size:15px;font-weight:600}
+.testi-user .role{font-size:12px;color:var(--text-mute)}
+
+/* ========== Footer ========== */
+.footer{background:var(--bg-2);border-top:1px solid var(--border);padding:60px 0 30px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand .logo{margin-bottom:16px}
+.footer-brand p{color:var(--text-mute);font-size:14px;max-width:300px}
+.footer-col h4{font-size:15px;margin-bottom:16px;color:var(--text)}
+.footer-col a{display:block;color:var(--text-mute);font-size:14px;padding:6px 0;transition:color .2s}
+.footer-col a:hover{color:var(--orange-light)}
+.footer-risk{
+  background:rgba(247,147,26,0.06);border:1px solid var(--border);
+  border-radius:12px;padding:18px 22px;margin-bottom:24px;font-size:13px;color:var(--text-mute);
+}
+.footer-risk strong{color:var(--orange-light)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  color:var(--text-mute);font-size:13px;
+}
+
+/* ========== 滚动淡入 ========== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ========== 响应式 ========== */
+@media(max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}
+  .hero p.sub{margin-left:auto;margin-right:auto}
+  .hero-stats,.hero-btns{justify-content:center}
+  .hero h1{font-size:42px}
+  .steps,.advantages,.plans,.app-shots,.stats,.testimonials{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(10,14,26,0.97);padding:20px;gap:18px;border-bottom:1px solid var(--border)}
+  .nav-menu.open{display:flex}
+  .nav-toggle{display:block}
+  .hero h1{font-size:32px}
+  .section{padding:60px 0}
+  .section-head h2{font-size:28px}
+  .steps,.advantages,.plans,.app-shots,.stats,.testimonials{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-icon">₿</span>
+      <span class="logo-text">比特云矿</span>
+    </a>
+    <div class="nav-menu" id="navMenu">
+      <a href="#product">产品介绍</a>
+      <a href="#plans">算力套餐</a>
+      <a href="#app">App 展示</a>
+      <a href="#reviews">用户口碑</a>
+      <a href="#download" class="nav-cta">下载 App</a>
+    </div>
+    <button class="nav-toggle" id="navToggle">☰</button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <canvas id="particles"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-glow two"></div>
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <span class="hero-badge"><span class="dot"></span> 全球领先 BTC 云算力平台</span>
+      <h1>一键开启 <span class="hl">BTC 云挖矿</span><br>每日结算 零硬件成本</h1>
+      <p class="sub">无需购买昂贵矿机、无需承担电费与维护。比特云矿提供真实算力,手机随时查看收益,每日自动结算到账,让每个人都能轻松参与比特币挖矿。</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">500 EH/s</div><div class="lbl">全网在线算力</div></div>
+        <div class="hero-stat"><div class="num">50万+</div><div class="lbl">注册用户</div></div>
+        <div class="hero-stat"><div class="num">98%</div><div class="lbl">用户好评率</div></div>
+      </div>
+      <div class="hero-btns">
+        <a href="#download" class="btn btn-primary">立即下载 App</a>
+        <a href="#product" class="btn btn-ghost">了解更多 →</a>
+      </div>
+    </div>
+    <div class="hero-phone">
+      <div class="phone-float" id="heroPhone"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 产品介绍 ===== -->
+<section class="section" id="product">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">产品介绍</span>
+      <h2>三步开始你的云挖矿之旅</h2>
+      <p>简单三步,无需专业技术,轻松开启比特币挖矿收益</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-icon">📝</div>
+        <h3>注册开户</h3>
+        <p>手机号一键注册,完成实名认证,1 分钟即可拥有专属云矿账户。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div class="step-icon">⚡</div>
+        <h3>选择算力套餐</h3>
+        <p>根据预算灵活选择算力套餐,从体验版到专业版,满足不同投资需求。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div class="step-icon">💰</div>
+        <h3>自动挖矿 每日结算</h3>
+        <p>矿场 24 小时自动运行,每日结算收益,可随时提币到你的钱包。</p>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:20px">
+      <span class="section-tag">核心优势</span>
+      <h2>为什么选择比特云矿</h2>
+    </div>
+    <div class="advantages">
+      <div class="adv reveal">
+        <div class="adv-icon">⛏️</div>
+        <h3>真实算力</h3>
+        <p>自建大型矿场,蚂蚁 S19 等专业矿机,算力真实可查,透明可信。</p>
+      </div>
+      <div class="adv reveal">
+        <div class="adv-icon">📅</div>
+        <h3>每日结算</h3>
+        <p>收益 T+1 自动结算到账,明细清晰可追溯,告别漫长等待。</p>
+      </div>
+      <div class="adv reveal">
+        <div class="adv-icon">💡</div>
+        <h3>零电费零维护</h3>
+        <p>电费、矿机折旧、运维全部由平台承担,你只管坐享收益。</p>
+      </div>
+      <div class="adv reveal">
+        <div class="adv-icon">🎧</div>
+        <h3>7×24 客服</h3>
+        <p>全天候多语言客服团队,随时解答疑问,资金安全有保障。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 套餐 ===== -->
+<section class="section" id="plans" style="background:linear-gradient(180deg,transparent,rgba(247,147,26,0.03),transparent)">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">算力套餐</span>
+      <h2>选择适合你的算力方案</h2>
+      <p>灵活合约周期,透明价格,收益预估一目了然</p>
+    </div>
+    <div class="plans">
+      <div class="plan reveal">
+        <h3>体验版</h3>
+        <div class="plan-sub">新手入门首选</div>
+        <div class="plan-price"><span class="cur">¥</span><span class="amount">299</span><span class="unit">/ 合约</span></div>
+        <div class="plan-tagline">10 TH/s · 30 天合约</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 算力:10 TH/s</li>
+          <li><span class="check">✓</span> 合约周期:30 天</li>
+          <li><span class="check">✓</span> 预估日收益:¥8.5</li>
+          <li><span class="check">✓</span> 每日自动结算</li>
+          <li><span class="check">✓</span> 随时提币到钱包</li>
+        </ul>
+        <a href="#download" class="btn btn-primary">立即购买</a>
+      </div>
+      <div class="plan popular reveal">
+        <div class="plan-badge">最受欢迎</div>
+        <h3>标准版</h3>
+        <div class="plan-sub">性价比之选</div>
+        <div class="plan-price"><span class="cur">¥</span><span class="amount">2,599</span><span class="unit">/ 合约</span></div>
+        <div class="plan-tagline">100 TH/s · 90 天合约</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 算力:100 TH/s</li>
+          <li><span class="check">✓</span> 合约周期:90 天</li>
+          <li><span class="check">✓</span> 预估日收益:¥95</li>
+          <li><span class="check">✓</span> 每日自动结算</li>
+          <li><span class="check">✓</span> 专属客服 + 提币免手续费</li>
+        </ul>
+        <a href="#download" class="btn btn-primary">立即购买</a>
+      </div>
+      <div class="plan reveal">
+        <h3>专业版</h3>
+        <div class="plan-sub">资深玩家专属</div>
+        <div class="plan-price"><span class="cur">¥</span><span class="amount">21,800</span><span class="unit">/ 合约</span></div>
+        <div class="plan-tagline">1000 TH/s · 180 天合约</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 算力:1000 TH/s</li>
+          <li><span class="check">✓</span> 合约周期:180 天</li>
+          <li><span class="check">✓</span> 预估日收益:¥980</li>
+          <li><span class="check">✓</span> 每日自动结算</li>
+          <li><span class="check">✓</span> VIP 经理 1 对 1 服务</li>
+        </ul>
+        <a href="#download" class="btn btn-primary">立即购买</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== App 截图 ===== -->
+<section class="section" id="app">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">App 展示</span>
+      <h2>手机随时掌控你的矿场</h2>
+      <p>精心打造的移动端体验,算力、收益、提币一目了然</p>
+    </div>
+    <div class="app-shots">
+      <div class="shot reveal"><div id="shot1"></div><div class="shot-label"><strong>算力仪表盘</strong>实时算力曲线监控</div></div>
+      <div class="shot reveal"><div id="shot2"></div><div class="shot-label"><strong>收益明细</strong>每日收益清晰可查</div></div>
+      <div class="shot reveal"><div id="shot3"></div><div class="shot-label"><strong>套餐购买</strong>一键选购算力套餐</div></div>
+      <div class="shot reveal"><div id="shot4"></div><div class="shot-label"><strong>资产管理</strong>余额提币安全便捷</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 数据 + 证言 ===== -->
+<section class="section" id="reviews" style="background:linear-gradient(180deg,transparent,rgba(247,147,26,0.03),transparent)">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">用户口碑</span>
+      <h2>50 万用户的信赖之选</h2>
+      <p>真实数据,真实评价,见证比特云矿的实力</p>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><div class="num" data-count="500000" data-suffix="+">0</div><div class="lbl">注册用户</div></div>
+      <div class="stat reveal"><div class="num" data-count="2000" data-suffix="+ BTC">0</div><div class="lbl">累计产出</div></div>
+      <div class="stat reveal"><div class="num" data-count="500" data-suffix=" EH/s">0</div><div class="lbl">在线算力</div></div>
+      <div class="stat reveal"><div class="num" data-count="98" data-suffix="%">0</div><div class="lbl">用户好评率</div></div>
+    </div>
+    <div class="testimonials">
+      <div class="testi reveal">
+        <div class="stars">★★★★★</div>
+        <p>"以前一直想参与比特币挖矿,但矿机太贵又不懂运维。比特云矿完美解决了我的痛点,手机点点就能挖,每天看到收益到账特别踏实。"</p>
+        <div class="testi-user"><div class="testi-avatar">李</div><div><div class="name">李先生</div><div class="role">标准版用户 · 上海</div></div></div>
+      </div>
+      <div class="testi reveal">
+        <div class="stars">★★★★★</div>
+        <p>"用了半年多,收益稳定,提币到账很快。客服响应也及时,有一次凌晨问问题都秒回。专业版算力确实给力,已经回本了。"</p>
+        <div class="testi-user"><div class="testi-avatar">王</div><div><div class="name">王女士</div><div class="role">专业版用户 · 深圳</div></div></div>
+      </div>
+      <div class="testi reveal">
+        <div class="stars">★★★★★</div>
+        <p>"对比了好几家云矿平台,最后选了比特云矿。算力透明可查,每日结算明细清楚,不用担心黑箱操作。推荐给了好几个朋友。"</p>
+        <div class="testi-user"><div class="testi-avatar">张</div><div><div class="name">张先生</div><div class="role">体验版用户 · 北京</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 下载 CTA ===== -->
+<section class="section" id="download" style="text-align:center">
+  <div class="container">
+    <div class="reveal" style="background:linear-gradient(135deg,rgba(247,147,26,0.12),rgba(255,215,0,0.06));border:1px solid var(--border);border-radius:24px;padding:60px 30px">
+      <h2 style="font-size:34px;font-weight:800;margin-bottom:14px">现在加入,即刻开始挖矿</h2>
+      <p style="color:var(--text-dim);font-size:16px;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto">下载比特云矿 App,注册即送新手体验算力,开启你的比特币挖矿之旅</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <a href="#" class="btn btn-primary">iOS 下载</a>
+        <a href="#" class="btn btn-ghost">Android 下载</a>
+      </div>
+      <p style="color:var(--text-mute);font-size:13px;margin-top:24px">支持 iOS 12+ / Android 7+ 以上系统</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-icon">₿</span>
+          <span class="logo-text">比特云矿</span>
+        </a>
+        <p>专业比特币云算力服务平台,致力于让每个人都能轻松、安全地参与区块链挖矿。自建矿场,真实算力,透明运营。</p>
+      </div>
+      <div class="footer-col">
+        <h4>产品</h4>
+        <a href="#product">产品介绍</a>
+        <a href="#plans">算力套餐</a>
+        <a href="#app">App 下载</a>
+        <a href="#">算力计算器</a>
+      </div>
+      <div class="footer-col">
+        <h4>支持</h4>
+        <a href="#">帮助中心</a>
+        <a href="#">使用教程</a>
+        <a href="#">联系我们</a>
+        <a href="#">常见问题</a>
+      </div>
+      <div class="footer-col">
+        <h4>关于</h4>
+        <a href="#">关于我们</a>
+        <a href="#">矿场实况</a>
+        <a href="#">服务条款</a>
+        <a href="#">隐私政策</a>
+      </div>
+    </div>
+    <div class="footer-risk">
+      <strong>⚠️ 风险提示:</strong>数字货币挖矿存在市场波动风险,过往收益不代表未来表现。请根据自身风险承受能力理性参与,投资需谨慎。本网站内容仅供展示参考,不构成任何投资建议。
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 比特云矿 BitCloud Mining. 保留所有权利。</span>
+      <span>本站为演示页面,数据与截图均为模拟生成</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== SVG 截图注入 + 脚本 ===== -->
+<script>
+/* ========== 手机外壳 SVG 包装器 ========== */
+function phoneFrame(innerSVG, opts){
+  opts = opts || {};
+  var w = opts.w || 220, h = opts.h || 450;
+  return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs><linearGradient id="frameG" x1="0" y1="0" x2="1" y2="1">'+
+    '<stop offset="0" stop-color="#2a3447"/><stop offset="1" stop-color="#111726"/></linearGradient></defs>'+
+    '<rect x="0" y="0" width="'+w+'" height="'+h+'" rx="28" fill="url(#frameG)" stroke="#3a4660" stroke-width="1"/>'+
+    '<rect x="8" y="8" width="'+(w-16)+'" height="'+(h-16)+'" rx="22" fill="#0d1320"/>'+
+    '<rect x="'+(w/2-28)+'" y="14" width="56" height="6" rx="3" fill="#0a0e1a"/>'+
+    innerSVG+
+    '</svg>';
+}
+
+/* 截图1:算力仪表盘 */
+var shot1 = phoneFrame(
+  '<text x="110" y="42" text-anchor="middle" fill="#e8ecf4" font-size="13" font-weight="700">算力仪表盘</text>'+
+  '<text x="110" y="92" text-anchor="middle" fill="#9aa5b8" font-size="9">当前算力 TH/s</text>'+
+  '<text x="110" y="125" text-anchor="middle" fill="#F7931A" font-size="30" font-weight="800">128.5</text>'+
+  '<text x="110" y="142" text-anchor="middle" fill="#FFB347" font-size="9">▲ 较昨日 +3.2%</text>'+
+  // 曲线
+  '<polyline points="18,200 40,185 62,195 84,170 106,178 128,160 150,168 172,150 194,158 206,155" '+
+  'fill="none" stroke="#F7931A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'+
+  '<polyline points="18,200 40,185 62,195 84,170 106,178 128,160 150,168 172,150 194,158 206,155 206,215 18,215" '+
+  'fill="rgba(247,147,26,0.12)" stroke="none"/>'+
+  '<line x1="18" y1="215" x2="206" y2="215" stroke="#1a2236" stroke-width="1"/>'+
+  // 卡片
+  '<rect x="18" y="235" width="90" height="56" rx="8" fill="#1a2236"/>'+
+  '<text x="28" y="253" fill="#6b7589" font-size="8">日收益</text>'+
+  '<text x="28" y="276" fill="#FFD700" font-size="16" font-weight="700">¥95.2</text>'+
+  '<rect x="118" y="235" width="90" height="56" rx="8" fill="#1a2236"/>'+
+  '<text x="128" y="253" fill="#6b7589" font-size="8">累计收益</text>'+
+  '<text x="128" y="276" fill="#FFD700" font-size="16" font-weight="700">¥2,856</text>'+
+  // 状态
+  '<rect x="18" y="305" width="190" height="40" rx="8" fill="#1a2236"/>'+
+  '<circle cx="36" cy="325" r="5" fill="#4ade80"/>'+
+  '<text x="48" y="322" fill="#e8ecf4" font-size="9" font-weight="600">矿机运行中</text>'+
+  '<text x="48" y="336" fill="#6b7589" font-size="7">已运行 26 天 14 小时</text>'+
+  '<rect x="180" y="318" width="20" height="14" rx="3" fill="#F7931A"/>'+
+  '<text x="190" y="328" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">98%</text>'+
+  // 底部导航
+  '<rect x="18" y="360" width="190" height="44" rx="10" fill="#111726"/>'+
+  '<text x="45" y="386" text-anchor="middle" fill="#F7931A" font-size="9" font-weight="700">首页</text>'+
+  '<text x="95" y="386" text-anchor="middle" fill="#6b7589" font-size="9">收益</text>'+
+  '<text x="145" y="386" text-anchor="middle" fill="#6b7589" font-size="9">购买</text>'+
+  '<text x="195" y="386" text-anchor="middle" fill="#6b7589" font-size="9">我的</text>'
+);
+
+/* 截图2:收益明细 */
+var shot2 = phoneFrame(
+  '<text x="110" y="42" text-anchor="middle" fill="#e8ecf4" font-size="13" font-weight="700">收益明细</text>'+
+  '<rect x="18" y="60" width="190" height="70" rx="10" fill="url(#shot2G)"/>'+
+  '<defs><linearGradient id="shot2G" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7931A"/><stop offset="1" stop-color="#E07B00"/></linearGradient></defs>'+
+  '<text x="28" y="82" fill="#fff" font-size="9" opacity="0.9">本月累计收益</text>'+
+  '<text x="28" y="108" fill="#fff" font-size="22" font-weight="800">¥2,856.4</text>'+
+  '<text x="28" y="122" fill="#fff" font-size="8" opacity="0.85">较上月 +18.5%</text>'+
+  // 日期条目
+  '<text x="18" y="150" fill="#9aa5b8" font-size="9" font-weight="600">最近收益</text>'+
+  listRow(165,"07-09","每日结算","+¥95.2")+
+  listRow(192,"07-08","每日结算","+¥94.8")+
+  listRow(219,"07-07","每日结算","+¥96.1")+
+  listRow(246,"07-06","每日结算","+¥93.5")+
+  listRow(273,"07-05","每日结算","+¥95.7")+
+  listRow(300,"07-04","每日结算","+¥94.2")+
+  // 底部按钮
+  '<rect x="18" y="360" width="190" height="44" rx="22" fill="#F7931A"/>'+
+  '<text x="113" y="387" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">提现到钱包</text>'
+);
+function listRow(y,date,label,amount){
+  return '<text x="18" y="'+y+'" fill="#e8ecf4" font-size="9" font-weight="600">'+date+'</text>'+
+    '<text x="50" y="'+y+'" fill="#6b7589" font-size="8">'+label+'</text>'+
+    '<text x="206" y="'+y+'" text-anchor="end" fill="#FFD700" font-size="10" font-weight="700">'+amount+'</text>'+
+    '<line x1="18" y1="'+(y+8)+'" x2="206" y2="'+(y+8)+'" stroke="#1a2236" stroke-width="1"/>';
+}
+
+/* 截图3:套餐购买 */
+var shot3 = phoneFrame(
+  '<text x="110" y="42" text-anchor="middle" fill="#e8ecf4" font-size="13" font-weight="700">购买算力</text>'+
+  // 热门套餐大卡
+  '<rect x="18" y="60" width="190" height="120" rx="12" fill="#1a2236" stroke="#F7931A" stroke-width="1.5"/>'+
+  '<rect x="150" y="68" width="50" height="16" rx="8" fill="#F7931A"/>'+
+  '<text x="175" y="79" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">热门</text>'+
+  '<text x="28" y="88" fill="#e8ecf4" font-size="13" font-weight="700">标准版</text>'+
+  '<text x="28" y="120" fill="#F7931A" font-size="26" font-weight="800">¥2,599</text>'+
+  '<text x="28" y="138" fill="#9aa5b8" font-size="9">100 TH/s · 90 天合约</text>'+
+  '<text x="28" y="160" fill="#6b7589" font-size="8">预估日收益</text>'+
+  '<text x="206" y="160" text-anchor="end" fill="#4ade80" font-size="11" font-weight="700">¥95/天</text>'+
+  // 其他套餐小卡
+  '<rect x="18" y="195" width="90" height="70" rx="8" fill="#1a2236"/>'+
+  '<text x="28" y="215" fill="#e8ecf4" font-size="10" font-weight="600">体验版</text>'+
+  '<text x="28" y="238" fill="#F7931A" font-size="16" font-weight="800">¥299</text>'+
+  '<text x="28" y="255" fill="#6b7589" font-size="7">10 TH/s · 30天</text>'+
+  '<rect x="118" y="195" width="90" height="70" rx="8" fill="#1a2236"/>'+
+  '<text x="128" y="215" fill="#e8ecf4" font-size="10" font-weight="600">专业版</text>'+
+  '<text x="128" y="238" fill="#F7931A" font-size="16" font-weight="800">¥21,800</text>'+
+  '<text x="128" y="255" fill="#6b7589" font-size="7">1000 TH/s · 180天</text>'+
+  // 支付方式
+  '<text x="18" y="290" fill="#9aa5b8" font-size="9" font-weight="600">支付方式</text>'+
+  '<rect x="18" y="300" width="60" height="26" rx="6" fill="#1a2236" stroke="#F7931A" stroke-width="1"/>'+
+  '<text x="48" y="316" text-anchor="middle" fill="#F7931A" font-size="8" font-weight="600">USDT</text>'+
+  '<rect x="84" y="300" width="60" height="26" rx="6" fill="#1a2236"/>'+
+  '<text x="114" y="316" text-anchor="middle" fill="#9aa5b8" font-size="8">BTC</text>'+
+  '<rect x="150" y="300" width="58" height="26" rx="6" fill="#1a2236"/>'+
+  '<text x="179" y="316" text-anchor="middle" fill="#9aa5b8" font-size="8">银行卡</text>'+
+  // 购买按钮
+  '<rect x="18" y="360" width="190" height="44" rx="22" fill="#F7931A"/>'+
+  '<text x="113" y="387" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">立即购买</text>'
+);
+
+/* 截图4:资产管理 */
+var shot4 = phoneFrame(
+  '<text x="110" y="42" text-anchor="middle" fill="#e8ecf4" font-size="13" font-weight="700">我的资产</text>'+
+  // 资产卡
+  '<rect x="18" y="60" width="190" height="90" rx="12" fill="url(#shot4G)"/>'+
+  '<defs><linearGradient id="shot4G" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2236"/><stop offset="1" stop-color="#0d1320"/></linearGradient></defs>'+
+  '<rect x="18" y="60" width="190" height="90" rx="12" fill="none" stroke="#F7931A" stroke-width="1" opacity="0.4"/>'+
+  '<text x="28" y="82" fill="#9aa5b8" font-size="9">总资产 (USDT)</text>'+
+  '<text x="28" y="112" fill="#FFD700" font-size="24" font-weight="800">8,456.32</text>'+
+  '<text x="28" y="132" fill="#4ade80" font-size="8">≈ ¥58,728 ▲ +2.3%</text>'+
+  // 4 个操作
+  pillBtn(18,170,"充值"),
+  pillBtn(68,170,"提币"),
+  pillBtn(118,170,"算力"),
+  pillBtn(168,170,"账单")+
+  // 资产列表
+  '<text x="18" y="220" fill="#9aa5b8" font-size="9" font-weight="600">币种资产</text>'+
+  '<circle cx="28" cy="245" r="8" fill="#F7931A"/>'+
+  '<text x="28" y="249" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">₿</text>'+
+  '<text x="44" y="242" fill="#e8ecf4" font-size="9" font-weight="600">BTC</text>'+
+  '<text x="44" y="254" fill="#6b7589" font-size="7">比特币</text>'+
+  '<text x="206" y="242" text-anchor="end" fill="#e8ecf4" font-size="9" font-weight="600">0.1248</text>'+
+  '<text x="206" y="254" text-anchor="end" fill="#6b7589" font-size="7">≈ ¥58,728</text>'+
+  '<line x1="18" y1="266" x2="206" y2="266" stroke="#1a2236"/>'+
+  '<circle cx="28" cy="285" r="8" fill="#26a17b"/>'+
+  '<text x="28" y="289" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">₮</text>'+
+  '<text x="44" y="282" fill="#e8ecf4" font-size="9" font-weight="600">USDT</text>'+
+  '<text x="44" y="294" fill="#6b7589" font-size="7">泰达币</text>'+
+  '<text x="206" y="282" text-anchor="end" fill="#e8ecf4" font-size="9" font-weight="600">1,284.5</text>'+
+  '<text x="206" y="294" text-anchor="end" fill="#6b7589" font-size="7">≈ ¥8,991</text>'+
+  '<line x1="18" y1="306" x2="206" y2="306" stroke="#1a2236"/>'+
+  '<circle cx="28" cy="325" r="8" fill="#627eea"/>'+
+  '<text x="28" y="329" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">Ξ</text>'+
+  '<text x="44" y="322" fill="#e8ecf4" font-size="9" font-weight="600">ETH</text>'+
+  '<text x="44" y="334" fill="#6b7589" font-size="7">以太坊</text>'+
+  '<text x="206" y="322" text-anchor="end" fill="#e8ecf4" font-size="9" font-weight="600">0.842</text>'+
+  '<text x="206" y="334" text-anchor="end" fill="#6b7589" font-size="7">≈ ¥2,156</text>'+
+  // 底部
+  '<rect x="18" y="360" width="190" height="44" rx="22" fill="#F7931A"/>'+
+  '<text x="113" y="387" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">提币</text>'
+);
+function pillBtn(x,label){
+  return '<rect x="'+x+'" y="170" width="44" height="30" rx="8" fill="#1a2236"/>'+
+    '<text x="'+(x+22)+'" y="189" text-anchor="middle" fill="#9aa5b8" font-size="8" font-weight="600">'+label+'</text>';
+}
+
+/* 注入 Hero 大手机(算力仪表盘放大版) */
+document.getElementById('heroPhone').innerHTML = phoneFrame(
+  '<text x="110" y="46" text-anchor="middle" fill="#e8ecf4" font-size="14" font-weight="700">比特云矿</text>'+
+  '<text x="110" y="110" text-anchor="middle" fill="#9aa5b8" font-size="10">实时算力 TH/s</text>'+
+  '<text x="110" y="148" text-anchor="middle" fill="#F7931A" font-size="34" font-weight="800">128.5</text>'+
+  '<text x="110" y="166" text-anchor="middle" fill="#FFB347" font-size="10">▲ 较昨日 +3.2%</text>'+
+  '<polyline points="18,220 40,205 62,215 84,188 106,196 128,176 150,184 172,164 194,172 206,168" '+
+  'fill="none" stroke="#F7931A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
+  '<polyline points="18,220 40,205 62,215 84,188 106,196 128,176 150,184 172,164 194,172 206,168 206,240 18,240" '+
+  'fill="rgba(247,147,26,0.15)" stroke="none"/>'+
+  '<rect x="18" y="260" width="90" height="62" rx="10" fill="#1a2236"/>'+
+  '<text x="28" y="280" fill="#6b7589" font-size="9">日收益</text>'+
+  '<text x="28" y="305" fill="#FFD700" font-size="18" font-weight="700">¥95.2</text>'+
+  '<rect x="118" y="260" width="90" height="62" rx="10" fill="#1a2236"/>'+
+  '<text x="128" y="280" fill="#6b7589" font-size="9">累计</text>'+
+  '<text x="128" y="305" fill="#FFD700" font-size="18" font-weight="700">¥2,856</text>'+
+  '<rect x="18" y="335" width="190" height="44" rx="10" fill="#1a2236"/>'+
+  '<circle cx="38" cy="357" r="6" fill="#4ade80"/>'+
+  '<text x="52" y="354" fill="#e8ecf4" font-size="10" font-weight="600">矿机运行中</text>'+
+  '<text x="52" y="369" fill="#6b7589" font-size="8">已运行 26 天 14 小时</text>'+
+  '<rect x="180" y="349" width="22" height="16" rx="4" fill="#F7931A"/>'+
+  '<text x="191" y="361" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">98%</text>'+
+  '<rect x="18" y="390" width="190" height="44" rx="22" fill="#F7931A"/>'+
+  '<text x="113" y="417" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">查看收益</text>'
+,{w:220,h:452});
+
+/* 注入 4 张截图 */
+document.getElementById('shot1').innerHTML = shot1;
+document.getElementById('shot2').innerHTML = shot2;
+document.getElementById('shot3').innerHTML = shot3;
+document.getElementById('shot4').innerHTML = shot4;
+
+/* ========== 导航滚动效果 ========== */
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 30) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+/* 移动端菜单 */
+document.getElementById('navToggle').addEventListener('click', function(){
+  document.getElementById('navMenu').classList.toggle('open');
+});
+document.querySelectorAll('.nav-menu a').forEach(function(a){
+  a.addEventListener('click', function(){
+    document.getElementById('navMenu').classList.remove('open');
+  });
+});
+
+/* ========== 滚动淡入 ========== */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+/* ========== 数字滚动 ========== */
+var counted = false;
+function animateCount(el){
+  var target = parseInt(el.getAttribute('data-count'),10);
+  var suffix = el.getAttribute('data-suffix') || '';
+  var dur = 1600, start = 0, t0 = null;
+  function fmt(n){
+    if(target >= 10000) return n.toLocaleString('en-US');
+    return n;
+  }
+  function step(ts){
+    if(!t0) t0 = ts;
+    var p = Math.min((ts - t0)/dur, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmt(Math.floor(start + (target - start)*eased)) + suffix;
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = fmt(target) + suffix;
+  }
+  requestAnimationFrame(step);
+}
+var statIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      animateCount(e.target);
+      statIO.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('.num[data-count]').forEach(function(el){ statIO.observe(el); });
+
+/* ========== 粒子背景 ========== */
+(function(){
+  var canvas = document.getElementById('particles');
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var W, H;
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  function init(){
+    resize();
+    particles = [];
+    var count = Math.min(60, Math.floor(W/22));
+    for(var i=0;i<count;i++){
+      particles.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: Math.random()*2+0.6,
+        vx: (Math.random()-0.5)*0.4,
+        vy: (Math.random()-0.5)*0.4,
+        a: Math.random()*0.5+0.15
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // 连线
+    for(var i=0;i<particles.length;i++){
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(247,147,26,'+p.a+')';
+      ctx.fill();
+      for(var j=i+1;j<particles.length;j++){
+        var q = particles[j];
+        var dx=p.x-q.x, dy=p.y-q.y, d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y);
+          ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle = 'rgba(247,147,26,'+(0.12*(1-d/120))+')';
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  init();
+  draw();
+  window.addEventListener('resize', init);
+})();
+</script>
+</body>
+</html>
