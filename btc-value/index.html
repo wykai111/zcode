@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitcoin Value — Why BTC Matters | The Future of Money</title>
+<meta name="description" content="Discover the value of Bitcoin. Learn why BTC is the most important digital asset — scarcity, decentralization, store of value, and financial freedom.">
+<style>
+/* ========== Reset & Variables ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e1a;
+  --bg-2:#111726;
+  --bg-3:#1a2236;
+  --orange:#F7931A;
+  --orange-light:#FFB347;
+  --orange-dark:#E07B00;
+  --gold:#FFD700;
+  --text:#e8ecf4;
+  --text-dim:#9aa5b8;
+  --text-mute:#6b7589;
+  --border:rgba(247,147,26,0.15);
+  --card:rgba(26,34,54,0.6);
+  --radius:16px;
+  --maxw:1200px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+section{position:relative}
+
+/* ========== Navbar ========== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:all .3s ease;
+  padding:18px 0;
+}
+.nav.scrolled{
+  background:rgba(10,14,26,0.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:12px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.5px}
+.nav-logo .btc-icon{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;color:#fff;
+  box-shadow:0 4px 14px rgba(247,147,26,0.4);
+}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--text-dim);font-size:15px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--orange-light)}
+.nav-cta{
+  padding:9px 20px;border-radius:30px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  color:#fff;font-weight:600;font-size:14px;
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(247,147,26,0.45)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ========== Hero ========== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:120px 0 80px;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(247,147,26,0.12),transparent 50%),
+    radial-gradient(ellipse at 80% 70%,rgba(255,215,0,0.08),transparent 50%);
+}
+.hero-bg::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(247,147,26,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(247,147,26,0.03) 1px,transparent 1px);
+  background-size:50px 50px;
+  mask-image:radial-gradient(ellipse at center,#000 30%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 70%);
+}
+.hero-content{position:relative;z-index:1;max-width:820px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 16px;border-radius:30px;
+  background:rgba(247,147,26,0.1);border:1px solid var(--border);
+  font-size:13px;color:var(--orange-light);font-weight:600;
+  margin-bottom:28px;
+}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 8px var(--orange)}
+.hero h1{
+  font-size:clamp(40px,6vw,76px);font-weight:900;
+  line-height:1.08;letter-spacing:-2px;margin-bottom:24px;
+}
+.hero h1 .grad{
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lead{
+  font-size:clamp(17px,2.2vw,21px);color:var(--text-dim);
+  max-width:620px;margin-bottom:36px;line-height:1.7;
+}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 30px;border-radius:30px;font-weight:700;font-size:16px;
+  cursor:pointer;border:none;transition:all .25s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  color:#fff;box-shadow:0 6px 24px rgba(247,147,26,0.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(247,147,26,0.5)}
+.btn-ghost{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-ghost:hover{background:var(--card);border-color:var(--orange)}
+
+/* Hero stats */
+.hero-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  margin-top:56px;padding-top:40px;border-top:1px solid var(--border);
+}
+.stat-item .num{
+  font-size:clamp(26px,3.5vw,38px);font-weight:900;
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat-item .label{font-size:14px;color:var(--text-mute);margin-top:4px}
+@media(max-width:600px){.hero-stats{grid-template-columns:1fr;gap:16px}}
+
+/* ========== Section base ========== */
+.sec{padding:100px 0}
+.sec-head{text-align:center;max-width:700px;margin:0 auto 64px}
+.sec-tag{
+  display:inline-block;padding:6px 16px;border-radius:20px;
+  background:rgba(247,147,26,0.1);border:1px solid var(--border);
+  font-size:13px;color:var(--orange-light);font-weight:600;
+  margin-bottom:18px;letter-spacing:.5px;text-transform:uppercase;
+}
+.sec-head h2{
+  font-size:clamp(30px,4.5vw,48px);font-weight:800;
+  letter-spacing:-1px;line-height:1.15;margin-bottom:16px;
+}
+.sec-head p{font-size:18px;color:var(--text-dim)}
+
+/* ========== Value Pillars ========== */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pillar{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px 30px;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.pillar::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--orange),var(--gold));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.pillar:hover{transform:translateY(-4px);border-color:rgba(247,147,26,0.4);background:rgba(26,34,54,0.9)}
+.pillar:hover::before{transform:scaleX(1)}
+.pillar-icon{
+  width:56px;height:56px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(247,147,26,0.2),rgba(247,147,26,0.05));
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin-bottom:22px;
+}
+.pillar h3{font-size:21px;font-weight:700;margin-bottom:12px}
+.pillar p{color:var(--text-dim);font-size:15px;line-height:1.7}
+@media(max-width:900px){.pillars{grid-template-columns:1fr}}
+
+/* ========== Features grid ========== */
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.feature{
+  display:flex;gap:20px;padding:28px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);transition:all .25s;
+}
+.feature:hover{border-color:rgba(247,147,26,0.35);transform:translateX(4px)}
+.feature-num{
+  flex-shrink:0;width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:18px;color:#fff;
+}
+.feature h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.feature p{color:var(--text-dim);font-size:15px}
+@media(max-width:768px){.features{grid-template-columns:1fr}}
+
+/* ========== Supply section ========== */
+.supply{background:var(--bg-2)}
+.supply-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.supply-visual{
+  position:relative;padding:40px;
+  background:radial-gradient(circle at center,rgba(247,147,26,0.1),transparent 70%);
+  display:flex;align-items:center;justify-content:center;
+}
+.supply-circle{
+  width:320px;height:320px;border-radius:50%;
+  background:conic-gradient(var(--orange) 0% 93%, var(--bg-3) 93% 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;box-shadow:0 0 60px rgba(247,147,26,0.2);
+}
+.supply-circle::after{
+  content:"";position:absolute;inset:30px;border-radius:50%;
+  background:var(--bg-2);
+}
+.supply-circle-inner{
+  position:relative;z-index:1;text-align:center;
+}
+.supply-circle-inner .pct{
+  font-size:48px;font-weight:900;
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.supply-circle-inner .desc{font-size:13px;color:var(--text-mute);margin-top:4px}
+.supply-info h2{
+  font-size:clamp(28px,4vw,42px);font-weight:800;
+  letter-spacing:-1px;margin-bottom:20px;line-height:1.2;
+}
+.supply-info p{color:var(--text-dim);font-size:17px;margin-bottom:28px;line-height:1.7}
+.supply-list{list-style:none;display:flex;flex-direction:column;gap:16px}
+.supply-list li{display:flex;align-items:center;gap:12px;font-size:15px}
+.supply-list .check{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  background:rgba(247,147,26,0.15);color:var(--orange);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;
+}
+@media(max-width:900px){.supply-grid{grid-template-columns:1fr}.supply-circle{width:260px;height:260px}}
+
+/* ========== Comparison ========== */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  background:var(--card);border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--border);
+}
+.compare-table th,.compare-table td{
+  padding:18px 24px;text-align:left;border-bottom:1px solid var(--border);
+}
+.compare-table th{
+  background:var(--bg-3);font-weight:700;font-size:15px;
+}
+.compare-table th:first-child{width:30%}
+.compare-table td{font-size:15px}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .btc-col{color:var(--orange-light);font-weight:600}
+.compare-table .yes{color:#4ade80;font-weight:700}
+.compare-table .no{color:#f87171}
+.compare-table .partial{color:var(--gold)}
+
+/* ========== Timeline ========== */
+.timeline{position:relative;max-width:800px;margin:0 auto}
+.timeline::before{
+  content:"";position:absolute;left:20px;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--orange),var(--orange-dark),transparent);
+}
+.tl-item{position:relative;padding-left:56px;margin-bottom:40px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{
+  position:absolute;left:12px;top:4px;width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  border:3px solid var(--bg);box-shadow:0 0 12px rgba(247,147,26,0.5);
+}
+.tl-year{
+  display:inline-block;font-size:14px;font-weight:800;color:var(--orange);
+  margin-bottom:6px;
+}
+.tl-item h4{font-size:18px;font-weight:700;margin-bottom:6px}
+.tl-item p{color:var(--text-dim);font-size:15px}
+
+/* ========== CTA ========== */
+.cta{
+  text-align:center;padding:100px 0;
+  background:radial-gradient(ellipse at center,rgba(247,147,26,0.12),transparent 60%);
+}
+.cta-box{
+  background:linear-gradient(135deg,rgba(247,147,26,0.1),rgba(255,215,0,0.05));
+  border:1px solid var(--border);border-radius:24px;
+  padding:64px 40px;max-width:700px;margin:0 auto;
+}
+.cta-box h2{
+  font-size:clamp(30px,4vw,44px);font-weight:800;
+  letter-spacing:-1px;margin-bottom:16px;
+}
+.cta-box p{color:var(--text-dim);font-size:18px;margin-bottom:32px}
+
+/* ========== Footer ========== */
+.footer{padding:48px 0;border-top:1px solid var(--border);background:var(--bg-2)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-logo{display:flex;align-items:center;gap:10px;font-weight:700}
+.footer-logo .btc-icon{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;color:#fff;
+}
+.footer p{color:var(--text-mute);font-size:14px}
+.footer-links{display:flex;gap:24px;list-style:none}
+.footer-links a{color:var(--text-dim);font-size:14px;transition:color .2s}
+.footer-links a:hover{color:var(--orange-light)}
+@media(max-width:600px){.footer-inner{flex-direction:column;text-align:center}}
+
+/* ========== Animations ========== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;animation:fadeUp .8s ease forwards}
+.reveal.d1{animation-delay:.1s}
+.reveal.d2{animation-delay:.2s}
+.reveal.d3{animation-delay:.3s}
+.reveal.d4{animation-delay:.4s}
+</style>
+</head>
+<body>
+
+<!-- ========== Navbar ========== -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="btc-icon">₿</span>
+      <span>Bitcoin Value</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#pillars">Value</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#supply">Supply</a></li>
+      <li><a href="#compare">Comparison</a></li>
+      <li><a href="#timeline">History</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- ========== Hero ========== -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+    <div class="hero-badge reveal d1"><span class="dot"></span> Digital Gold · Store of Value · Future of Money</div>
+    <h1 class="reveal d2">The Value of <span class="grad">Bitcoin</span></h1>
+    <p class="lead reveal d3">Bitcoin is the world's first scarce digital asset — a decentralized, censorship-resistant store of value that anyone, anywhere can own. No banks. No borders. No inflation.</p>
+    <div class="hero-actions reveal d4">
+      <a href="#pillars" class="btn btn-primary">Explore BTC Value →</a>
+      <a href="#timeline" class="btn btn-ghost">View History</a>
+    </div>
+    <div class="hero-stats reveal d4">
+      <div class="stat-item"><div class="num">21M</div><div class="label">Maximum supply cap</div></div>
+      <div class="stat-item"><div class="num">$1T+</div><div class="label">Market capitalization</div></div>
+      <div class="stat-item"><div class="num">2009</div><div class="label">Genesis block mined</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Value Pillars ========== -->
+<section class="sec" id="pillars">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Core Value</span>
+      <h2>Why Bitcoin Has Value</h2>
+      <p>Bitcoin derives its value from a combination of scarcity, decentralization, security, and network effects that no other asset in history has achieved.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon"> Rarity </div>
+        <h3>Absolute Scarcity</h3>
+        <p>Bitcoin has a hard-capped supply of 21 million coins — a property no gold, fiat currency, or other commodity possesses. New bitcoins are issued at a predictable, ever-decreasing rate through the halving mechanism every four years.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"> Decentralized </div>
+        <h3>Decentralization</h3>
+        <p>No single entity, government, or corporation controls Bitcoin. It runs on a global network of thousands of nodes, making it censorship-resistant and immune to unilateral changes in monetary policy.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"> Security </div>
+        <h3>Unbreakable Security</h3>
+        <p>Secured by the largest computing network on Earth, Bitcoin's proof-of-work consensus has never been compromised. Billions of dollars in value have been protected for over 15 years without a single protocol-level hack.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"> Portable </div>
+        <h3>Fungibility & Portability</h3>
+        <p>Unlike gold or real estate, Bitcoin can be moved anywhere in the world in minutes, at low cost, by anyone with a private key. Your wealth travels with you, across borders, without intermediaries.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"> Freedom </div>
+        <h3>Financial Freedom</h3>
+        <p>Bitcoin separates money from the state. It gives individuals full sovereignty over their wealth — no account freezes, no capital controls, no permission needed to transact.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"> Network </div>
+        <h3>Network Effects</h3>
+        <p>Every new user, miner, and business that joins Bitcoin strengthens the network. Over a decade of compounding adoption has made Bitcoin the most recognized and trusted cryptocurrency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Features ========== -->
+<section class="sec" id="features" style="background:var(--bg-2)">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Key Properties</span>
+      <h2>What Makes Bitcoin Unique</h2>
+      <p>Eight fundamental properties that distinguish Bitcoin from every other form of money.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-num">01</div>
+        <div><h4>Proof-of-Work Consensus</h4><p>The most battle-tested consensus mechanism, requiring real-world energy expenditure to secure the network and validate transactions.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">02</div>
+        <div><h4>Halving Every 4 Years</h4><p>Block rewards are cut in half approximately every four years, systematically reducing new supply and increasing scarcity over time.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">03</div>
+        <div><h4>Open & Permissionless</h4><p>Anyone can join the network, run a node, mine, or transact without asking for permission from any authority.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">04</div>
+        <div><h4>Immutable Ledger</h4><p>Once a transaction is confirmed, it cannot be reversed or altered. The blockchain serves as a permanent, auditable record of all activity.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">05</div>
+        <div><h4>Predictable Monetary Policy</h4><p>Unlike central banks that can print unlimited money, Bitcoin's supply schedule is written into code and known by everyone in advance.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">06</div>
+        <div><h4>Self-Custody</h4><p>"Not your keys, not your coins." Bitcoin allows true ownership — you hold your private keys, you hold your wealth, with no counterparty risk.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">07</div>
+        <div><h4>Divisibility</h4><p>Each bitcoin is divisible into 100 million satoshis (sats), enabling microtransactions and making it accessible at any price level.</p></div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">08</div>
+        <div><h4>Verifiability</h4><p>Every transaction and the entire supply can be independently verified by any user running a full node — total transparency, zero trust required.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Supply ========== -->
+<section class="sec supply" id="supply">
+  <div class="container">
+    <div class="supply-grid">
+      <div class="supply-visual">
+        <div class="supply-circle">
+          <div class="supply-circle-inner">
+            <div class="pct">93%</div>
+            <div class="desc">Mined so far</div>
+          </div>
+        </div>
+      </div>
+      <div class="supply-info">
+        <span class="sec-tag">Finite Supply</span>
+        <h2>The Scarcest Asset Ever Created</h2>
+        <p>Of the 21 million bitcoins that will ever exist, over 19.7 million have already been mined. The remaining supply will be issued over the next century, becoming exponentially harder to produce.</p>
+        <ul class="supply-list">
+          <li><span class="check">✓</span> Hard cap of 21,000,000 BTC — cannot be changed</li>
+          <li><span class="check">✓</span> ~900 new BTC issued per day (post-2024 halving)</li>
+          <li><span class="check">✓</span> Final bitcoin expected around year 2140</li>
+          <li><span class="check">✓</span> Millions of BTC permanently lost, reducing effective supply</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Comparison ========== -->
+<section class="sec" id="compare" style="background:var(--bg-2)">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Comparison</span>
+      <h2>Bitcoin vs. Traditional Assets</h2>
+      <p>How Bitcoin stacks up against gold, fiat currency, and real estate as a store of value.</p>
+    </div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Property</th><th>Bitcoin</th><th>Gold</th><th>Fiat Currency</th><th>Real Estate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Absolute scarcity</td><td class="btc-col yes">✓ Yes (21M cap)</td><td class="partial">~ Limited</td><td class="no">✗ Unlimited</td><td class="partial">~ Limited</td></tr>
+        <tr><td>Portability</td><td class="btc-col yes">✓ Instant, global</td><td class="no">✗ Heavy, slow</td><td class="partial">~ Bank-dependent</td><td class="no">✗ Immovable</td></tr>
+        <tr><td>Divisibility</td><td class="btc-col yes">✓ 100M sats</td><td class="no">✗ Limited</td><td class="yes">✓ High</td><td class="no">✗ Low</td></tr>
+        <tr><td>Censorship resistance</td><td class="btc-col yes">✓ Permissionless</td><td class="partial">~ Regulated</td><td class="no">✗ Controlled</td><td class="no">✗ Controlled</td></tr>
+        <tr><td>Verifiability</td><td class="btc-col yes">✓ Full node</td><td class="partial">~ Assays</td><td class="no">✗ Trust-based</td><td class="no">✗ Complex</td></tr>
+        <tr><td>Storage cost</td><td class="btc-col yes">✓ Near zero</td><td class="no">✗ Expensive</td><td class="yes">✓ Low</td><td class="no">✗ High</td></tr>
+        <tr><td>Counterparty risk</td><td class="btc-col yes">✓ None (self-custody)</td><td class="partial">~ Some</td><td class="no">✗ High</td><td class="partial">~ Some</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== Timeline ========== -->
+<section class="sec" id="timeline">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Milestones</span>
+      <h2>Bitcoin's Journey</h2>
+      <p>Key moments that shaped the most valuable cryptocurrency in history.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2008</div>
+        <h4>The Whitepaper</h4>
+        <p>Satoshi Nakamoto published "Bitcoin: A Peer-to-Peer Electronic Cash System," proposing a trustless digital currency secured by proof-of-work.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2009</div>
+        <h4>Genesis Block</h4>
+        <p>The first Bitcoin block was mined, embedding the message: "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2010</div>
+        <h4>First Real-World Transaction</h4>
+        <p>10,000 BTC were spent on two pizzas — now celebrated annually as "Bitcoin Pizza Day," marking the first time BTC had a market price.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2012</div>
+        <h4>First Halving</h4>
+        <p>Block reward dropped from 50 to 25 BTC, beginning the deflationary supply schedule that continues to this day.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2013</div>
+        <h4>$1 Billion Market Cap</h4>
+        <p>Bitcoin crossed the $1 billion valuation milestone, establishing itself as a serious asset class recognized by global markets.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2017</div>
+        <h4>$20,000 All-Time High</h4>
+        <p>Bitcoin surged past $20,000, capturing mainstream media attention and bringing millions of new investors into the ecosystem.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2021</div>
+        <h4>$1 Trillion Asset</h4>
+        <p>Bitcoin reached a $1 trillion market cap and hit an all-time high above $69,000, with adoption by major corporations and institutions.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2024</div>
+        <h4>Fourth Halving & ETFs</h4>
+        <p>Spot Bitcoin ETFs were approved in the US, and the fourth halving reduced block rewards to 3.125 BTC, further constraining supply.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta" id="cta">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Start Your Bitcoin Journey</h2>
+      <p>Understand the value. Hold the asset. Be part of the future of money.</p>
+      <div class="hero-actions" style="justify-content:center">
+        <a href="#hero" class="btn btn-primary">Back to Top ↑</a>
+        <a href="#pillars" class="btn btn-ghost">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-logo">
+      <span class="btc-icon">₿</span>
+      <span>Bitcoin Value</span>
+    </div>
+    <p>© 2026 Bitcoin Value. Educational content. Not financial advice.</p>
+    <ul class="footer-links">
+      <li><a href="#pillars">Value</a></li>
+      <li><a href="#supply">Supply</a></li>
+      <li><a href="#timeline">History</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+</script>
+</body>
+</html>
