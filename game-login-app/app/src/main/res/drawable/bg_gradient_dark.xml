@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_gradient_dark.xml
+    Deep tactical background: vertical gradient from near-black to a slightly
+    lighter gunmetal, with a faint red glow at the bottom edge to suggest a
+    combat horizon. Layered with a subtle vignette for depth.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base vertical gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/bg_dark"
+                android:centerColor="@color/bg_base"
+                android:endColor="@color/metal_gray_dark"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Diagonal accent wash (tactical red glow from top-left) -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="45"
+                android:startColor="#26E63946"
+                android:centerColor="#0DE63946"
+                android:endColor="#00E63946"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Bottom horizon glow -->
+    <item android:top="520dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="90"
+                android:startColor="#00E63946"
+                android:centerColor="#10E63946"
+                android:endColor="#22E63946"
+                android:type="linear" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_progress_bar.xml
+    Progress bar TRACK: chamfered dark groove. Sits behind the fill layer.
+    Drawn as a vector so the chamfer matches the rest of the tactical UI.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="280dp"
+    android:height="10dp"
+    android:viewportWidth="280"
+    android:viewportHeight="10">
+
+    <!-- Track fill -->
+    <path
+        android:fillColor="@color/progress_track"
+        android:pathData="M 3,0 L 277,0 L 280,3 L 280,7 L 277,10 L 3,10 L 0,7 L 0,3 Z" />
+
+    <!-- Track border -->
+    <path
+        android:strokeColor="@color/metal_gray_light"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M 3,0 L 277,0 L 280,3 L 280,7 L 277,10 L 3,10 L 0,7 L 0,3 Z" />
+
+    <!-- Segment tick marks every ~25% (tactical gauge feel) -->
+    <path
+        android:strokeColor="@color/metal_gray_dark"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M 70,1 L 70,9 M 140,1 L 140,9 M 210,1 L 210,9" />
+
+</vector>

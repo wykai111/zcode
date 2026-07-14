@@ -1,0 +1,17 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/app/build
+
+# Sensitive signing files (NOT committed to git for security)
+# Uncomment below to exclude keystore and credentials from git:
+# *.jks
+# *.keystore
+# keystore.properties

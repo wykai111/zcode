@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_logo_strike.xml
+    Strike Force logo mark: a chamfered tactical shield with a red crosshair
+    strike and a yellow chevron. Used at the top of the login screen.
+    96dp viewport for crisp large rendering.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Outer shield (chamfered) -->
+    <path
+        android:fillColor="@color/metal_gray"
+        android:strokeColor="@color/panel_border"
+        android:strokeWidth="2"
+        android:pathData="M 24,6 L 72,6 L 90,24 L 90,60 L 72,84 L 48,94 L 24,84 L 6,60 L 6,24 Z" />
+
+    <!-- Inner shield inset -->
+    <path
+        android:fillColor="@color/bg_dark"
+        android:pathData="M 28,12 L 68,12 L 82,26 L 82,58 L 66,78 L 48,86 L 30,78 L 14,58 L 14,26 Z" />
+
+    <!-- Red strike diagonal -->
+    <path
+        android:fillColor="@color/tactical_red"
+        android:pathData="M 20,68 L 28,60 L 60,28 L 68,28 L 68,36 L 36,68 L 28,76 L 20,76 Z" />
+
+    <!-- Yellow chevron accent -->
+    <path
+        android:fillColor="@color/warning_yellow"
+        android:pathData="M 48,30 L 58,40 L 48,50 L 38,40 Z" />
+
+    <!-- Crosshair center dot -->
+    <path
+        android:fillColor="@color/bg_dark"
+        android:pathData="M48,40 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 Z" />
+
+    <!-- Crosshair lines -->
+    <path
+        android:strokeColor="@color/warning_yellow"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 48,22 L 48,30 M 48,50 L 48,58 M 30,40 L 38,40 M 58,40 L 66,40" />
+
+</vector>

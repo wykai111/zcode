@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    progress_bar_fill.xml
+    Progress bar FILL: chamfered gradient (warning yellow -> tactical red) that
+    is clipped to the current progress level. Used as the android:progressDrawable
+    of a ProgressBar with the matching track.
+
+    Structure (layer-list):
+      - id/background : (handled separately by bg_progress_bar via the view
+        background, so we leave an empty transparent layer here)
+      - id/progress   : the gradient fill, clipped to progress via scale/clip
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <!-- Background track slot (kept transparent; the track is drawn by the
+         View's own background = bg_progress_bar.xml so the chamfer aligns). -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Secondary progress (unused, keep transparent) -->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape android:shape="rectangle">
+                <solid android:color="#00000000" />
+            </shape>
+        </clip>
+    </item>
+
+    <!-- Primary progress fill with diagonal gradient + chamfer -->
+    <item android:id="@android:id/progress">
+        <clip
+            android:clipOrientation="horizontal"
+            android:gravity="left">
+            <vector
+                android:width="280dp"
+                android:height="10dp"
+                android:viewportWidth="280"
+                android:viewportHeight="10">
+                <path
+                    android:name="fill"
+                    android:pathData="M 3,0 L 277,0 L 280,3 L 280,7 L 277,10 L 3,10 L 0,7 L 0,3 Z">
+                    <aapt:attr name="android:fillColor">
+                        <gradient
+                            android:angle="0"
+                            android:startColor="@color/progress_fill_start"
+                            android:centerColor="@color/progress_fill_start"
+                            android:endColor="@color/progress_fill_end"
+                            android:type="linear" />
+                    </aapt:attr>
+                </path>
+            </vector>
+        </clip>
+    </item>
+
+</layer-list>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_button_strike_disabled.xml
+    Disabled state of the DEPLOY button: desaturated gray-red.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="280dp"
+    android:height="56dp"
+    android:viewportWidth="280"
+    android:viewportHeight="56">
+
+    <path
+        android:name="body"
+        android:fillColor="@color/metal_gray_light"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 280,44 L 268,56 L 12,56 L 0,44 L 0,12 Z" />
+
+    <path
+        android:name="stroke"
+        android:strokeColor="@color/metal_gray"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 280,44 L 268,56 L 12,56 L 0,44 L 0,12 Z" />
+
+</vector>

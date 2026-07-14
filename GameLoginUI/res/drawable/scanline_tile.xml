@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    scanline_tile.xml
+    A single 1x4dp tile: one faint red line over transparent. Repeated by
+    bg_scanline_overlay.xml to form the HUD scanline grid.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="1dp"
+    android:height="4dp"
+    android:viewportWidth="1"
+    android:viewportHeight="4">
+    <path
+        android:fillColor="@color/scan_line"
+        android:pathData="M 0,0 L 1,0 L 1,1 L 0,1 Z" />
+</vector>

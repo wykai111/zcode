@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_scanline_overlay.xml
+    Repeating horizontal scanline pattern drawn over the whole screen for a
+    CRT/tactical HUD feel. Uses a bitmap-less vector repeating tile via a
+    <bitmap> with tileMode. Implemented as a drawable so it can sit as a
+    transparent View above the background.
+-->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/scanline_tile"
+    android:tileMode="repeat"
+    android:dither="true" />

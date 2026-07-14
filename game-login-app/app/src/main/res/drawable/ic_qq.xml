@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_qq.xml
+    QQ penguin mascot silhouette in QQ blue, simplified to a clean vector.
+    24dp viewport.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Body + head silhouette -->
+    <path
+        android:fillColor="@color/qq_blue"
+        android:pathData="M12,2 C9.5,2 8,3.8 8,6.3 C8,7.4 8.3,8.3 8.7,9.1 C7.8,10.2 6.5,12 6,14 C5.4,16.4 6,18 7,18.6 C7.3,19.6 7.9,20.5 8.6,21.2 C8.2,21.5 7.8,21.9 7.6,22.3 C7.4,22.7 7.6,23 8,23 L16,23 C16.4,23 16.6,22.7 16.4,22.3 C16.2,21.9 15.8,21.5 15.4,21.2 C16.1,20.5 16.7,19.6 17,18.6 C18,18 18.6,16.4 18,14 C17.5,12 16.2,10.2 15.3,9.1 C15.7,8.3 16,7.4 16,6.3 C16,3.8 14.5,2 12,2 Z" />
+
+    <!-- White belly -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,6 C10.8,6 10,7.2 10,8.8 C10,9.8 10.4,10.6 11,11.2 L11,16 C11,16.6 11.4,17 12,17 C12.6,17 13,16.6 13,16 L13,11.2 C13.6,10.6 14,9.8 14,8.8 C14,7.2 13.2,6 12,6 Z" />
+
+    <!-- Eyes -->
+    <path
+        android:fillColor="#FF1A1A1A"
+        android:pathData="M10.3,4.6 m-0.7,0 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0 Z" />
+    <path
+        android:fillColor="#FF1A1A1A"
+        android:pathData="M13.7,4.6 m-0.7,0 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0 Z" />
+
+    <!-- Beak -->
+    <path
+        android:fillColor="@color/warning_yellow"
+        android:pathData="M11,6 L13,6 L12,7.2 Z" />
+
+</vector>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_lock.xml
+    Security-key icon: padlock with a tactical cut-corner body and a red
+    keyhole accent. 24dp viewport.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="@color/text_secondary">
+
+    <!-- Shackle -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="square"
+        android:fillColor="#00000000"
+        android:pathData="M7,11 L7,7 C7,4.2 9.2,2 12,2 C14.8,2 17,4.2 17,7 L17,11" />
+
+    <!-- Lock body (chamfered) -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M5,11 L19,11 L21,13 L21,20 L19,22 L5,22 L3,20 L3,13 Z" />
+
+    <!-- Inner body inset -->
+    <path
+        android:fillColor="@color/metal_gray_dark"
+        android:pathData="M6.5,12.5 L17.5,12.5 L19,14 L19,19 L17.5,20.5 L6.5,20.5 L5,19 L5,14 Z" />
+
+    <!-- Keyhole -->
+    <path
+        android:fillColor="@color/tactical_red"
+        android:pathData="M12,14 C11,14 10.2,14.8 10.2,15.8 C10.2,16.5 10.6,17 11.2,17.3 L10.8,19 L13.2,19 L12.8,17.3 C13.4,17 13.8,16.5 13.8,15.8 C13.8,14.8 13,14 12,14 Z" />
+
+</vector>

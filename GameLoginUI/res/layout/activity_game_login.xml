@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_game_login.xml
+    Strike Force — tactical shooter login screen.
+
+    Layout: ConstraintLayout root.
+      - Full-bleed dark gradient background
+      - Scanline overlay (transparent View, repeating tile)
+      - Top:    logo + game title + version tag
+      - Middle: chamfered auth panel (account / password / DEPLOY)
+      - Bottom: third-party login row, asset download progress, links, footer
+
+    Styling notes:
+      - All corners are CHAMFERED (cut), never rounded — enforced via vector
+        drawables (bg_panel_tactical, bg_input_tactical, bg_button_strike).
+      - Fonts: bold uppercase Latin + monospace digits feel via fontFamily.
+        Add a custom font (res/font) and swap android:fontFamily to match.
+      - API 24+ target. autoSizeTextType used on API 26+; guarded by
+        tools:targetApi so lint stays quiet in lower builds.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_dark"
+    android:fitsSystemWindows="true"
+    tools:context=".GameLoginActivity">
+
+    <!-- ============================================================== -->
+    <!-- SCANLINE OVERLAY (sits above background, below content)         -->
+    <!-- ============================================================== -->
+    <View
+        android:id="@+id/scanline_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_scanline_overlay"
+        android:alpha="0.5"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- HUD corner brackets (screen frame) -->
+    <ImageView
+        android:id="@+id/bracket_tl"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_corner_bracket"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/bracket_tr"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_corner_bracket"
+        android:rotation="90"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/bracket_bl"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/ic_corner_bracket"
+        android:rotation="-90"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/bracket_br"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/ic_corner_bracket"
+        android:rotation="180"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ============================================================== -->
+    <!-- TOP: LOGO + TITLE                                               -->
+    <!-- ============================================================== -->
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/ic_logo_strike"
+        android:contentDescription="@string/cd_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/game_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/game_title"
+        android:textColor="@color/text_primary"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.12"
+        android:fontFamily="sans-serif-condensed"
+        android:shadowColor="@color/tactical_red"
+        android:shadowRadius="14"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Title underline (red rule with yellow tick) -->
+    <View
+        android:id="@+id/title_rule"
+        android:layout_width="160dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/tactical_red"
+        app:layout_constraintTop_toBottomOf="@id/game_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/game_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/game_subtitle"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp"
+        android:letterSpacing="0.3"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/title_rule"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/version_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/version_tag"
+        android:textColor="@color/warning_yellow_dim"
+        android:textSize="9sp"
+        android:letterSpacing="0.2"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toBottomOf="@id/game_subtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ============================================================== -->
+    <!-- MIDDLE: AUTH PANEL                                              -->
+    <!-- ============================================================== -->
+
+    <!-- Panel background (chamfered vector). Sized to wrap the auth content. -->
+    <ImageView
+        android:id="@+id/auth_panel_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="28dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_panel_tactical"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toBottomOf="@id/version_tag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_login" />
+
+    <!-- Panel corner brackets -->
+    <ImageView
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@drawable/ic_corner_bracket"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="@id/auth_panel_bg"
+        app:layout_constraintStart_toStartOf="@id/auth_panel_bg"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp" />
+    <ImageView
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@drawable/ic_corner_bracket"
+        android:rotation="90"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="@id/auth_panel_bg"
+        app:layout_constraintEnd_toEndOf="@id/auth_panel_bg"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="6dp" />
+
+    <!-- Panel header line -->
+    <TextView
+        android:id="@+id/auth_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/login_card_header"
+        android:textColor="@color/tactical_red"
+        android:textSize="11sp"
+        android:letterSpacing="0.25"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toTopOf="@id/auth_panel_bg"
+        app:layout_constraintStart_toStartOf="@id/auth_panel_bg"
+        app:layout_constraintEnd_toEndOf="@id/auth_panel_bg" />
+
+    <TextView
+        android:id="@+id/auth_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/login_card_title"
+        android:textColor="@color/text_primary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.08"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintTop_toBottomOf="@id/auth_header"
+        app:layout_constraintStart_toStartOf="@id/auth_panel_bg"
+        app:layout_constraintEnd_toEndOf="@id/auth_panel_bg" />
+
+    <!-- ===== ACCOUNT INPUT ===== -->
+    <LinearLayout
+        android:id="@+id/account_row"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_input_tactical_selector"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/auth_title"
+        app:layout_constraintStart_toStartOf="@id/auth_panel_bg"
+        app:layout_constraintEnd_toEndOf="@id/auth_panel_bg">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_user"
+            android:contentDescription="@string/cd_user_icon" />
+
+        <EditText
+            android:id="@+id/edit_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:background="@null"
+            android:hint="@string/hint_account"
+            android:textColorHint="@color/text_tertiary"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.08" />
+    </LinearLayout>
+
+    <!-- ===== PASSWORD INPUT ===== -->
+    <LinearLayout
+        android:id="@+id/password_row"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_input_tactical_selector"
+        android:paddingStart="16dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/account_row"
+        app:layout_constraintStart_toStartOf="@id/auth_panel_bg"
+        app:layout_constraintEnd_toEndOf="@id/auth_panel_bg">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_lock"
+            android:contentDescription="@string/cd_lock_icon" />
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:background="@null"
+            android:hint="@string/hint_password"
+            android:textColorHint="@color/text_tertiary"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.08" />
+
+        <!-- Show/hide toggle -->
+        <ImageButton
+            android:id="@+id/btn_password_toggle"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_eye_off"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_password_toggle"
+            android:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- ===== DEPLOY BUTTON ===== -->
+    <TextView
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="22dp"
+        android:gravity="center"
+        android:text="@string/btn_login"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.25"
+        android:fontFamily="sans-serif-condensed"
+        android:background="@drawable/bg_button_strike_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:stateListAnimator="@animator/button_press_anim"
+        app:layout_constraintTop_toBottomOf="@id/password_row"
+        app:layout_constraintStart_toStartOf="@id/auth_panel_bg"
+        app:layout_constraintEnd_toEndOf="@id/auth_panel_bg" />
+
+    <!-- CN subtitle under button -->
+    <TextView
+        android:id="@+id/btn_login_cn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/btn_login_cn"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp"
+        android:letterSpacing="0.4"
+        app:layout_constraintTop_toBottomOf="@id/btn_login"
+        app:layout_constraintStart_toStartOf="@id/btn_login"
+        app:layout_constraintEnd_toEndOf="@id/btn_login" />
+
+    <!-- ============================================================== -->
+    <!-- BOTTOM: THIRD-PARTY / PROGRESS / LINKS                         -->
+    <!-- ============================================================== -->
+
+    <TextView
+        android:id="@+id/third_party_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/third_party_divider"
+        android:textColor="@color/text_tertiary"
+        android:textSize="10sp"
+        android:letterSpacing="0.35"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toBottomOf="@id/btn_login_cn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Third-party login row: WeChat | QQ | Guest -->
+    <LinearLayout
+        android:id="@+id/third_party_row"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/third_party_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- WeChat -->
+        <LinearLayout
+            android:id="@+id/btn_wechat"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_third_party_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_wechat"
+                android:contentDescription="@string/cd_wechat" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/login_wechat"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- QQ -->
+        <LinearLayout
+            android:id="@+id/btn_qq"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_third_party_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_qq"
+                android:contentDescription="@string/cd_qq" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/login_qq"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Guest -->
+        <LinearLayout
+            android:id="@+id/btn_guest"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_third_party_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_guest"
+                android:contentDescription="@string/cd_guest" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/login_guest"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ===== ASSET DOWNLOAD PROGRESS ===== -->
+    <TextView
+        android:id="@+id/progress_label_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/resource_downloading"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp"
+        android:letterSpacing="0.15"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toBottomOf="@id/third_party_row"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Progress container: track background view + horizontal ProgressBar on top -->
+    <FrameLayout
+        android:id="@+id/progress_container"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/progress_label_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Chamfered track -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_progress_bar" />
+
+        <!-- Fill layer (clipped by ProgressBar) -->
+        <ProgressBar
+            android:id="@+id/progress_download"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:progress="73"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_bar_fill"
+            android:indeterminate="false"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Progress numeric label -->
+    <TextView
+        android:id="@+id/progress_percent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/progress_label"
+        android:textColor="@color/warning_yellow"
+        android:textSize="12sp"
+        android:letterSpacing="0.12"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/progress_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ===== LINKS: register / forgot ===== -->
+    <TextView
+        android:id="@+id/link_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:text="@string/link_register"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toBottomOf="@id/progress_percent"
+        app:layout_constraintEnd_toStartOf="@id/link_separator" />
+
+    <TextView
+        android:id="@+id/link_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/link_separator"
+        android:textColor="@color/text_tertiary"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/progress_percent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/link_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:text="@string/link_forgot"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toBottomOf="@id/progress_percent"
+        app:layout_constraintStart_toEndOf="@id/link_separator" />
+
+    <!-- ===== FOOTER ===== -->
+    <View
+        android:id="@+id/footer_rule"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/metal_gray"
+        app:layout_constraintBottom_toTopOf="@id/footer_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/footer_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/footer_status"
+        android:textColor="@color/tactical_red"
+        android:textSize="9sp"
+        android:letterSpacing="0.3"
+        android:fontFamily="monospace"
+        app:layout_constraintBottom_toTopOf="@id/footer_legal"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="28dp" />
+
+    <TextView
+        android:id="@+id/footer_legal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginStart="28dp"
+        android:text="@string/footer_legal"
+        android:textColor="@color/text_tertiary"
+        android:textSize="9sp"
+        android:letterSpacing="0.1"
+        android:fontFamily="monospace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

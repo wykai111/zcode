@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ===== Core Tactical Palette ===== -->
+    <color name="bg_base">#0A0A0F</color>          <!-- 黑色背景 -->
+    <color name="bg_dark">#070709</color>          <!-- 深黑层 -->
+    <color name="tactical_red">#E63946</color>     <!-- 战术红 -->
+    <color name="tactical_red_dark">#B5283A</color>
+    <color name="tactical_red_light">#FF5A6A</color>
+    <color name="metal_gray">#2A2A35</color>       <!-- 金属灰 -->
+    <color name="metal_gray_dark">#1A1A22</color>
+    <color name="metal_gray_light">#3A3A48</color>
+    <color name="warning_yellow">#FFD60A</color>   <!-- 警示黄 -->
+    <color name="warning_yellow_dim">#8A7400</color>
+
+    <!-- ===== Text ===== -->
+    <color name="text_primary">#F2F2F5</color>
+    <color name="text_secondary">#9A9AA8</color>
+    <color name="text_tertiary">#5A5A66</color>
+    <color name="text_accent">#E63946</color>
+    <color name="text_warning">#FFD60A</color>
+
+    <!-- ===== Panels & Overlays ===== -->
+    <color name="panel_overlay">#CC0F0F16</color>
+    <color name="panel_border">#4A4A5C</color>
+    <color name="scan_line">#14E63946</color>
+    <color name="scan_line_dim">#0AFFFFFF</color>
+
+    <!-- ===== Input ===== -->
+    <color name="input_bg">#8014141C</color>
+    <color name="input_border_normal">#3C3C48</color>
+    <color name="input_border_focus">#E63946</color>
+
+    <!-- ===== Button ===== -->
+    <color name="btn_red_start">#E63946</color>
+    <color name="btn_red_end">#8E1F2D</color>
+    <color name="btn_red_pressed">#7A1A26</color>
+
+    <!-- ===== Progress ===== -->
+    <color name="progress_track">#1E1E26</color>
+    <color name="progress_fill_start">#FFD60A</color>
+    <color name="progress_fill_end">#E63946</color>
+
+    <!-- ===== Third-party brand ===== -->
+    <color name="wechat_green">#07C160</color>
+    <color name="qq_blue">#12B7F5</color>
+    <color name="guest_gray">#9A9AA8</color>
+
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_button_strike.xml
+    Primary "DEPLOY" button: red diagonal gradient with chamfered (cut) corners.
+    Uses an inline gradient resource (aapt:attr) so a true gradient fills the
+    chamfered vector path. API 24+ supports gradients inside vectors.
+
+    Press feedback is provided by the parent's android:stateListAnimator +
+    a tint overlay; see the layout's foreground selector if needed.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="280dp"
+    android:height="56dp"
+    android:viewportWidth="280"
+    android:viewportHeight="56">
+
+    <!-- Soft drop shadow below the button -->
+    <path
+        android:name="shadow"
+        android:fillColor="#50000000"
+        android:pathData="M 12,4 L 268,4 L 280,16 L 280,46 L 268,58 L 12,58 L 0,46 L 0,16 Z" />
+
+    <!-- Main chamfered body with diagonal red gradient -->
+    <path
+        android:name="body"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 280,44 L 268,56 L 12,56 L 0,44 L 0,12 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:angle="45"
+                android:startColor="@color/btn_red_start"
+                android:endColor="@color/btn_red_end"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Top highlight strip for a pressed-metal sheen -->
+    <path
+        android:name="highlight"
+        android:fillColor="#33FFFFFF"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 0,12 Z" />
+
+    <!-- Inner accent stroke -->
+    <path
+        android:name="stroke"
+        android:strokeColor="#66FF5A6A"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 280,44 L 268,56 L 12,56 L 0,44 L 0,12 Z" />
+
+</vector>

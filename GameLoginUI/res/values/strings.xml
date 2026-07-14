@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ===== App ===== -->
+    <string name="app_name">Strike Force</string>
+    <string name="game_title">STRIKE FORCE</string>
+    <string name="game_subtitle">TACTICAL COMBAT DIVISION</string>
+    <string name="version_tag">BUILD 2.7.4 // CLASSIFIED</string>
+
+    <!-- ===== Login Card ===== -->
+    <string name="login_card_header">// AUTHENTICATION REQUIRED</string>
+    <string name="login_card_title">OPERATOR LOGIN</string>
+    <string name="hint_account">CODENAME / ACCOUNT</string>
+    <string name="hint_password">SECURITY KEY</string>
+    <string name="btn_login">DEPLOY</string>
+    <string name="btn_login_cn">登录</string>
+
+    <!-- ===== Third-party login ===== -->
+    <string name="third_party_divider">OR ACCESS VIA</string>
+    <string name="login_wechat">微信</string>
+    <string name="login_qq">QQ</string>
+    <string name="login_guest">游客</string>
+
+    <!-- ===== Progress ===== -->
+    <string name="resource_download">ASSET DOWNLOAD</string>
+    <string name="resource_downloading">DOWNLOADING COMBAT ASSETS</string>
+    <string name="progress_percent">73%</string>
+    <string name="progress_label">73%  //  4.2 GB / 5.7 GB</string>
+
+    <!-- ===== Links ===== -->
+    <string name="link_register">注册新账号</string>
+    <string name="link_forgot">忘记密码</string>
+    <string name="link_separator">|</string>
+
+    <!-- ===== Footer ===== -->
+    <string name="footer_status">SYSTEM ONLINE</string>
+    <string name="footer_legal">© 2026 STRIKE FORCE // ALL OPERATIONS LOGGED</string>
+
+    <!-- ===== Content descriptions ===== -->
+    <string name="cd_logo">Game logo</string>
+    <string name="cd_user_icon">Account icon</string>
+    <string name="cd_lock_icon">Password icon</string>
+    <string name="cd_password_toggle">Show or hide password</string>
+    <string name="cd_wechat">Login with WeChat</string>
+    <string name="cd_qq">Login with QQ</string>
+    <string name="cd_guest">Login as guest</string>
+
+</resources>

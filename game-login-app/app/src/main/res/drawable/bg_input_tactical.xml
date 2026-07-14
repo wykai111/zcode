@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_input_tactical.xml
+    Chamfered input field background: translucent dark fill with a metal-gray
+    border. Sharp cut corners, no rounding. Drawn as a vector so the chamfer
+    scales to any input height.
+
+    Note: For focus-state color change, create a sibling drawable
+    (bg_input_tactical_focus.xml) and wire a state-list selector, or set the
+    border tint programmatically.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="280dp"
+    android:height="52dp"
+    android:viewportWidth="280"
+    android:viewportHeight="52">
+
+    <!-- Translucent fill -->
+    <path
+        android:name="fill"
+        android:fillColor="@color/input_bg"
+        android:pathData="
+            M 10,0
+            L 270,0
+            L 280,10
+            L 280,42
+            L 270,52
+            L 10,52
+            L 0,42
+            L 0,10
+            Z" />
+
+    <!-- Border -->
+    <path
+        android:name="border"
+        android:strokeColor="@color/input_border_normal"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="
+            M 10,0
+            L 270,0
+            L 280,10
+            L 280,42
+            L 270,52
+            L 10,52
+            L 0,42
+            L 0,10
+            Z" />
+
+    <!-- Left accent tick (red, signals input) -->
+    <path
+        android:name="accent_tick"
+        android:strokeColor="@color/tactical_red"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:pathData="M 6,18 L 6,34" />
+
+</vector>

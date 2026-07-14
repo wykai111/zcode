@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_button_strike_pressed.xml
+    Pressed state of the DEPLOY button: darker red gradient, mimicking the
+    button being driven inward.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="280dp"
+    android:height="56dp"
+    android:viewportWidth="280"
+    android:viewportHeight="56">
+
+    <path
+        android:name="body"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 280,44 L 268,56 L 12,56 L 0,44 L 0,12 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:angle="45"
+                android:startColor="@color/btn_red_pressed"
+                android:endColor="#4A0F18"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <path
+        android:name="highlight"
+        android:fillColor="#1AFFFFFF"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 0,12 Z" />
+
+    <path
+        android:name="stroke"
+        android:strokeColor="@color/tactical_red_dark"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 12,0 L 268,0 L 280,12 L 280,44 L 268,56 L 12,56 L 0,44 L 0,12 Z" />
+
+</vector>

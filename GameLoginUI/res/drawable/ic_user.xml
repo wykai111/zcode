@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_user.xml
+    Operator/codename icon: stylized helmet-and-shoulders silhouette in a
+    tactical angular style. 24dp viewport.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="@color/text_secondary">
+
+    <!-- Head/helmet -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,3 C9.5,3 8,4.8 8,7.2 L8,9 C8,9 6.5,9.4 6.5,11 L6.5,11.5 C6.5,12.6 7,13 7.5,13.2 C7.8,14.8 8.6,15.8 9,16.2 L9,17.5 C9,17.9 8.8,18.2 8.4,18.4 L4.6,20.2 C3.6,20.7 3,21.7 3,22.8 L3,23 L21,23 L21,22.8 C21,21.7 20.4,20.7 19.4,20.2 L15.6,18.4 C15.2,18.2 15,17.9 15,17.5 L15,16.2 C15.4,15.8 16.2,14.8 16.5,13.2 C17,13 17.5,12.6 17.5,11.5 L17.5,11 C17.5,9.4 16,9 16,9 L16,7.2 C16,4.8 14.5,3 12,3 Z" />
+
+    <!-- Helmet visor line accent -->
+    <path
+        android:fillColor="@color/tactical_red"
+        android:pathData="M8.2,11 L15.8,11 L15.8,11.6 L8.2,11.6 Z" />
+
+</vector>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_panel_tactical.xml
+    Semi-transparent tactical panel with chamfered (cut) corners — NOT rounded.
+    Implemented as a vector so the chamfer path scales to any view bounds while
+    keeping both a translucent fill and a sharp metal border stroke.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="520dp"
+    android:viewportWidth="360"
+    android:viewportHeight="520">
+
+    <!-- Translucent fill -->
+    <path
+        android:name="panel_fill"
+        android:fillColor="@color/panel_overlay"
+        android:pathData="
+            M 16,0
+            L 344,0
+            L 360,16
+            L 360,504
+            L 344,520
+            L 16,520
+            L 0,504
+            L 0,16
+            Z" />
+
+    <!-- Metal border -->
+    <path
+        android:name="panel_border"
+        android:strokeColor="@color/panel_border"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="
+            M 16,0
+            L 344,0
+            L 360,16
+            L 360,504
+            L 344,520
+            L 16,520
+            L 0,504
+            L 0,16
+            Z" />
+
+    <!-- Inner accent line (red, top edge) -->
+    <path
+        android:name="accent_top"
+        android:strokeColor="@color/tactical_red"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="
+            M 24,8
+            L 200,8" />
+
+</vector>

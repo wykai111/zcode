@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_third_party_btn.xml
+    Chamfered background for the WeChat/QQ/Guest login buttons. Subtle dark
+    fill with metal border and a small bottom accent corner.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="88dp"
+    android:height="64dp"
+    android:viewportWidth="88"
+    android:viewportHeight="64">
+
+    <path
+        android:name="fill"
+        android:fillColor="@color/input_bg"
+        android:pathData="M 6,0 L 82,0 L 88,6 L 88,58 L 82,64 L 6,64 L 0,58 L 0,6 Z" />
+
+    <path
+        android:name="border"
+        android:strokeColor="@color/input_border_normal"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 6,0 L 82,0 L 88,6 L 88,58 L 82,64 L 6,64 L 0,58 L 0,6 Z" />
+
+    <!-- Bottom-right red corner accent -->
+    <path
+        android:name="corner_accent"
+        android:strokeColor="@color/tactical_red"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="M 76,64 L 82,64 L 88,58" />
+
+</vector>

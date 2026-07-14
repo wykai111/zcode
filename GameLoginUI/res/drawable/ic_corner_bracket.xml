@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_corner_bracket.xml
+    Tactical corner-bracket decoration. Tintable; placed at the four corners of
+    the login card / screen for a HUD frame feel. 24dp viewport, drawn as an
+    L-shape in the top-left; rotate via android:rotation for other corners.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="@color/tactical_red">
+
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="square"
+        android:fillColor="#00000000"
+        android:pathData="M 2,10 L 2,2 L 10,2" />
+
+</vector>

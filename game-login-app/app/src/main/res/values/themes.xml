@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.StrikeForce" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tactical_red</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+        <item name="colorSecondary">@color/warning_yellow</item>
+        <item name="colorOnSecondary">@color/bg_base</item>
+        <item name="android:colorBackground">@color/bg_base</item>
+        <item name="colorSurface">@color/metal_gray</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/bg_base</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/bg_base</item>
+    </style>
+
+</resources>
