@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary gradient colors (Indigo → Purple) -->
+    <color name="primary">#6366F1</color>
+    <color name="primary_dark">#4F46E5</color>
+    <color name="primary_light">#818CF8</color>
+    <color name="accent">#8B5CF6</color>
+    <color name="accent_light">#A78BFA</color>
+
+    <!-- Background colors -->
+    <color name="bg_gradient_start">#6366F1</color>
+    <color name="bg_gradient_end">#8B5CF6</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="bg_dark">#1E1B2E</color>
+
+    <!-- Text colors -->
+    <color name="text_primary">#1E1B2E</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <!-- Misc -->
+    <color name="divider">#E5E7EB</color>
+    <color name="error">#EF4444</color>
+    <color name="success">#10B981</color>
+
+    <!-- Material colors for theme -->
+    <color name="md_theme_primary">#6366F1</color>
+    <color name="md_theme_on_primary">#FFFFFF</color>
+    <color name="md_theme_secondary">#8B5CF6</color>
+    <color name="md_theme_on_secondary">#FFFFFF</color>
+    <color name="md_theme_background">#F3F4F6</color>
+    <color name="md_theme_surface">#FFFFFF</color>
+    <color name="md_theme_on_background">#1E1B2E</color>
+    <color name="md_theme_on_surface">#1E1B2E</color>
+</resources>
