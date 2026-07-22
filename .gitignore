@@ -1,2 +1,25 @@
 # ZCode local config
 .zcode/
+
+# ===== macOS =====
+.DS_Store
+
+# ===== Node.js =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== drama-admin 后端 =====
+drama-admin/server/.env
+drama-admin/server/uploads/*
+!drama-admin/server/uploads/.gitkeep
+
+# ===== drama-admin 前端 =====
+drama-admin/web/dist/
+drama-admin/web/.vite/
+
+# ===== 构建产物 / 大文件 =====
+*.apk
+*.ipa
+

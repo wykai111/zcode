@@ -1,0 +1,44 @@
+<!-- components/video-card/video-card.ttml -->
+<view class="video-card {{mode === 'list' ? 'list-mode' : ''}}" bindtap="onTap">
+
+  <!-- 缩略图 -->
+  <view class="thumb-wrapper">
+    <image class="thumb" src="{{video.cover}}" mode="aspectFill" lazy-load="true" />
+
+    <!-- 渐变遮罩 -->
+    <view class="thumb-overlay"></view>
+
+    <!-- 顶部标签 -->
+    <view class="badge-row" wx:if="{{video.tag}}">
+      <view class="badge badge-{{video.tag === 'HOT' ? 'hot' : 'new'}}">
+        <text class="badge-text">{{video.tag}}</text>
+      </view>
+    </view>
+
+    <!-- 时长 -->
+    <view class="duration" wx:if="{{video.duration}}">
+      <text class="duration-text">{{video.duration}}</text>
+    </view>
+
+    <!-- 底部信息覆盖层 -->
+    <view class="thumb-info">
+      <view class="rating-row" wx:if="{{video.rating}}">
+        <text class="rating-star">★</text>
+        <text class="rating-value">{{video.rating}}</text>
+      </view>
+      <view class="views-row" wx:if="{{video.views}}">
+        <text class="views-text">▶ {{video.views}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 文字信息 -->
+  <view class="info">
+    <text class="title text-ellipsis">{{video.title}}</text>
+    <view class="meta" wx:if="{{video.episodes || video.genre}}">
+      <text class="meta-text" wx:if="{{video.episodes}}">{{video.episodes}} eps</text>
+      <text class="meta-dot" wx:if="{{video.episodes && video.genre}}">·</text>
+      <text class="meta-text" wx:if="{{video.genre}}">{{video.genre}}</text>
+    </view>
+  </view>
+</view>

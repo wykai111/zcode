@@ -1,0 +1,119 @@
+<!-- pages/profile/profile.ttml -->
+<view class="page">
+
+  <!-- ===== 顶部导航栏 ===== -->
+  <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="top-row">
+      <!-- 左侧：用户名 + 下拉箭头 -->
+      <view class="top-left">
+        <text class="top-username">@{{user.username}}</text>
+        <text class="top-arrow">▾</text>
+      </view>
+      <!-- 右侧：菜单图标（三点） -->
+      <view class="menu-btn" bindtap="onMenuTap">
+        <view class="menu-dot"></view>
+        <view class="menu-dot"></view>
+        <view class="menu-dot"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 占位 -->
+  <view style="height: {{statusBarHeight + 88}}px;"></view>
+
+  <!-- ===== 头像 ===== -->
+  <view class="avatar-section">
+    <view class="avatar-ring" bindtap="onAvatarTap">
+      <image class="avatar" src="{{user.avatar}}" mode="aspectFill" />
+    </view>
+  </view>
+
+  <!-- ===== 昵称 ===== -->
+  <text class="nickname">{{user.nickname}}</text>
+
+  <!-- ===== 数据统计（3 列） ===== -->
+  <view class="stats-row">
+    <view class="stat-item">
+      <text class="stat-num">{{user.following}}</text>
+      <text class="stat-label">Following</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num">{{user.followers}}</text>
+      <text class="stat-label">Followers</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num">{{user.likes}}</text>
+      <text class="stat-label">Likes</text>
+    </view>
+  </view>
+
+  <!-- ===== 操作按钮 ===== -->
+  <view class="actions-row">
+    <view class="edit-btn" bindtap="onEditTap">
+      <text class="edit-text">Edit profile</text>
+    </view>
+    <view class="icon-btn" bindtap="onAddTap">
+      <text class="icon-btn-plus">+</text>
+    </view>
+  </view>
+
+  <!-- ===== Tab 栏 ===== -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{activeTab === 0 ? 'active' : ''}}"
+      data-index="0"
+      bindtap="onTabTap"
+    >
+      <text class="tab-icon">♥</text>
+      <view class="tab-indicator" wx:if="{{activeTab === 0}}"></view>
+    </view>
+    <view
+      class="tab-item {{activeTab === 1 ? 'active' : ''}}"
+      data-index="1"
+      bindtap="onTabTap"
+    >
+      <text class="tab-icon">▦</text>
+      <view class="tab-indicator" wx:if="{{activeTab === 1}}"></view>
+    </view>
+    <view
+      class="tab-item {{activeTab === 2 ? 'active' : ''}}"
+      data-index="2"
+      bindtap="onTabTap"
+    >
+      <text class="tab-icon">🔖</text>
+      <view class="tab-indicator" wx:if="{{activeTab === 2}}"></view>
+    </view>
+  </view>
+
+  <!-- ===== 视频网格（3 列） ===== -->
+  <view class="video-grid">
+    <view
+      class="grid-cell"
+      wx:for="{{videos}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      data-locked="{{item.locked}}"
+      bindtap="onVideoTap"
+    >
+      <image class="grid-thumb" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+
+      <!-- 播放次数覆盖层 -->
+      <view class="play-count" wx:if="{{!item.locked}}">
+        <view class="play-tri"></view>
+        <text class="play-count-text">{{item.plays}}</text>
+      </view>
+
+      <!-- 私密视频锁图标 -->
+      <view class="lock-badge" wx:if="{{item.locked}}">
+        <view class="lock-icon">
+          <view class="lock-body"></view>
+          <view class="lock-shackle"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</view>

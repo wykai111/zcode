@@ -1,0 +1,91 @@
+<!-- pages/history/history.ttml -->
+<view class="page">
+
+  <!-- 顶部标题栏 -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-content">
+      <text class="header-title">Watch History</text>
+      <view class="clear-btn" bindtap="onClearTap" wx:if="{{history.length}}">
+        <text class="clear-text">Clear All</text>
+      </view>
+    </view>
+
+    <!-- 筛选 -->
+    <view class="filter-row">
+      <view class="filter-tab {{filter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="onFilterTap">
+        <text class="filter-text">All</text>
+      </view>
+      <view class="filter-tab {{filter === 'watching' ? 'active' : ''}}" data-filter="watching" bindtap="onFilterTap">
+        <text class="filter-text">Watching</text>
+      </view>
+      <view class="filter-tab {{filter === 'completed' ? 'active' : ''}}" data-filter="completed" bindtap="onFilterTap">
+        <text class="filter-text">Completed</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 占位（有数据时缩小上方间距） -->
+  <view style="height: {{statusBarHeight + 100}}px;"></view>
+
+  <!-- 历史列表 -->
+  <view class="history-list" wx:if="{{history.length}}">
+    <view
+      class="history-item"
+      wx:for="{{history}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onContinueTap"
+    >
+      <!-- 缩略图 -->
+      <view class="thumb-box">
+        <image class="thumb" src="{{item.cover}}" mode="aspectFill" />
+        <view class="thumb-mask"></view>
+
+        <!-- 进度条 -->
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{item.progress}}%;"></view>
+        </view>
+
+        <!-- 完成标记 -->
+        <view class="completed-badge" wx:if="{{item.progress === 100}}">
+          <text class="completed-text">✓ Done</text>
+        </view>
+
+        <!-- 继续观看按钮 -->
+        <view class="resume-btn" wx:else>
+          <view class="play-triangle"></view>
+        </view>
+      </view>
+
+      <!-- 信息 -->
+      <view class="item-info">
+        <text class="item-title text-ellipsis-2">{{item.title}}</text>
+        <text class="item-episode">{{item.episode}}</text>
+        <view class="item-meta">
+          <text class="meta-time">{{item.watchedAt}}</text>
+          <text class="meta-dot">·</text>
+          <text class="meta-dur">{{item.duration}}</text>
+        </view>
+        <view class="progress-text">{{item.progress}}% watched</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <!-- CSS 纯图标：时钟 + 播放三角（暗淡配色） -->
+    <view class="empty-illustration">
+      <view class="empty-clock">
+        <view class="clock-ring"></view>
+        <view class="clock-hand-h"></view>
+        <view class="clock-hand-m"></view>
+        <view class="clock-center"></view>
+        <view class="clock-play"></view>
+      </view>
+    </view>
+    <text class="empty-title">No Watch History</text>
+    <text class="empty-desc">Start watching to see your history here</text>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</view>

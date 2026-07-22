@@ -1,0 +1,253 @@
+<!-- pages/index/index.ttml -->
+<view class="page">
+
+  <!-- ===== 1. 顶部搜索栏 ===== -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <!-- 搜索框 -->
+    <view class="search-row">
+      <view class="search-box" bindtap="onSearchTap">
+        <view class="search-icon">
+          <view class="icon-search-circle"></view>
+          <view class="icon-search-handle"></view>
+        </view>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="{{placeholder}}"
+          placeholder-class="search-placeholder"
+          value="{{searchText}}"
+          bindinput="onSearchInput"
+          bindconfirm="onSearchConfirm"
+          confirm-type="search"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 占位（固定顶部的高度） -->
+  <view style="height: {{statusBarHeight + 80}}px;"></view>
+
+  <!-- ===== 滚动内容 ===== -->
+  <view class="content">
+
+    <!-- ===== 1.5 Gallery 画廊轮播区（搜索框下方主推位） ===== -->
+    <view class="gallery-section">
+      <swiper
+        class="gallery-swiper"
+        indicator-dots="false"
+        autoplay="true"
+        interval="4000"
+        duration="500"
+        circular="true"
+        bindchange="onGalleryChange"
+      >
+        <swiper-item wx:for="{{gallery}}" wx:key="id">
+          <view class="gallery-card" data-id="{{item.id}}" bindtap="onGalleryTap">
+            <!-- 大幅居中封面海报 -->
+            <image class="gallery-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+            <view class="gallery-overlay"></view>
+
+            <!-- 左上角集数 -->
+            <view class="gallery-eps">
+              <text class="gallery-eps-text">{{item.episodes}} EPS</text>
+            </view>
+
+            <!-- 左下角标题 + 标签 -->
+            <view class="gallery-info">
+              <text class="gallery-title">{{item.title}}</text>
+              <view class="gallery-tags">
+                <view class="gallery-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+                  <text class="gallery-tag-text">{{tag}}</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 右下角悬浮白色 Play 按钮：点击直接进入播放器，从第1集开始 -->
+            <view
+              class="gallery-play-btn"
+              catchtap="onPlayTap"
+              data-id="{{item.id}}"
+            >
+              <view class="gallery-play-tri"></view>
+              <text class="gallery-play-text">Play</text>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+
+      <!-- 指示点 -->
+      <view class="gallery-dots">
+        <view
+          class="gallery-dot {{galleryIndex === index ? 'active' : ''}}"
+          wx:for="{{gallery}}"
+          wx:key="id"
+        ></view>
+      </view>
+    </view>
+
+    <!-- ===== 2. Top Shorts 热门短剧专区（横向滑动） ===== -->
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title-wrap">
+          <text class="section-title">Top Shorts</text>
+          <view class="section-accent-line topshort-line"></view>
+        </view>
+        <view class="view-all" bindtap="onViewAllTap" data-type="topshort">
+          <text class="view-all-text">See All</text>
+          <text class="view-all-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 横向滑动封面 -->
+      <scroll-view class="trend-scroll" scroll-x="true" enhanced="true" show-scrollbar="false">
+        <view class="trend-list">
+          <view
+            class="trend-item"
+            wx:for="{{topShorts}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="onTopShortTap"
+          >
+            <view class="trend-cover-wrap">
+              <image class="trend-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+              <view class="trend-cover-overlay"></view>
+
+              <!-- NEW 标识 -->
+              <view class="trend-hot-badge topshort-badge">
+                <text class="trend-hot-text topshort-badge-text">✦ {{item.tag}}</text>
+              </view>
+
+              <!-- 播放次数 -->
+              <view class="trend-plays">
+                <view class="play-tri-xs"></view>
+                <text class="trend-plays-text">{{item.views}}</text>
+              </view>
+            </view>
+
+            <!-- 标题 -->
+            <text class="trend-title text-ellipsis">{{item.title}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- ===== 3. New Arrivals 新上架专区（横版列表卡片） ===== -->
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title-wrap">
+          <text class="section-title">New Arrivals</text>
+          <view class="section-accent-line"></view>
+        </view>
+        <view class="view-all" bindtap="onViewAllTap" data-type="new">
+          <text class="view-all-text">See All</text>
+          <text class="view-all-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 竖向横版卡片列表 -->
+      <view class="new-arrivals-list">
+        <view
+          class="new-card"
+          wx:for="{{newArrivals}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onNewArrivalTap"
+        >
+          <!-- 左侧封面 -->
+          <view class="new-cover-wrap">
+            <image class="new-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+            <view class="new-cover-overlay"></view>
+
+            <!-- 右上角 NEW 标识 -->
+            <view class="new-badge">
+              <text class="new-badge-text">NEW</text>
+            </view>
+
+            <!-- 集数 -->
+            <view class="new-eps">
+              <text class="new-eps-text">{{item.episodes}} EPS</text>
+            </view>
+          </view>
+
+          <!-- 右侧信息 -->
+          <view class="new-info">
+            <text class="new-title">{{item.title}}</text>
+            <text class="new-desc text-ellipsis-2">{{item.description}}</text>
+
+            <!-- 题材标签栏 -->
+            <view class="new-tags">
+              <view class="new-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+                <text class="new-tag-text">{{tag}}</text>
+              </view>
+            </view>
+
+            <!-- 评分 + Play 按钮 -->
+            <view class="new-bottom">
+              <view class="new-rating">
+                <text class="rating-star">★</text>
+                <text class="rating-num">{{item.rating}}</text>
+              </view>
+              <view
+                class="new-play-btn"
+                catchtap="onPlayTap"
+                data-id="{{item.id}}"
+              >
+                <view class="play-tri-sm"></view>
+                <text class="new-play-text">Play</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 4. Trending 热门趋势专区 ===== -->
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title-wrap">
+          <text class="section-title">Trending</text>
+          <view class="section-accent-line trend-line"></view>
+        </view>
+        <view class="view-all" bindtap="onViewAllTap" data-type="trending">
+          <text class="view-all-text">See All</text>
+          <text class="view-all-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 横向滑动封面 -->
+      <scroll-view class="trend-scroll" scroll-x="true" enhanced="true" show-scrollbar="false">
+        <view class="trend-list">
+          <view
+            class="trend-item"
+            wx:for="{{trending}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="onTrendingTap"
+          >
+            <view class="trend-cover-wrap">
+              <image class="trend-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+              <view class="trend-cover-overlay"></view>
+
+              <!-- HOT 标识 -->
+              <view class="trend-hot-badge">
+                <text class="trend-hot-text">🔥 {{item.tag}}</text>
+              </view>
+
+              <!-- 播放次数 -->
+              <view class="trend-plays">
+                <view class="play-tri-xs"></view>
+                <text class="trend-plays-text">{{item.plays}}</text>
+              </view>
+            </view>
+
+            <!-- 标题 -->
+            <text class="trend-title text-ellipsis">{{item.title}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-spacer"></view>
+  </view>
+</view>

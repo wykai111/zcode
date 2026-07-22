@@ -1,0 +1,313 @@
+/* pages/history/history.ttss */
+
+.page {
+  min-height: 100vh;
+  background: #000000;
+}
+
+/* ===== Header ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.header-content {
+  height: 88rpx;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title {
+  color: #FFFFFF;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.clear-btn {
+  padding: 12rpx 24rpx;
+  background: rgba(254, 44, 85, 0.12);
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(254, 44, 85, 0.3);
+}
+
+.clear-text {
+  color: #FE2C55;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 24rpx 24rpx;
+}
+
+.filter-tab {
+  padding: 12rpx 32rpx;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.filter-tab.active {
+  background: linear-gradient(135deg, #FE2C55, #C9302C);
+  border-color: transparent;
+}
+
+.filter-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.filter-tab.active .filter-text {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* ===== 历史列表 ===== */
+.history-list {
+  padding: 0 24rpx;
+}
+
+.history-item {
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.thumb-box {
+  position: relative;
+  width: 240rpx;
+  height: 320rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #1C1C1E;
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+}
+
+.thumb-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+/* 进度条 */
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6rpx;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FE2C55, #FF6B9D);
+  box-shadow: 0 0 8rpx rgba(254, 44, 85, 0.6);
+}
+
+/* 完成标记 */
+.completed-badge {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  padding: 6rpx 14rpx;
+  background: rgba(37, 244, 238, 0.9);
+  border-radius: 8rpx;
+}
+
+.completed-text {
+  color: #000000;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+/* 继续按钮 */
+.resume-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.play-triangle {
+  width: 0;
+  height: 0;
+  border-left: 24rpx solid #FFFFFF;
+  border-top: 16rpx solid transparent;
+  border-bottom: 16rpx solid transparent;
+  margin-left: 6rpx;
+}
+
+/* 信息 */
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-title {
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 8rpx;
+}
+
+.item-episode {
+  color: #25F4EE;
+  font-size: 24rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.meta-time,
+.meta-dur {
+  color: #8E8E93;
+  font-size: 22rpx;
+}
+
+.meta-dot {
+  color: #48484A;
+}
+
+.progress-text {
+  color: #FE2C55;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 64rpx;
+}
+
+/* CSS 纯图标容器 */
+.empty-illustration {
+  margin-bottom: 48rpx;
+}
+
+.empty-clock {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+/* 时钟外圈 */
+.clock-ring {
+  position: absolute;
+  inset: 0;
+  border: 8rpx solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* 时针 */
+.clock-hand-h {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6rpx;
+  height: 50rpx;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 3rpx;
+  transform: translate(-50%, -100%) rotate(45deg);
+  transform-origin: bottom center;
+}
+
+/* 分针 */
+.clock-hand-m {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6rpx;
+  height: 70rpx;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 3rpx;
+  transform: translate(-50%, -100%) rotate(-30deg);
+  transform-origin: bottom center;
+}
+
+/* 中心点 */
+.clock-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16rpx;
+  height: 16rpx;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 中心播放三角（暗示"播放历史"） */
+.clock-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 22rpx solid rgba(255, 255, 255, 0.22);
+  border-top: 14rpx solid transparent;
+  border-bottom: 14rpx solid transparent;
+  transform: translate(-40%, -50%);
+  margin-left: 4rpx;
+}
+
+.empty-title {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 36rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+}
+
+.empty-desc {
+  color: #8E8E93;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.bottom-spacer {
+  height: 60rpx;
+}

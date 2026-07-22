@@ -1,0 +1,127 @@
+<!-- pages/player/player.ttml -->
+<view class="page">
+
+  <!-- ===== 竖屏沉浸式全屏播放（Swiper 上下滑切集） ===== -->
+  <swiper
+    class="player-swiper"
+    vertical="true"
+    duration="400"
+    current="{{swiperIndex}}"
+    bindchange="onSwiperChange"
+  >
+    <swiper-item wx:for="{{episodes}}" wx:key="ep">
+      <view class="ep-screen" bindtap="onTapScreen">
+
+        <!-- 封面背景（模拟视频画面） -->
+        <image class="ep-cover" src="{{drama.cover}}" mode="aspectFill" />
+        <view class="ep-mask"></view>
+
+        <!-- 当前集大标识 -->
+        <view class="ep-big-label">
+          <text class="ep-big-num">{{item.ep}}</text>
+          <text class="ep-big-total">/ {{total}}</text>
+        </view>
+
+        <!-- 锁定遮罩（VIP 集数） -->
+        <view class="ep-locked" wx:if="{{!item.free}}">
+          <view class="lock-circle">
+            <text class="lock-emoji">🔒</text>
+          </view>
+          <text class="lock-text">Unlock EP {{item.ep}} with VIP</text>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- ===== 中间大图标反馈（点击屏幕切换播放/暂停） ===== -->
+  <view class="center-icon {{centerIconVisible ? 'show' : ''}}">
+    <view class="center-icon-circle">
+      <view class="center-play-tri" wx:if="{{centerIconType === 'play'}}"></view>
+      <view class="center-pause-bars" wx:else>
+        <view class="pause-bar"></view>
+        <view class="pause-bar"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 顶部控制栏 ===== -->
+  <view class="top-bar {{controlsVisible ? 'show' : 'hide'}}" style="padding-top: {{statusBarHeight}}px;">
+    <view class="top-row">
+      <view class="back-btn" catchtap="onBack">
+        <view class="back-arrow"></view>
+      </view>
+      <view class="top-title-wrap">
+        <text class="top-title text-ellipsis">{{drama.title}}</text>
+        <text class="top-sub">EP {{currentEp}} · {{total}} episodes</text>
+      </view>
+      <view class="top-actions">
+        <text class="top-action-icon">⋯</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 底部信息区（从上到下：名称 → 集数徽章 → 进度条） ===== -->
+  <view class="bottom-bar {{controlsVisible ? 'show' : 'hide'}}">
+
+    <!-- 1. 短剧名称 -->
+    <view class="drama-info-row">
+      <text class="drama-title text-ellipsis">{{drama.title}}</text>
+    </view>
+
+    <!-- 2. 当前剧集 / 总剧集（点击查看所有剧集） -->
+    <view class="ep-badge-row">
+      <view class="ep-badge" catchtap="onShowEpPanel">
+        <text class="ep-badge-text">EP {{currentEp}} / {{total}}</text>
+        <text class="ep-badge-arrow">📋</text>
+      </view>
+    </view>
+
+    <!-- 3. 进度条贴底 -->
+    <view class="progress-row">
+      <text class="time-text">{{currentTime}}</text>
+      <view
+        class="progress-track"
+        catchtap="onProgressTap"
+        bindtouchstart="onProgressTouchStart"
+        bindtouchmove="onProgressTouchMove"
+        bindtouchend="onProgressTouchEnd"
+      >
+        <view class="progress-buffered"></view>
+        <view class="progress-played" style="width: {{progress}}%;">
+          <view class="progress-thumb"></view>
+        </view>
+      </view>
+      <text class="time-text">{{totalTime}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 全剧集集数面板（从底部弹出） ===== -->
+  <view class="ep-mask-layer {{showEpPanel ? 'show' : ''}}" bindtap="onHideEpPanel"></view>
+
+  <view class="ep-panel {{showEpPanel ? 'show' : ''}}">
+    <view class="ep-panel-header">
+      <text class="ep-panel-title">All Episodes</text>
+      <text class="ep-panel-sub">{{total}} episodes · EP 1-2 free</text>
+      <view class="ep-panel-close" bindtap="onHideEpPanel">
+        <text class="close-x">✕</text>
+      </view>
+    </view>
+
+    <scroll-view class="ep-grid-scroll" scroll-y="true">
+      <view class="ep-grid">
+        <view
+          class="ep-cell {{item.ep === currentEp ? 'current' : ''}} {{!item.free ? 'locked' : ''}}"
+          wx:for="{{episodes}}"
+          wx:key="ep"
+          data-ep="{{item.ep}}"
+          data-free="{{item.free}}"
+          bindtap="onEpTap"
+        >
+          <text class="ep-cell-num">{{item.ep}}</text>
+          <text class="ep-cell-free" wx:if="{{item.free}}">Free</text>
+          <text class="ep-cell-lock" wx:else>🔒</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

@@ -1,0 +1,99 @@
+<!-- pages/foryou/foryou.ttml -->
+<view class="page">
+
+  <!-- 顶部状态栏占位 + 顶部 Tab -->
+  <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="top-tabs">
+      <text class="top-tab">Following</text>
+      <view class="top-divider"></view>
+      <text class="top-tab active">For You</text>
+    </view>
+  </view>
+
+  <!-- 全屏视频流 Swiper -->
+  <swiper
+    class="feed-swiper"
+    vertical="true"
+    duration="300"
+    bindchange="onSwiperChange"
+    current="{{currentIndex}}"
+  >
+    <swiper-item wx:for="{{feed}}" wx:key="id">
+
+      <view class="feed-item" bindtap="onFeedTap" data-id="{{item.id}}">
+
+        <!-- 视频封面（背景） -->
+        <image class="feed-cover" src="{{item.cover}}" mode="aspectFill" />
+
+        <!-- 暗色渐变遮罩（让文字可读） -->
+        <view class="feed-mask"></view>
+
+        <!-- 右侧操作栏 -->
+        <view class="action-rail">
+
+          <!-- 头像 + 关注 -->
+          <view class="avatar-wrap" bindtap="onAvatarTap" data-author="{{item.author}}">
+            <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+            <view
+              class="follow-btn {{followedMap[item.author] ? 'followed' : ''}}"
+              catchtap="onFollowTap"
+              data-author="{{item.author}}"
+            >
+              <text class="follow-icon">{{followedMap[item.author] ? '✓' : '+'}}</text>
+            </view>
+          </view>
+
+          <!-- 点赞 -->
+          <view class="rail-btn" catchtap="onLikeTap" data-id="{{item.id}}">
+            <view class="rail-icon heart {{likedMap[item.id] ? 'liked' : ''}}">
+              <text class="heart-icon">{{likedMap[item.id] ? '♥' : '♡'}}</text>
+            </view>
+            <text class="rail-text">{{item.likes}}</text>
+          </view>
+
+          <!-- 评论 -->
+          <view class="rail-btn" catchtap="onCommentTap">
+            <view class="rail-icon">
+              <text class="icon-emoji">💬</text>
+            </view>
+            <text class="rail-text">{{item.comments}}</text>
+          </view>
+
+          <!-- 分享 -->
+          <view class="rail-btn" catchtap="onShareTap">
+            <view class="rail-icon">
+              <text class="icon-emoji">↪</text>
+            </view>
+            <text class="rail-text">{{item.shares}}</text>
+          </view>
+        </view>
+
+        <!-- 底部信息 -->
+        <view class="feed-info">
+          <text class="feed-author">{{item.author}}</text>
+          <text class="feed-title">{{item.title}}</text>
+          <text class="feed-desc">{{item.description}}</text>
+
+          <view class="tag-row" wx:if="{{item.tags.length}}">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">#{{tag}}</text>
+          </view>
+
+          <!-- 音乐条（装饰） -->
+          <view class="music-bar">
+            <view class="music-disc">
+              <view class="disc-inner"></view>
+            </view>
+            <view class="music-info">
+              <text class="music-text">🎵 Original Sound - {{item.author}}</text>
+            </view>
+          </view>
+        </view>
+
+      </view>
+
+    </swiper-item>
+  </swiper>
+
+  <!-- 底部留白 -->
+  <view class="bottom-pad"></view>
+</view>

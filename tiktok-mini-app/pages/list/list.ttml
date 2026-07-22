@@ -1,0 +1,73 @@
+<!-- pages/list/list.ttml -->
+<view class="page">
+
+  <!-- ===== 顶部导航栏 ===== -->
+  <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="top-row">
+      <view class="back-btn" bindtap="onBack">
+        <view class="back-arrow"></view>
+      </view>
+      <view class="top-title-wrap">
+        <text class="top-title text-ellipsis">{{title}}</text>
+        <text class="top-sub">{{subtitle}}</text>
+      </view>
+      <view class="top-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- 占位 -->
+  <view style="height: {{statusBarHeight + 130}}px;"></view>
+
+  <!-- ===== GridView 2 列列表 ===== -->
+  <view class="grid" wx:if="{{!isEmpty}}">
+    <view
+      class="grid-item"
+      wx:for="{{list}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onItemTap"
+    >
+      <!-- 封面 -->
+      <view class="cover-wrap">
+        <image class="cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+        <view class="cover-overlay"></view>
+
+        <!-- 标识 -->
+        <view class="badge-row" wx:if="{{item.tag}}">
+          <view class="badge {{item.tag === 'HOT' ? 'hot' : 'new'}}">
+            <text class="badge-text">{{item.tag}}</text>
+          </view>
+        </view>
+
+        <!-- 集数 -->
+        <view class="cover-eps" wx:if="{{item.episodes}}">
+          <text class="cover-eps-text">{{item.episodes}} EPS</text>
+        </view>
+
+        <!-- 播放次数 -->
+        <view class="cover-views" wx:if="{{item.views}}">
+          <view class="play-tri"></view>
+          <text class="cover-views-text">{{item.views}}</text>
+        </view>
+
+        <!-- 评分 -->
+        <view class="cover-rating" wx:if="{{item.rating}}">
+          <text class="rating-star">★</text>
+          <text class="rating-num">{{item.rating}}</text>
+        </view>
+      </view>
+
+      <!-- 标题 -->
+      <text class="item-title text-ellipsis-2">{{item.title}}</text>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">🎬</text>
+    <text class="empty-title">No content yet</text>
+    <text class="empty-desc">Check back later for more dramas</text>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</view>

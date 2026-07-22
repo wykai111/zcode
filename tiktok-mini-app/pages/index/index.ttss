@@ -1,0 +1,583 @@
+/* pages/index/index.ttss */
+
+.page {
+  min-height: 100vh;
+  background: #000000;
+}
+
+/* ============================================
+   1. 顶部搜索栏
+   ============================================ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.search-row {
+  padding: 16rpx 24rpx;
+}
+
+.search-box {
+  width: 100%;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 28rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.search-icon {
+  position: relative;
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.icon-search-circle {
+  position: absolute;
+  left: 2rpx;
+  top: 2rpx;
+  width: 20rpx;
+  height: 20rpx;
+  border: 3rpx solid #FFFFFF;
+  border-radius: 50%;
+}
+
+.icon-search-handle {
+  position: absolute;
+  right: 0;
+  bottom: 2rpx;
+  width: 12rpx;
+  height: 3rpx;
+  background: #FFFFFF;
+  border-radius: 2rpx;
+  transform: rotate(45deg);
+  transform-origin: right center;
+}
+
+.search-input {
+  flex: 1;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  height: 100%;
+}
+
+.search-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 28rpx;
+}
+
+/* ============================================
+   内容区
+   ============================================ */
+.content {
+  padding-bottom: 32rpx;
+}
+
+/* ============================================
+   Section 公共样式
+   ============================================ */
+.section {
+  padding: 24rpx 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24rpx 24rpx;
+}
+
+.section-title-wrap {
+  position: relative;
+}
+
+.section-title {
+  color: #FFFFFF;
+  font-size: 40rpx;
+  font-weight: 800;
+  letter-spacing: -0.5rpx;
+}
+
+.section-accent-line {
+  position: absolute;
+  bottom: -8rpx;
+  left: 0;
+  width: 60rpx;
+  height: 6rpx;
+  background: linear-gradient(90deg, #FE2C55, #25F4EE);
+  border-radius: 3rpx;
+}
+
+.trend-line {
+  background: linear-gradient(90deg, #FF9500, #FFD60A);
+}
+
+.view-all {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.view-all-text {
+  color: #FE2C55;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.view-all-arrow {
+  color: #FE2C55;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+/* ============================================
+   1.5 Gallery 画廊轮播区（搜索框下方主推位）
+   ============================================ */
+.gallery-section {
+  padding: 8rpx 0 8rpx;
+}
+
+.gallery-swiper {
+  width: 100%;
+  height: 480rpx;
+}
+
+.gallery-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  border-radius: 28rpx;
+  overflow: hidden;
+  background: #1C1C1E;
+  box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.5);
+}
+
+/* 大幅居中封面海报 */
+.gallery-cover {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    transparent 28%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* 左上角集数 */
+.gallery-eps {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  padding: 6rpx 16rpx;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 8rpx;
+  backdrop-filter: blur(10px);
+}
+
+.gallery-eps-text {
+  color: #FFFFFF;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+/* 左下角标题 + 标签 */
+.gallery-info {
+  position: absolute;
+  bottom: 28rpx;
+  left: 24rpx;
+  right: 220rpx;  /* 给右下角 Play 按钮留位 */
+}
+
+.gallery-title {
+  display: block;
+  color: #FFFFFF;
+  font-size: 42rpx;
+  font-weight: 800;
+  line-height: 1.2;
+  text-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.9);
+  margin-bottom: 14rpx;
+}
+
+.gallery-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.gallery-tag {
+  padding: 6rpx 16rpx;
+  background: rgba(37, 244, 238, 0.18);
+  border-radius: 8rpx;
+  border: 1rpx solid rgba(37, 244, 238, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.gallery-tag-text {
+  color: #25F4EE;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+/* 右下角悬浮白色 Play 按钮 */
+.gallery-play-btn {
+  position: absolute;
+  bottom: 28rpx;
+  right: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 18rpx 36rpx;
+  background: #FFFFFF;
+  border-radius: 44rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.6);
+}
+
+.gallery-play-tri {
+  width: 0;
+  height: 0;
+  border-left: 22rpx solid #000000;
+  border-top: 15rpx solid transparent;
+  border-bottom: 15rpx solid transparent;
+  margin-left: 6rpx;
+}
+
+.gallery-play-text {
+  color: #000000;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+/* 自定义指示点 */
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 20rpx 0 8rpx;
+}
+
+.gallery-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: all 0.3s;
+}
+
+.gallery-dot.active {
+  width: 48rpx;
+  border-radius: 8rpx;
+  background: linear-gradient(90deg, #FE2C55, #25F4EE);
+}
+
+/* ============================================
+   2. New Arrivals 新上架专区（横版列表卡片）
+   ============================================ */
+.new-arrivals-list {
+  padding: 0 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.new-card {
+  display: flex;
+  gap: 20rpx;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 24rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+/* 左侧封面 */
+.new-cover-wrap {
+  position: relative;
+  width: 200rpx;
+  height: 280rpx;
+  flex-shrink: 0;
+  background: #1C1C1E;
+}
+
+.new-cover {
+  width: 100%;
+  height: 100%;
+}
+
+.new-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.3) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(0,0,0,0.7) 100%
+  );
+}
+
+/* 右上角 NEW 标识 */
+.new-badge {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  padding: 6rpx 14rpx;
+  background: linear-gradient(135deg, #FE2C55, #C9302C);
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 12rpx rgba(254, 44, 85, 0.5);
+}
+
+.new-badge-text {
+  color: #FFFFFF;
+  font-size: 20rpx;
+  font-weight: 800;
+  letter-spacing: 1rpx;
+}
+
+/* 集数 */
+.new-eps {
+  position: absolute;
+  bottom: 12rpx;
+  left: 12rpx;
+  padding: 4rpx 10rpx;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 6rpx;
+  backdrop-filter: blur(8px);
+}
+
+.new-eps-text {
+  color: #FFFFFF;
+  font-size: 20rpx;
+  font-weight: 600;
+}
+
+/* 右侧信息 */
+.new-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 20rpx 20rpx 0;
+  min-width: 0;
+}
+
+.new-title {
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 8rpx;
+}
+
+.new-desc {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 22rpx;
+  line-height: 1.4;
+  margin-bottom: 12rpx;
+}
+
+/* 题材标签栏 */
+.new-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.new-tag {
+  padding: 4rpx 14rpx;
+  background: rgba(37, 244, 238, 0.12);
+  border-radius: 6rpx;
+  border: 1rpx solid rgba(37, 244, 238, 0.25);
+}
+
+.new-tag-text {
+  color: #25F4EE;
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+/* 底部：评分 + Play 按钮 */
+.new-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.new-rating {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.rating-star {
+  color: #FFD60A;
+  font-size: 24rpx;
+}
+
+.rating-num {
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.new-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 28rpx;
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(255, 255, 255, 0.2);
+}
+
+.play-tri-sm {
+  width: 0;
+  height: 0;
+  border-left: 16rpx solid #000000;
+  border-top: 11rpx solid transparent;
+  border-bottom: 11rpx solid transparent;
+  margin-left: 4rpx;
+}
+
+.new-play-text {
+  color: #000000;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+/* ============================================
+   3. Trending 热门趋势专区（横向滑动）
+   ============================================ */
+.trend-scroll {
+  white-space: nowrap;
+}
+
+.trend-list {
+  display: inline-flex;
+  gap: 20rpx;
+  padding: 0 24rpx;
+}
+
+.trend-item {
+  display: inline-flex;
+  flex-direction: column;
+  width: 260rpx;
+  flex-shrink: 0;
+}
+
+.trend-cover-wrap {
+  position: relative;
+  width: 260rpx;
+  height: 360rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: #1C1C1E;
+}
+
+.trend-cover {
+  width: 100%;
+  height: 100%;
+}
+
+.trend-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.4) 0%,
+    transparent 30%,
+    transparent 60%,
+    rgba(0,0,0,0.85) 100%
+  );
+}
+
+/* HOT 标识 */
+.trend-hot-badge {
+  position: absolute;
+  top: 12rpx;
+  left: 12rpx;
+  padding: 6rpx 14rpx;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8rpx;
+  backdrop-filter: blur(10px);
+  border: 1rpx solid rgba(255, 149, 0, 0.4);
+}
+
+.trend-hot-text {
+  color: #FF9500;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+/* 播放次数 */
+.trend-plays {
+  position: absolute;
+  bottom: 12rpx;
+  left: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.play-tri-xs {
+  width: 0;
+  height: 0;
+  border-left: 12rpx solid #FFFFFF;
+  border-top: 8rpx solid transparent;
+  border-bottom: 8rpx solid transparent;
+}
+
+.trend-plays-text {
+  color: #FFFFFF;
+  font-size: 22rpx;
+  font-weight: 600;
+  text-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.8);
+}
+
+.trend-title {
+  margin-top: 12rpx;
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ============================================
+   Top Shorts 专属配色（青色调，区别于 Trending 橙色）
+   复用 .trend-* 布局类，仅覆盖标识颜色
+   ============================================ */
+.topshort-line {
+  background: linear-gradient(90deg, #25F4EE, #FE2C55);
+}
+
+.topshort-badge {
+  border-color: rgba(37, 244, 238, 0.45) !important;
+}
+
+.topshort-badge-text {
+  color: #25F4EE !important;
+}
+
+/* 底部留白 */
+.bottom-spacer {
+  height: 40rpx;
+}
