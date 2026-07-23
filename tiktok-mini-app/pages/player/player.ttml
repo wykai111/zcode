@@ -5,28 +5,28 @@
   <swiper
     class="player-swiper"
     vertical="true"
-    duration="400"
+    duration="300"
     current="{{swiperIndex}}"
     bindchange="onSwiperChange"
   >
     <swiper-item wx:for="{{episodes}}" wx:key="ep">
-      <view class="ep-screen" bindtap="onTapScreen">
+      <view class="ep-screen">
 
-        <!-- 当前集：真实视频播放 -->
+        <!-- 当前集：真实视频播放（不接收手势，由覆盖层接管） -->
         <video
           wx:if="{{index === swiperIndex && !showLock}}"
           id="player-video"
           class="ep-video"
           src="{{currentVideoUrl}}"
-          autoplay="{{isPlaying}}"
+          autoplay="{{true}}"
           controls="{{false}}"
           show-center-play-btn="{{false}}"
           show-fullscreen-btn="{{false}}"
           show-play-btn="{{false}}"
+          show-progress="{{false}}"
           object-fit="cover"
           loop="{{false}}"
           poster="{{drama.cover}}"
-          bindtap="onTapScreen"
           bindtimeupdate="onTimeUpdate"
           bindended="onVideoEnded"
           bindplay="onVideoPlay"
@@ -40,7 +40,7 @@
           <view class="ep-mask"></view>
         </block>
 
-        <!-- 当前集大标识（非播放态显示） -->
+        <!-- 当前集大标识（非当前集显示） -->
         <view class="ep-big-label" wx:if="{{index !== swiperIndex}}">
           <text class="ep-big-num">{{item.ep}}</text>
           <text class="ep-big-total">/ {{total}}</text>
@@ -53,6 +53,15 @@
           </view>
           <text class="lock-text">Unlock EP {{item.ep}} with VIP</text>
         </view>
+
+        <!-- 手势覆盖层：接管点击 + 上下滑动（解决 video 原生组件吞手势） -->
+        <view
+          class="gesture-layer"
+          bindtap="onTapScreen"
+          catchtouchstart="onGestureStart"
+          catchtouchmove="onGestureMove"
+          catchtouchend="onGestureEnd"
+        ></view>
       </view>
     </swiper-item>
   </swiper>

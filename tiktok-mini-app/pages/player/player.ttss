@@ -29,6 +29,14 @@
   background: #000000;
 }
 
+/* 手势覆盖层：透明、全屏、最高层级，接管所有触摸事件
+   解决 <video> 原生组件吞掉点击和滑动手势的问题 */
+.gesture-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
 .ep-cover {
   position: absolute;
   inset: 0;
