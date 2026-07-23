@@ -26,6 +26,7 @@
           object-fit="cover"
           loop="{{false}}"
           poster="{{drama.cover}}"
+          bindtap="onTapScreen"
           bindtimeupdate="onTimeUpdate"
           bindended="onVideoEnded"
           bindplay="onVideoPlay"
