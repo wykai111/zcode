@@ -1,6 +1,13 @@
 // pages/list/list.js
-const { getListData } = require('../../utils/mock');
+const api = require('../../utils/api');
 const util = require('../../utils/util');
+
+// board 和板块标题的映射（type 和 board 取值一致：new/topshort/trending）
+const BOARD_TITLE = {
+  new: { title: 'New Arrivals', subtitle: 'Latest updated dramas' },
+  topshort: { title: 'Top Shorts', subtitle: 'Most popular short dramas' },
+  trending: { title: 'Trending', subtitle: 'What everyone is watching' },
+};
 
 Page({
   data: {
@@ -10,30 +17,37 @@ Page({
     subtitle: '',
     list: [],          // 归一化列表数据
     isEmpty: false,
+    isLoading: false,
   },
 
   onLoad(opts) {
     const app = getApp();
     const type = opts.type || 'new';
-    this._loadData(type);
     this.setData({
       statusBarHeight: app.globalData.statusBarHeight,
       type,
+      ...(BOARD_TITLE[type] || BOARD_TITLE.new),
     });
     tt.setNavigationBarTitle({ title: this.data.title });
+    this._loadData(type);
   },
 
   /**
-   * 加载数据
+   * 从后端加载数据
    */
   _loadData(type) {
-    const { title, subtitle, list } = getListData(type);
-    this.setData({
-      title,
-      subtitle,
-      list,
-      isEmpty: list.length === 0,
-    });
+    this.setData({ isLoading: true });
+    api.fetchDramaList({ board: type, page: 1, pageSize: 50 })
+      .then((res) => {
+        this.setData({
+          list: res.list,
+          isEmpty: res.list.length === 0,
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        this.setData({ list: [], isEmpty: true, isLoading: false });
+      });
   },
 
   /**

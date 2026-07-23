@@ -1,10 +1,5 @@
 // pages/index/index.js
-const {
-  gallery,
-  topShorts,
-  newArrivals,
-  trending,
-} = require('../../utils/mock');
+const api = require('../../utils/api');
 const util = require('../../utils/util');
 
 Page({
@@ -24,6 +19,7 @@ Page({
     trending: [],          // Trending 热门趋势
 
     isLoading: false,
+    loadError: false,      // 加载失败标记
   },
 
   onLoad() {
@@ -31,11 +27,28 @@ Page({
     this.setData({
       statusBarHeight: app.globalData.statusBarHeight,
       navBarHeight: app.globalData.navBarHeight,
-      gallery,
-      topShorts,
-      newArrivals: newArrivals.slice(0, 3),  // 只展示前 3 条
-      trending,
     });
+    this._loadHome();
+  },
+
+  /**
+   * 从后端拉取首页数据
+   */
+  _loadHome() {
+    this.setData({ isLoading: true, loadError: false });
+    api.fetchHome()
+      .then((data) => {
+        this.setData({
+          gallery: data.gallery,
+          topShorts: data.topShorts,
+          newArrivals: data.newArrivals,
+          trending: data.trending,
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        this.setData({ isLoading: false, loadError: true });
+      });
   },
 
   /**
@@ -120,15 +133,21 @@ Page({
   },
 
   /**
-   * 下拉刷新
+   * 下拉刷新 - 重新拉取首页数据
    */
   onPullDownRefresh() {
-    this.setData({ isLoading: true });
-    setTimeout(() => {
-      tt.stopPullDownRefresh();
-      this.setData({ isLoading: false });
-      util.showToast('Refreshed ✓', 'success', 1000);
-    }, 1200);
+    api.fetchHome()
+      .then((data) => {
+        this.setData({
+          gallery: data.gallery,
+          topShorts: data.topShorts,
+          newArrivals: data.newArrivals,
+          trending: data.trending,
+        });
+        util.showToast('Refreshed ✓', 'success', 1000);
+      })
+      .catch(() => {})
+      .then(() => tt.stopPullDownRefresh());
   },
 
   /**

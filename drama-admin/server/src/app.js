@@ -21,6 +21,7 @@ app.use('/api/home', require('./routes/api/home'));
 app.use('/api/dramas', require('./routes/api/dramas'));
 app.use('/api/categories', require('./routes/api/categories'));
 app.use('/api/history', require('./routes/api/history'));
+app.use('/api/foryou', require('./routes/api/foryou'));
 
 // 管理后台 API
 // auth 路由内含 /login 和 /profile，挂载到 /admin

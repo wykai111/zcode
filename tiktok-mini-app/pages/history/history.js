@@ -1,5 +1,5 @@
 // pages/history/history.js
-const { historyList } = require('../../utils/mock');
+const api = require('../../utils/api');
 const util = require('../../utils/util');
 
 Page({
@@ -7,14 +7,34 @@ Page({
     statusBarHeight: 20,
     history: [],
     filter: 'all', // all | watching | completed
+    isLoading: false,
   },
 
   onLoad() {
     const app = getApp();
     this.setData({
       statusBarHeight: app.globalData.statusBarHeight,
-      history: historyList,
     });
+    this._loadHistory();
+  },
+
+  onShow() {
+    // 播放页返回时刷新进度
+    if (this.data.history.length) this._loadHistory();
+  },
+
+  /**
+   * 从后端拉取观看历史
+   */
+  _loadHistory() {
+    this.setData({ isLoading: true });
+    api.fetchHistory()
+      .then((list) => {
+        this.setData({ history: list, isLoading: false });
+      })
+      .catch(() => {
+        this.setData({ history: [], isLoading: false });
+      });
   },
 
   /**
@@ -23,7 +43,13 @@ Page({
   onContinueTap(e) {
     const { id } = e.currentTarget.dataset;
     util.vibrate();
-    tt.navigateTo({ url: `/pages/player/player?id=${id}&ep=1` });
+    // id 是历史记录 id，但跳转播放器需要 drama_id。
+    // 这里从 history 列表里查 drama_id
+    const item = this.data.history.find((h) => h.id === id);
+    const dramaId = (item && item.drama_id) || id;
+    tt.navigateTo({
+      url: `/pages/player/player?id=${dramaId}&ep=1`,
+    });
   },
 
   /**
@@ -36,7 +62,7 @@ Page({
   },
 
   /**
-   * 清空历史
+   * 清空历史（后端暂无清空接口，前端本地隐藏）
    */
   onClearTap() {
     tt.showModal({
@@ -54,10 +80,7 @@ Page({
   },
 
   onPullDownRefresh() {
-    setTimeout(() => {
-      tt.stopPullDownRefresh();
-      this.setData({ history: historyList });
-      util.showToast('Refreshed ✓', 'success', 1000);
-    }, 1000);
+    this._loadHistory();
+    setTimeout(() => tt.stopPullDownRefresh(), 800);
   },
 });

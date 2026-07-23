@@ -1,5 +1,5 @@
 // pages/player/player.js
-const { buildEpisodes } = require('../../utils/mock');
+const api = require('../../utils/api');
 const util = require('../../utils/util');
 
 Page({
@@ -25,35 +25,42 @@ Page({
 
     // 剧集面板
     showEpPanel: false,    // 全剧集集数面板显隐
+    loadError: false,
   },
 
   onLoad(opts) {
     const app = getApp();
-    const id = opts.id || 'g1';
+    const id = opts.id || 'drama_001';
     const ep = Number(opts.ep) || 1;
-
-    const { drama, episodes, total } = buildEpisodes(id);
-
-    if (!drama) {
-      util.showToast('Drama not found', 'none');
-      return;
-    }
 
     this.setData({
       statusBarHeight: app.globalData.statusBarHeight,
       id,
-      drama,
-      episodes,
-      total,
-      currentEp: Math.min(Math.max(ep, 1), total),
-      swiperIndex: Math.min(Math.max(ep - 1, 0), total - 1),
     });
-    tt.setNavigationBarTitle({ title: drama.title });
 
-    // 模拟播放进度
-    this._startMockProgress();
-    // 控制 UI 自动隐藏
-    this._startAutoHide();
+    // 并行拉取详情 + 剧集
+    Promise.all([api.fetchDramaDetail(id), api.fetchEpisodes(id)])
+      .then(([drama, epData]) => {
+        const episodes = epData.episodes;
+        const total = epData.total || drama.episodes || episodes.length || 1;
+        this.setData({
+          drama,
+          episodes,
+          total,
+          currentEp: Math.min(Math.max(ep, 1), total),
+          swiperIndex: Math.min(Math.max(ep - 1, 0), Math.max(total - 1, 0)),
+        });
+        tt.setNavigationBarTitle({ title: drama.title });
+
+        // 模拟播放进度
+        this._startMockProgress();
+        // 控制 UI 自动隐藏
+        this._startAutoHide();
+      })
+      .catch(() => {
+        this.setData({ loadError: true });
+        util.showToast('Failed to load', 'none');
+      });
   },
 
   onUnload() {
@@ -76,6 +83,8 @@ Page({
       isPlaying: true,
     });
     this._restartMockProgress();
+    // 上报观看记录（异步，不阻塞交互）
+    api.reportHistory({ dramaId: this.data.id, epNumber: ep, progress: 0 }).catch(() => {});
   },
 
   /* =========================================

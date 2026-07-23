@@ -1,5 +1,5 @@
 // pages/foryou/foryou.js
-const { forYouFeed } = require('../../utils/mock');
+const api = require('../../utils/api');
 const util = require('../../utils/util');
 
 Page({
@@ -17,8 +17,19 @@ Page({
     const app = getApp();
     this.setData({
       statusBarHeight: app.globalData.statusBarHeight,
-      feed: forYouFeed,
     });
+    this._loadFeed();
+  },
+
+  /**
+   * 从后端拉取推荐流
+   */
+  _loadFeed() {
+    api.fetchForYou()
+      .then((list) => {
+        this.setData({ feed: list });
+      })
+      .catch(() => {});
   },
 
   onShow() {
