@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     const limit = Math.min(Number(req.query.limit) || 6, 20);
     // 按播放量降序取 top N
     const [rows] = await pool.query(
-      `SELECT id, title, cover, description, views, likes, duration, tags
+      `SELECT id, title, cover, description, views, duration, tags
        FROM dramas
        WHERE status = 1
        ORDER BY views DESC
@@ -32,9 +32,9 @@ router.get('/', async (req, res) => {
         avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=80',
         cover: d.cover,
         // 后端无 likes/comments/shares 真实数据，按播放量派生
-        likes: Math.floor(d.views / 10),
-        comments: Math.floor(d.views / 100),
-        shares: Math.floor(d.views / 200),
+        likes: Math.floor((d.views || 0) / 10),
+        comments: Math.floor((d.views || 0) / 100),
+        shares: Math.floor((d.views || 0) / 200),
         duration: d.duration || '0:58',
         description: d.description || d.title,
         tags,
