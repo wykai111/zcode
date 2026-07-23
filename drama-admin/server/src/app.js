@@ -22,8 +22,10 @@ app.use('/api/dramas', require('./routes/api/dramas'));
 app.use('/api/categories', require('./routes/api/categories'));
 app.use('/api/history', require('./routes/api/history'));
 
-// 管理后台 API（需 JWT 鉴权）
-app.use('/admin/login', require('./routes/admin/auth'));
+// 管理后台 API
+// auth 路由内含 /login 和 /profile，挂载到 /admin
+app.use('/admin', require('./routes/admin/auth'));
+// 以下路由内部已用 authRequired 中间件鉴权
 app.use('/admin/dramas', require('./routes/admin/dramas'));
 app.use('/admin/episodes', require('./routes/admin/episodes'));
 app.use('/admin/categories', require('./routes/admin/categories'));
