@@ -18,12 +18,6 @@ Page({
     newArrivals: [],       // New Arrivals 新上架
     trending: [],          // Trending 热门趋势
 
-    // 分类筛选
-    categories: [],        // 分类列表
-    activeCategory: 'all', // 当前选中分类
-    categoryName: '',      // 当前分类名（筛选模式显示用）
-    filterList: [],        // 筛选结果列表
-
     isLoading: false,
     loadError: false,      // 加载失败标记
   },
@@ -34,19 +28,7 @@ Page({
       statusBarHeight: app.globalData.statusBarHeight,
       navBarHeight: app.globalData.navBarHeight,
     });
-    this._loadCategories();
     this._loadHome();
-  },
-
-  /**
-   * 加载分类列表
-   */
-  _loadCategories() {
-    api.fetchCategories()
-      .then((list) => {
-        this.setData({ categories: list });
-      })
-      .catch(() => {});
   },
 
   /**
@@ -67,41 +49,6 @@ Page({
       .catch(() => {
         this.setData({ isLoading: false, loadError: true });
       });
-  },
-
-  /**
-   * 分类筛选切换
-   */
-  onCategoryTap(e) {
-    const { id } = e.currentTarget.dataset;
-    util.vibrate();
-    this.setData({ activeCategory: id });
-
-    if (id === 'all') {
-      // 选 All：回到完整首页
-      return;
-    }
-
-    // 选具体分类：拉取该分类下的短剧
-    const cat = this.data.categories.find((c) => c.id === id);
-    this.setData({ categoryName: cat ? cat.name : '', filterList: [] });
-
-    api.fetchDramaList({ categoryId: id, page: 1, pageSize: 50 })
-      .then((res) => {
-        this.setData({ filterList: res.list });
-      })
-      .catch(() => {
-        this.setData({ filterList: [] });
-      });
-  },
-
-  /**
-   * 筛选结果项点击 → 跳转播放器
-   */
-  onFilterItemTap(e) {
-    const { id } = e.currentTarget.dataset;
-    util.vibrate();
-    tt.navigateTo({ url: `/pages/player/player?id=${id}&ep=1` });
   },
 
   /**
