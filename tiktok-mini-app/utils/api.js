@@ -155,6 +155,7 @@ function fetchEpisodes(id) {
       label: ep.label,
       free: !!ep.free,
       duration: ep.duration || '',
+      videoUrl: ep.video_url || '',
     })),
   }));
 }

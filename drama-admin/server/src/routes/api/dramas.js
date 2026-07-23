@@ -92,6 +92,7 @@ router.get('/:id/episodes', async (req, res) => {
           label: ep.label,
           free: !!ep.free,
           duration: ep.duration,
+          video_url: ep.video_url || '',
         })),
       },
     });

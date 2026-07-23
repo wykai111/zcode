@@ -12,19 +12,22 @@ Page({
 
     currentEp: 1,          // 当前集数
     swiperIndex: 0,        // swiper 当前索引（与 currentEp 联动）
+    currentVideoUrl: '',   // 当前集的视频地址
+    showLock: false,       // 当前集是否锁定（锁定则不渲染 video）
 
-    // 单集播放控制
-    isPlaying: true,
+    // 播放控制
+    isPlaying: false,
     progress: 0,           // 当前播放进度 0-100
     currentTime: '0:00',
-    totalTime: '0:58',
-    isDragging: false,     // 是否正在拖拽进度条
-    controlsVisible: true, // 控制 UI 显隐
-    centerIconVisible: false,  // 中间大图标反馈（播放/暂停）
-    centerIconType: 'play',    // 'play' | 'pause'
+    totalTime: '0:00',
+    duration: 0,           // 视频总时长（秒）
+    isDragging: false,
+    controlsVisible: true,
+    centerIconVisible: false,
+    centerIconType: 'play',
 
     // 剧集面板
-    showEpPanel: false,    // 全剧集集数面板显隐
+    showEpPanel: false,
     loadError: false,
   },
 
@@ -38,24 +41,29 @@ Page({
       id,
     });
 
-    // 并行拉取详情 + 剧集
     Promise.all([api.fetchDramaDetail(id), api.fetchEpisodes(id)])
       .then(([drama, epData]) => {
         const episodes = epData.episodes;
         const total = epData.total || drama.episodes || episodes.length || 1;
+        const safeEp = Math.min(Math.max(ep, 1), total);
+        const safeIdx = safeEp - 1;
+        const curEpData = episodes[safeIdx] || {};
+
         this.setData({
           drama,
           episodes,
           total,
-          currentEp: Math.min(Math.max(ep, 1), total),
-          swiperIndex: Math.min(Math.max(ep - 1, 0), Math.max(total - 1, 0)),
+          currentEp: safeEp,
+          swiperIndex: safeIdx,
+          currentVideoUrl: curEpData.videoUrl || '',
+          showLock: !curEpData.free,
+          isPlaying: !!curEpData.free,  // 锁定集不自动播放
         });
         tt.setNavigationBarTitle({ title: drama.title });
-
-        // 模拟播放进度
-        this._startMockProgress();
-        // 控制 UI 自动隐藏
         this._startAutoHide();
+
+        // 上报观看记录
+        api.reportHistory({ dramaId: id, epNumber: safeEp, progress: 0 }).catch(() => {});
       })
       .catch(() => {
         this.setData({ loadError: true });
@@ -64,8 +72,57 @@ Page({
   },
 
   onUnload() {
-    this._stopMockProgress();
     this._clearAutoHide();
+    this._clearCenterTimer();
+  },
+
+  /* =========================================
+     视频事件回调（真实播放驱动）
+     ========================================= */
+
+  // 播放进度更新（video 每秒触发）
+  onTimeUpdate(e) {
+    if (this.data.isDragging) return;  // 拖拽中不覆盖
+    const { currentTime, duration } = e.detail;
+    const ratio = duration > 0 ? (currentTime / duration) * 100 : 0;
+    this.setData({
+      progress: ratio,
+      currentTime: this._formatTime(currentTime),
+      totalTime: this._formatTime(duration),
+      duration: duration || 0,
+    });
+
+    // 每 10 秒上报一次进度
+    if (Math.floor(currentTime) % 10 === 0 && currentTime > 0) {
+      api.reportHistory({
+        dramaId: this.data.id,
+        epNumber: this.data.currentEp,
+        progress: Math.floor(ratio),
+      }).catch(() => {});
+    }
+  },
+
+  // 视频播放结束 → 自动下一集
+  onVideoEnded() {
+    if (this.data.currentEp < this.data.total) {
+      this._switchToEp(this.data.currentEp + 1);
+    } else {
+      this.setData({ isPlaying: false });
+      util.showToast('Finished all episodes 🎉', 'none');
+    }
+  },
+
+  onVideoPlay() {
+    this.setData({ isPlaying: true });
+  },
+
+  onVideoPause() {
+    this.setData({ isPlaying: false });
+  },
+
+  onVideoError(e) {
+    console.error('[player] video error', e);
+    util.showToast('Video failed to load', 'none');
   },
 
   /* =========================================
@@ -75,28 +132,51 @@ Page({
     const index = e.detail.current;
     const ep = index + 1;
     util.vibrate();
+    this._switchToEp(ep);
+  },
+
+  // 统一的切集方法
+  _switchToEp(ep) {
+    const epData = this.data.episodes[ep - 1];
+    if (!epData) return;
+
+    // VIP 锁定集
+    if (!epData.free) {
+      this.setData({
+        swiperIndex: ep - 1,
+        currentEp: ep,
+        currentVideoUrl: '',
+        showLock: true,
+        isPlaying: false,
+        progress: 0,
+        currentTime: '0:00',
+      });
+      util.showToast('🔒 Unlock with VIP', 'none');
+      return;
+    }
+
     this.setData({
-      swiperIndex: index,
+      swiperIndex: ep - 1,
       currentEp: ep,
+      currentVideoUrl: epData.videoUrl || '',
+      showLock: false,
+      isPlaying: true,
       progress: 0,
       currentTime: '0:00',
-      isPlaying: true,
     });
-    this._restartMockProgress();
-    // 上报观看记录（异步，不阻塞交互）
+
+    // 上报观看
     api.reportHistory({ dramaId: this.data.id, epNumber: ep, progress: 0 }).catch(() => {});
   },
 
   /* =========================================
-     2. 进度拖拽
+     2. 进度拖拽（通过 videoContext seek）
      ========================================= */
   onProgressTap(e) {
-    // 点击进度条某位置 → 跳转
-    const ratio = this._calcRatio(e);
-    this._applyRatio(ratio);
+    this._seekTo(this._calcRatio(e));
   },
 
-  onProgressTouchStart(e) {
+  onProgressTouchStart() {
     this._clearAutoHide();
     this.setData({ isDragging: true });
   },
@@ -105,15 +185,24 @@ Page({
     const ratio = this._calcRatio(e);
     this.setData({
       progress: ratio * 100,
-      currentTime: this._formatTime(ratio * 58),
+      currentTime: this._formatTime(ratio * (this.data.duration || 0)),
     });
   },
 
   onProgressTouchEnd(e) {
-    const ratio = this._calcRatio(e);
-    this._applyRatio(ratio);
+    this._seekTo(this._calcRatio(e));
     this.setData({ isDragging: false });
     this._startAutoHide();
+  },
+
+  _seekTo(ratio) {
+    const ctx = tt.createVideoContext('player-video', this);
+    const sec = ratio * (this.data.duration || 0);
+    if (ctx && ctx.seek) ctx.seek(sec);
+    this.setData({
+      progress: ratio * 100,
+      currentTime: this._formatTime(sec),
+    });
   },
 
   _calcRatio(e) {
@@ -121,40 +210,29 @@ Page({
     const changed = e.changedTouches && e.changedTouches[0];
     const x = (touches && touches.clientX) || (changed && changed.clientX) || 0;
     const w = tt.getSystemInfoSync().windowWidth || 375;
-    // 进度条左右各留 32rpx，简单按全宽近似
     return Math.min(Math.max(x / w, 0), 1);
   },
 
-  _applyRatio(ratio) {
-    const sec = ratio * 58;
-    this.setData({
-      progress: ratio * 100,
-      currentTime: this._formatTime(sec),
-    });
-  },
-
   /* =========================================
-     3. 点击屏幕 = 切换播放/暂停（中间显示大图标反馈）
+     3. 点击屏幕 = 切换播放/暂停
      ========================================= */
-  onTogglePlay() {
+  onTapScreen() {
+    if (this.data.showLock) return;  // 锁定集点击不响应
     util.vibrate();
-    const isPlaying = !this.data.isPlaying;
-    this.setData({
-      isPlaying,
-      centerIconType: isPlaying ? 'play' : 'pause',
-      centerIconVisible: true,
-    });
+    const ctx = tt.createVideoContext('player-video', this);
+    if (this.data.isPlaying) {
+      if (ctx && ctx.pause) ctx.pause();
+      this.setData({ isPlaying: false, centerIconType: 'pause' });
+    } else {
+      if (ctx && ctx.play) ctx.play();
+      this.setData({ isPlaying: true, centerIconType: 'play' });
+    }
+    this.setData({ centerIconVisible: true });
     this._startAutoHide();
-    // 800ms 后隐藏大图标
-    if (this._centerTimer) clearTimeout(this._centerTimer);
+    this._clearCenterTimer();
     this._centerTimer = setTimeout(() => {
       this.setData({ centerIconVisible: false });
     }, 800);
-  },
-
-  onTapScreen() {
-    // 点击屏幕 = 切换播放/暂停（核心交互）
-    this.onTogglePlay();
   },
 
   /* =========================================
@@ -172,61 +250,13 @@ Page({
   },
 
   onEpTap(e) {
-    const { ep, free } = e.currentTarget.dataset;
-    if (!free) {
-      util.showToast('🔒 Unlock with VIP', 'none');
-      return;
-    }
-    util.vibrate();
-    this.setData({
-      currentEp: ep,
-      swiperIndex: ep - 1,
-      showEpPanel: false,
-      progress: 0,
-      currentTime: '0:00',
-      isPlaying: true,
-    });
-    this._restartMockProgress();
+    const { ep } = e.currentTarget.dataset;
+    this._switchToEp(Number(ep));
+    this.setData({ showEpPanel: false });
   },
 
   /* =========================================
-     5. 上一集 / 下一集
-     ========================================= */
-  onPrevEp() {
-    if (this.data.currentEp <= 1) {
-      util.showToast('Already first episode', 'none');
-      return;
-    }
-    this.setData({
-      currentEp: this.data.currentEp - 1,
-      swiperIndex: this.data.currentEp - 2,
-      progress: 0,
-      currentTime: '0:00',
-    });
-    this._restartMockProgress();
-  },
-
-  onNextEp() {
-    if (this.data.currentEp >= this.data.total) {
-      util.showToast('Already last episode', 'none');
-      return;
-    }
-    const next = this.data.currentEp + 1;
-    if (next > 2) {
-      util.showToast('🔒 Unlock with VIP', 'none');
-      return;
-    }
-    this.setData({
-      currentEp: next,
-      swiperIndex: next - 1,
-      progress: 0,
-      currentTime: '0:00',
-    });
-    this._restartMockProgress();
-  },
-
-  /* =========================================
-     6. 返回
+     5. 返回
      ========================================= */
   onBack() {
     tt.navigateBack({
@@ -242,36 +272,8 @@ Page({
   },
 
   /* =========================================
-     工具方法：模拟播放进度 + UI 自动隐藏
+     工具方法
      ========================================= */
-  _startMockProgress() {
-    this._stopMockProgress();
-    this._timer = setInterval(() => {
-      if (!this.data.isPlaying || this.data.isDragging) return;
-      let p = this.data.progress + (100 / 58); // 每秒前进
-      if (p >= 100) {
-        p = 100;
-        this.setData({ isPlaying: false });
-      }
-      this.setData({
-        progress: p,
-        currentTime: this._formatTime((p / 100) * 58),
-      });
-    }, 1000);
-  },
-
-  _stopMockProgress() {
-    if (this._timer) {
-      clearInterval(this._timer);
-      this._timer = null;
-    }
-  },
-
-  _restartMockProgress() {
-    this._stopMockProgress();
-    this._startMockProgress();
-  },
-
   _startAutoHide() {
     this._clearAutoHide();
     this.setData({ controlsVisible: true });
@@ -289,9 +291,17 @@ Page({
     }
   },
 
+  _clearCenterTimer() {
+    if (this._centerTimer) {
+      clearTimeout(this._centerTimer);
+      this._centerTimer = null;
+    }
+  },
+
   _formatTime(sec) {
+    sec = Math.floor(sec || 0);
     const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
+    const s = sec % 60;
     return `${m}:${s.toString().padStart(2, '0')}`;
   },
 });
