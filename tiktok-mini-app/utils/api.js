@@ -109,11 +109,14 @@ function fetchHome() {
 }
 
 /**
- * 短剧列表（See All 页）
- * GET /api/dramas?board=xxx
+ * 短剧列表（See All 页 / 分类筛选页）
+ * GET /api/dramas?board=xxx&categoryId=yyy
  */
-function fetchDramaList({ board, page = 1, pageSize = 20 }) {
-  return get('/api/dramas', { board, page, pageSize }).then((data) => ({
+function fetchDramaList({ board, categoryId, page = 1, pageSize = 20 }) {
+  const params = { page, pageSize };
+  if (board) params.board = board;
+  if (categoryId && categoryId !== 'all') params.categoryId = categoryId;
+  return get('/api/dramas', params).then((data) => ({
     list: (data.list || []).map(toListItem),
     total: data.total || 0,
   }));

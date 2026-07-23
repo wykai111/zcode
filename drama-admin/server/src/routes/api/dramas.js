@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
           id: d.id,
           title: d.title,
           cover: d.cover,
+          category_id: d.category_id || '',
           episodes: d.episodes,
           rating: Number(d.rating),
           views: d.views,

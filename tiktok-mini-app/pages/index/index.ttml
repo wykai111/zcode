@@ -1,7 +1,7 @@
 <!-- pages/index/index.ttml -->
 <view class="page">
 
-  <!-- ===== 1. 顶部搜索栏 ===== -->
+  <!-- ===== 1. 顶部搜索栏 + 分类筛选栏 ===== -->
   <view class="header" style="padding-top: {{statusBarHeight}}px;">
     <!-- 搜索框 -->
     <view class="search-row">
@@ -22,13 +22,32 @@
         />
       </view>
     </view>
+
+    <!-- 分类筛选标签栏（横滚） -->
+    <scroll-view class="category-bar" scroll-x="true" enhanced="true" show-scrollbar="false">
+      <view class="category-list">
+        <view
+          class="category-chip {{activeCategory === item.id ? 'active' : ''}}"
+          wx:for="{{categories}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onCategoryTap"
+        >
+          <text class="chip-icon">{{item.icon}}</text>
+          <text class="chip-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 
-  <!-- 占位（固定顶部的高度） -->
-  <view style="height: {{statusBarHeight + 80}}px;"></view>
+  <!-- 占位（固定顶部的高度：搜索框 + 分类栏） -->
+  <view style="height: {{statusBarHeight + 140}}px;"></view>
 
   <!-- ===== 滚动内容 ===== -->
   <view class="content">
+
+    <!-- 模式 A：选 All 时显示完整首页（4 板块） -->
+    <block wx:if="{{activeCategory === 'all'}}">
 
     <!-- ===== 1.5 Gallery 画廊轮播区（搜索框下方主推位） ===== -->
     <view class="gallery-section">
@@ -246,6 +265,49 @@
         </view>
       </scroll-view>
     </view>
+
+    </block><!-- /模式 A -->
+
+    <!-- 模式 B：选了具体分类时显示筛选网格 -->
+    <block wx:else>
+      <view class="filter-section">
+        <view class="filter-header">
+          <text class="filter-title">{{categoryName}}</text>
+          <text class="filter-count">{{filterList.length}} dramas</text>
+        </view>
+
+        <view class="filter-grid" wx:if="{{filterList.length}}">
+          <view
+            class="filter-item"
+            wx:for="{{filterList}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="onFilterItemTap"
+          >
+            <view class="filter-cover-wrap">
+              <image class="filter-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+              <view class="filter-cover-overlay"></view>
+              <view class="filter-badge" wx:if="{{item.tag}}">
+                <text class="filter-badge-text">{{item.tag}}</text>
+              </view>
+              <view class="filter-eps" wx:if="{{item.episodes}}">
+                <text class="filter-eps-text">{{item.episodes}} EPS</text>
+              </view>
+              <view class="filter-rating" wx:if="{{item.rating}}">
+                <text class="filter-star">★</text>
+                <text class="filter-rating-num">{{item.rating}}</text>
+              </view>
+            </view>
+            <text class="filter-item-title text-ellipsis-2">{{item.title}}</text>
+          </view>
+        </view>
+
+        <view class="filter-empty" wx:else>
+          <text class="filter-empty-icon">🎬</text>
+          <text class="filter-empty-text">No dramas in this category</text>
+        </view>
+      </view>
+    </block><!-- /模式 B -->
 
     <!-- 底部留白 -->
     <view class="bottom-spacer"></view>
