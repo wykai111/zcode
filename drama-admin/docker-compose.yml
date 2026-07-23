@@ -1,0 +1,67 @@
+# ShortDrama 短剧管理后台 - Docker Compose 编排
+# 一键启动：docker compose up -d
+services:
+  # ===== MySQL 数据库 =====
+  db:
+    image: mysql:8.0
+    container_name: drama-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root123}
+      MYSQL_DATABASE: ${DB_NAME:-drama_admin}
+      TZ: Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      # 首次启动自动执行建表 + 种子数据
+      - ./server/sql:/docker-entrypoint-initdb.d
+      # 数据持久化
+      - drama-mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"  # 可选：如需外部连接数据库则开放，否则建议注释掉
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-root123}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ===== 后端 API =====
+  server:
+    build: ./server
+    container_name: drama-server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      DB_HOST: db           # Docker 网络内用服务名访问 MySQL
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-root123}
+      DB_NAME: ${DB_NAME:-drama_admin}
+      JWT_SECRET: ${JWT_SECRET:-drama_admin_secret_2024}
+      JWT_EXPIRES: 7d
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      TZ: Asia/Shanghai
+    volumes:
+      # 上传文件持久化
+      - drama-uploads:/app/uploads
+    ports:
+      - "3000:3000"
+
+  # ===== 前端管理后台 =====
+  web:
+    build: ./web
+    container_name: drama-web
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+
+volumes:
+  drama-mysql:
+    name: drama-mysql-data
+  drama-uploads:
+    name: drama-uploads-data
