@@ -3,6 +3,4 @@ npm-debug.log
 .env
 uploads/*
 !uploads/.gitkeep
-Dockerfile
 .dockerignore
-docker-entrypoint.sh
