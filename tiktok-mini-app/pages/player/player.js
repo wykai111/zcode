@@ -227,12 +227,26 @@ Page({
   },
 
   /* =========================================
-     3. 点击屏幕 = 切换播放/暂停
+     3. 点击屏幕 = 切换播放/暂停（锁定集则切换底部信息栏显隐）
      ========================================= */
   onTapScreen() {
-    if (this.data.showLock) return;  // 锁定集点击不响应
     // 正在切集滑动手势中，忽略点击
     if (this.data.isSwiping) return;
+
+    // 锁定集：点击切换底部信息栏（短剧名 + 当前/总集）显隐
+    if (this.data.showLock) {
+      util.vibrate();
+      if (this.data.controlsVisible) {
+        // 已显示 → 隐藏
+        this._clearAutoHide();
+        this.setData({ controlsVisible: false });
+      } else {
+        // 未显示 → 显示并启动自动隐藏
+        this.setData({ controlsVisible: true });
+        this._startAutoHide();
+      }
+      return;
+    }
 
     util.vibrate();
     const ctx = tt.createVideoContext('player-video', this);
