@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bitcoin Miner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0f1620;
+    --bg-cave:#1A2332;
+    --stone:#2C3E50;
+    --wood:#8B4513;
+    --wood-light:#A0522D;
+    --wood-dark:#5C2F0E;
+    --gold:#FFD700;
+    --gold-deep:#DAA520;
+    --orange:#FF9500;
+    --green:#32CD32;
+    --blue:#00BFFF;
+    --beige:#F5DEB3;
+    --metal:#708090;
+    --red:#FF0000;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    height:100%;
+    font-family:'Roboto',Arial,sans-serif;
+    background:var(--bg-deep);
+    color:#fff;
+    overflow:hidden;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    height:100dvh;
+    max-width:540px;
+    margin:0 auto;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 30%, #2a3850 0%, #1A2332 45%, #0f1620 100%);
+  }
+
+  /* ===== Cave scene ===== */
+  .cave{
+    position:absolute;inset:0;
+    overflow:hidden;
+    background-color:#0f1620;
+  }
+  /* Top-half: the provided cave image */
+  .cave-bg{
+    position:absolute;left:0;top:0;width:100%;height:62%;
+    background-image:url('cave-bg.jpg');
+    background-size:cover;
+    background-position:center 30%;
+    pointer-events:none;
+  }
+  /* Bottom-half: top edge butts against the cave image's bottom (at 62%) */
+  .cave-floor{
+    position:absolute;left:0;right:0;top:62%;bottom:0;
+    background-image:url('cave-floor-bg.jpg');
+    background-size:cover;
+    background-position:center top;
+    background-repeat:no-repeat;
+    pointer-events:none;
+  }
+  /* Soft edge vignette — transparent center so the bg image shows,
+     darkens only toward the borders to blend into the scene */
+  .cave::before{
+    content:"";position:absolute;
+    left:50%;top:42%;transform:translate(-50%,-50%);
+    width:120%;height:84%;border-radius:50%;
+    background:
+      radial-gradient(ellipse 55% 60% at 50% 45%,
+        transparent 0%, transparent 45%,
+        rgba(8,16,28,.35) 72%, rgba(5,10,18,.85) 100%);
+    filter:blur(6px);
+    z-index:1;pointer-events:none;
+  }
+  /* subtle stone block texture on the lower floor only */
+  .cave::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:50%;opacity:.10;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+    background-size:54px 42px;
+    background-position:0 0, 27px 21px;
+    mask-image:linear-gradient(180deg, transparent, #000 40%, #000);
+    -webkit-mask-image:linear-gradient(180deg, transparent, #000 40%, #000);
+    z-index:1;
+  }
+
+  /* ===== Central Bitcoin Ore ===== */
+  .ore-area{
+    position:absolute;left:50%;top:calc(50% - 60px);
+    transform:translate(-50%,-50%);
+    width:460px;height:560px;
+    z-index:5;
+  }
+  /* smooth, soft glow — no scaling, gentle opacity breathe */
+  .ore-glow{
+    position:absolute;inset:-40px -20px -40px -20px;border-radius:50%;
+    background:radial-gradient(circle,
+      rgba(255,215,0,.30) 0%,
+      rgba(255,180,40,.18) 30%,
+      rgba(255,150,0,.08) 55%,
+      transparent 75%);
+    filter:blur(14px);
+    animation:glowBreathe 4s ease-in-out infinite;
+  }
+  @keyframes glowBreathe{
+    0%,100%{opacity:.65;}
+    50%{opacity:1;}
+  }
+  /* the gold-coin mountain image */
+  .ore{
+    position:absolute;inset:0;
+    background-image:url('ore-gold.png');
+    background-size:contain;
+    background-position:center bottom;
+    background-repeat:no-repeat;
+    filter:drop-shadow(0 8px 16px rgba(0,0,0,.55));
+  }
+
+  /* sparkles */
+  .sparkle{
+    position:absolute;width:10px;height:10px;pointer-events:none;
+    background:radial-gradient(circle,#fff,transparent 70%);
+    animation:twinkle 1.8s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{transform:scale(.4);opacity:.2;}
+    50%{transform:scale(1.3);opacity:1;}
+  }
+
+  /* ===== BTC Balance Bar ===== */
+  .balance-bar{
+    position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    z-index:18;
+    display:flex;align-items:center;gap:10px;
+    background:linear-gradient(#a8652e,#5C2F0E);
+    border:2px solid var(--gold);
+    border-radius:30px;
+    padding:5px 18px 5px 5px;
+    min-width:300px;
+    box-shadow:0 3px 0 rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .btc-coin{
+    width:36px;height:36px;
+    background-image:url('avatar_frame.png');
+    background-size:contain;background-position:center;background-repeat:no-repeat;
+    flex-shrink:0;
+  }
+  /* withdraw wallet — right of the balance bar, vertically centered with it */
+  .wallet-btn{
+    position:absolute;
+    top:18px;
+    left:calc(50% + 150px + 30px);
+    width:42px;height:42px;
+    background-image:url('withdraw.png');
+    background-size:contain;background-position:center;background-repeat:no-repeat;
+    cursor:pointer;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));
+    transition:transform .1s;
+    z-index:18;
+  }
+  .wallet-btn:active{transform:scale(.92);}
+  /* wallet scale-pulse when eligible to withdraw */
+  .wallet-btn.guide-on{animation:walletPulse 1.1s ease-in-out infinite;}
+  @keyframes walletPulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.18);}
+  }
+  /* finger-tap guide on the wallet button */
+  .wallet-btn .tap-guide{
+    position:absolute;
+    top:calc(80% + 20px);left:50%;
+    transform:translate(-50%,-50%);
+    font-size:60px;
+    pointer-events:none;
+    /* render the emoji as solid white */
+    color:#fff;
+    filter:grayscale(1) brightness(3) drop-shadow(0 2px 4px rgba(0,0,0,.7));
+    animation:tapPoint 1.1s ease-in-out infinite;
+    z-index:5;
+  }
+  .balance-num{
+    font-family:'Roboto';font-weight:900;font-size:24px;
+    color:var(--gold);letter-spacing:.3px;
+    text-shadow:0 1px 2px rgba(0,0,0,.6);
+    white-space:nowrap;
+  }
+
+  /* ===== Hasrate Bar ===== */
+  .hashrate-bar{
+    position:absolute;
+    top:calc(62% + 20px);
+    left:50%;transform:translateX(-50%);
+    z-index:18;
+    display:flex;align-items:center;gap:8px;
+    background-image:url('mining_bar.png');
+    background-size:100% 100%;
+    background-position:center;background-repeat:no-repeat;
+    border:none;
+    border-radius:0;
+    padding:6px 31px 6px 23px;
+  }
+  .hashrate-bar .mini-coin{
+    width:26px;height:26px;
+    background-image:url('avatar_frame.png');
+    background-size:contain;background-position:center;background-repeat:no-repeat;
+    flex-shrink:0;
+  }
+  .hashrate-bar .label{font-size:13px;font-weight:700;color:#fff;}
+  .hashrate-bar .val{font-size:15px;font-weight:900;color:var(--green);text-shadow:0 0 6px rgba(50,205,50,.5);}
+  .hashrate-bar .unit{font-size:11px;color:#fff;opacity:.8;}
+
+  /* rivets */
+  .rivet{width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c9d2db,#5b6b7a);box-shadow:inset 0 -1px 0 rgba(0,0,0,.5);}
+
+  /* ===== Floating miners (on the ore) ===== */
+  .miners-stage{
+    position:absolute;left:50%;top:calc(50% - 130px);
+    transform:translate(-50%,-50%);
+    width:380px;height:520px;
+    z-index:8;pointer-events:none;
+  }
+  /* ===== Sprite-sheet miner (Attack.png) =====
+     sheet 1920x800, 8 cols x 4 rows, frame 240x200, 30 frames */
+  .miner-unit{
+    position:absolute;
+    width:90px;height:75px;
+    transform:translate(-50%,-50%);
+    /* slight idle bob so miners feel alive */
+    animation:minerBob 1.6s ease-in-out infinite;
+  }
+  /* sprite faces LEFT by default; .face-right mirrors it to face right */
+  .miner-unit.face-right{ transform:translate(-50%,-50%) scaleX(-1); }
+  @keyframes minerBob{
+    0%,100%{transform:translate(-50%,-50%) translateY(0);}
+    50%{transform:translate(-50%,-50%) translateY(-4px);}
+  }
+  .miner-unit.face-right{ animation-name:minerBobFlip; }
+  @keyframes minerBobFlip{
+    0%,100%{transform:translate(-50%,-50%) scaleX(-1) translateY(0);}
+    50%{transform:translate(-50%,-50%) scaleX(-1) translateY(-4px);}
+  }
+  .miner-sprite{
+    width:100%;height:100%;
+    background-image:url('miner-sprite.png');
+    background-repeat:no-repeat;
+    /* sheet scaled to 8x4 frames so one frame fills any container size */
+    background-size:800% 400%;
+    background-position:0% 0%;
+    image-rendering:auto;
+  }
+
+  /* floating +BTC indicator */
+  .plus-btc{
+    position:absolute;pointer-events:none;
+    animation:floatUp 1.4s ease-out forwards;
+    z-index:30;
+    display:flex;align-items:center;justify-content:center;
+    /* --dx (horizontal drift) and --rise (how far up) are set per-pop */
+  }
+  /* the popped gold coin */
+  .plus-btc .coin-pop{
+    width:30px;height:30px;border-radius:50%;
+    background:
+      radial-gradient(circle at 35% 30%, #FFF6B8, #FFD700 45%, #DAA520 80%, #B8860B);
+    border:2px solid #B8860B;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:16px;color:#5a4a00;
+    box-shadow:0 2px 6px rgba(0,0,0,.5), inset 0 -2px 4px rgba(120,72,0,.5), inset 0 2px 3px rgba(255,255,255,.6);
+  }
+  /* a smaller, brighter coin variant */
+  .plus-btc .coin-pop.small{
+    width:20px;height:20px;font-size:11px;
+    background:radial-gradient(circle at 35% 30%, #FFF6B8, #FFE45C 50%, #DAA520);
+  }
+  /* a larger premium coin variant */
+  .plus-btc .coin-pop.big{
+    width:40px;height:40px;font-size:22px;
+    background:radial-gradient(circle at 35% 30%, #FFFFFF, #FFE45C 35%, #FFD700 70%, #B8860B);
+    box-shadow:0 2px 10px rgba(255,215,0,.7), inset 0 -2px 4px rgba(120,72,0,.5), inset 0 2px 3px rgba(255,255,255,.7);
+  }
+  /* a sparkle burst variant (no coin, just glint) */
+  .plus-btc .coin-pop.spark{
+    width:16px;height:16px;background:transparent;border:none;
+    box-shadow:none;
+    background:radial-gradient(circle,#fff 0%, rgba(255,255,255,.6) 30%, transparent 70%);
+    animation:sparkGlint 1s ease-out forwards;
+  }
+  @keyframes sparkGlint{
+    0%{transform:scale(.2) rotate(0);opacity:0;}
+    30%{transform:scale(1.4) rotate(45deg);opacity:1;}
+    100%{transform:scale(.4) rotate(90deg);opacity:0;}
+  }
+  @keyframes floatUp{
+    0%{transform:translate(0,0) scale(.4);opacity:0;}
+    18%{transform:translate(calc(var(--dx,0px)*0.3), -16px) scale(1.2);opacity:1;}
+    100%{transform:translate(var(--dx,0px), calc(var(--rise,-80px))) scale(.9);opacity:0;}
+  }
+
+  /* ===== Bottom area ===== */
+  .bottom-area{
+    position:absolute;left:0;right:0;top:calc(62% + 90px - 8px);z-index:25;
+    padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 8px);
+  }
+  .miner-rack{
+    display:grid;grid-template-columns:repeat(5,1fr);
+    /* exactly 2 rows of square cells; fixed height so the top edge never moves */
+    grid-template-rows:repeat(2, calc((100vw - 24px - 4px - 4 * 6px) / 5));
+    gap:6px;
+    padding:2px;
+    margin-bottom:8px;
+    overflow:hidden;
+  }
+  @media (min-width:540px){
+    .miner-rack{
+      grid-template-rows:repeat(2, calc((540px - 24px - 4px - 4 * 6px) / 5));
+    }
+  }
+  /* cells fill their fixed track (no intrinsic height pushing the row) */
+  .miner-rack .miner-card,
+  .miner-rack .recruit-slot{
+    width:100%;height:100%;min-height:0;overflow:hidden;
+  }
+
+  .recruit-slot{
+    position:relative;
+    border-radius:12px;
+    border:2.5px dashed rgba(255,215,0,.55);
+    background:rgba(60,40,15,.35);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    cursor:pointer;transition:transform .1s, background .2s;
+  }
+  .recruit-slot:active{transform:scale(.95);}
+  .recruit-slot .plus-circle{
+    width:26px;height:26px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#FFE45C,#FFD700 50%,#DAA520);
+    border:2px solid #B8860B;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;font-weight:900;color:#5a4a00;
+    box-shadow:0 2px 4px rgba(0,0,0,.4);
+  }
+  .recruit-slot .lbl{font-size:9px;font-weight:700;color:var(--gold);}
+  /* finger-tap guide centered on the Recruit button */
+  .recruit-slot .tap-guide{
+    position:absolute;
+    top:80%;left:50%;
+    transform:translate(-50%,-50%);
+    font-size:60px;
+    pointer-events:none;
+    color:#fff;
+    filter:grayscale(1) brightness(3) drop-shadow(0 2px 4px rgba(0,0,0,.7));
+    animation:tapPoint 1.1s ease-in-out infinite;
+    z-index:5;
+  }
+  @keyframes tapPoint{
+    0%,100%{transform:translate(-50%,-50%) scale(1);}
+    45%{transform:translate(-50%,-50%) scale(.82);}
+    55%{transform:translate(-50%,-50%) scale(.82);}
+  }
+  /* a soft pulse ring on the slot to draw the eye (only while guiding) */
+  .recruit-slot.has-guide::after{
+    content:"";position:absolute;inset:0;border-radius:12px;
+    border:2px solid rgba(255,215,0,.7);
+    animation:tapPulse 1.4s ease-out infinite;pointer-events:none;
+  }
+  @keyframes tapPulse{
+    0%{transform:scale(1);opacity:.9;}
+    70%{transform:scale(1.25);opacity:0;}
+    100%{opacity:0;}
+  }
+
+  .miner-card{
+    border-radius:12px;
+    background:linear-gradient(#F5DEB3,#d9b97f);
+    border:2px solid #8B4513;
+    padding:2px;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:0;
+    position:relative;
+    box-shadow:0 3px 0 rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  .miner-card .mc-mini{
+    width:100%;flex:1;min-height:0;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  /* portrait uses the variant avatar image (image-rendered, not CSS) */
+  .miner-card .mc-mini .mc-portrait{
+    height:100%;width:auto;max-width:100%;object-fit:contain;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));
+  }
+  .miner-card .mc-info{
+    width:100%;display:flex;flex-direction:column;align-items:center;gap:0;
+  }
+  .miner-card .mc-hash{
+    font-size:10px;font-weight:900;color:var(--green);
+    text-shadow:0 1px 0 rgba(255,255,255,.4);
+  }
+  .miner-card .mc-timer{
+    font-size:8px;color:#5C2F0E;font-weight:700;
+  }
+  .miner-card .mc-status{
+    position:absolute;top:-5px;right:-5px;
+    background:var(--green);color:#fff;font-size:8px;font-weight:900;
+    padding:1px 5px;border-radius:8px;border:1.5px solid #fff;
+  }
+
+  /* ===== Free Miner Welcome popup ===== */
+  .overlay{
+    position:absolute;inset:0;z-index:60;
+    background:rgba(0,0,0,.75);
+    display:flex;align-items:center;justify-content:center;
+    animation:fadeIn .3s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .popup{
+    width:300px;
+    background:linear-gradient(180deg,#3a2614,#1f1208);
+    border:3px solid var(--gold);
+    border-radius:22px;
+    padding:0 0 18px;
+    text-align:center;
+    position:relative;
+    box-shadow:0 0 40px rgba(255,215,0,.4);
+    animation:popIn .4s cubic-bezier(.2,1.4,.5,1);
+  }
+  @keyframes popIn{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .popup-banner{
+    margin:-3px -3px 0;
+    height:54px;
+    background:linear-gradient(180deg,#FFD700,#DAA520);
+    border:3px solid var(--gold);
+    border-bottom:none;
+    border-radius:22px 22px 0 0;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .popup-banner .title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:30px;letter-spacing:2px;color:#5a4a00;
+    text-shadow:0 2px 0 rgba(255,255,255,.5), 0 -1px 0 #B8860B;
+    transform:rotate(-2deg);
+  }
+  .popup .ray{
+    position:absolute;top:64px;left:50%;transform:translateX(-50%);
+    width:200px;height:200px;border-radius:50%;
+    background:conic-gradient(rgba(255,215,0,.35),transparent 12deg, rgba(255,215,0,.35) 24deg, transparent 36deg, rgba(255,215,0,.35) 48deg);
+    filter:blur(2px);
+    animation:spin 8s linear infinite;
+    z-index:0;
+  }
+  @keyframes spin{to{transform:translateX(-50%) rotate(360deg);}}
+  .popup .pm-stage{
+    position:relative;z-index:2;
+    height:130px;display:flex;align-items:center;justify-content:center;
+    margin-top:-6px;
+  }
+  /* popup big miner sprite (Attack.png, frame-driven) */
+  .popup .pm-sprite{
+    width:180px;height:150px;          /* matches 240:200 frame ratio, scaled up */
+    background-image:url('miner-sprite.png');
+    background-repeat:no-repeat;
+    background-size:800% 400%;          /* 8 cols x 4 rows → one full frame fills box */
+    background-position:0% 0%;
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));
+  }
+  .popup .total-line{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:4px;position:relative;z-index:3;
+    font-size:14px;font-weight:700;color:#fff;
+  }
+  .popup .total-line .mini-coin{
+    width:24px;height:24px;
+    background-image:url('avatar_frame.png');
+    background-size:contain;background-position:center;background-repeat:no-repeat;
+    flex-shrink:0;
+  }
+  .popup .total-line .gh{color:var(--green);font-weight:900;font-size:18px;}
+  .popup .receive-btn{
+    margin:16px auto 0;display:block;
+    width:200px;padding:13px 0;
+    background:linear-gradient(180deg,#FFB347,#FF9500);
+    border:2.5px solid #E67E00;
+    border-radius:30px;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:24px;letter-spacing:2px;color:#fff;
+    text-shadow:0 2px 0 rgba(0,0,0,.25);
+    cursor:pointer;position:relative;z-index:3;
+    box-shadow:0 5px 0 #B86A00, 0 8px 12px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.4);
+    transition:transform .1s;
+  }
+  .popup .receive-btn:active{
+    transform:translateY(3px);
+    box-shadow:0 2px 0 #B86A00, 0 4px 6px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.4);
+  }
+  /* recruit spawn animation */
+  @keyframes spawn{
+    0%{transform:translate(-50%,-50%) scale(0);}
+    70%{transform:translate(-50%,-50%) scale(1.2);}
+    100%{transform:translate(-50%,-50%) scale(1);}
+  }
+
+  /* Tap hint */
+  .hint{
+    position:absolute;left:50%;top:calc(74% + 120px);transform:translateX(-50%);
+    z-index:15;font-size:12px;color:rgba(255,255,255,.6);
+    text-align:center;pointer-events:none;
+    animation:hintPulse 2s ease-in-out infinite;
+  }
+  @keyframes hintPulse{0%,100%{opacity:.4;}50%{opacity:.85;}}
+
+  /* toast */
+  .toast{
+    position:absolute;top:180px;left:50%;transform:translateX(-50%) translateY(-20px);
+    z-index:70;background:rgba(0,0,0,.85);border:1.5px solid var(--gold);
+    color:var(--gold);font-size:13px;font-weight:700;
+    padding:8px 18px;border-radius:20px;opacity:0;
+    transition:opacity .25s, transform .25s;pointer-events:none;
+    white-space:nowrap;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="game" id="game">
+  <!-- Cave scene -->
+  <div class="cave">
+    <!-- top-half background image -->
+    <div class="cave-bg"></div>
+    <!-- bottom-half dark cave floor -->
+    <div class="cave-floor"></div>
+  </div>
+
+  <!-- Central ore -->
+  <div class="ore-area">
+    <div class="ore-glow"></div>
+    <div class="ore"></div>
+    <div class="sparkle" style="top:10%;left:20%;animation-delay:0s;"></div>
+    <div class="sparkle" style="top:30%;right:12%;animation-delay:.5s;"></div>
+    <div class="sparkle" style="bottom:20%;left:8%;animation-delay:1s;"></div>
+    <div class="sparkle" style="bottom:10%;right:22%;animation-delay:1.4s;"></div>
+  </div>
+
+  <!-- floating miners on the ore -->
+  <div class="miners-stage" id="minersStage"></div>
+
+  <!-- Balance bar -->
+  <div class="balance-bar">
+    <div class="btc-coin"></div>
+    <div class="balance-num" id="balanceNum">0.00000015000</div>
+  </div>
+
+  <!-- Withdraw wallet (right of balance bar) -->
+  <div class="wallet-btn" id="walletBtn" title="Withdraw"></div>
+
+  <div class="hint" id="hint">Tap “Recruit” to hire more miners ⛏</div>
+
+  <!-- Hashrate bar (aligned to top of cave-floor image, 10px below) -->
+  <div class="hashrate-bar">
+    <span class="rivet" style="margin-right:2px;"></span>
+    <div class="mini-coin"></div>
+    <span class="label">Total:</span>
+    <span class="val" id="hashVal">10</span>
+    <span class="unit">Gh/s</span>
+    <span class="rivet" style="margin-left:2px;"></span>
+  </div>
+
+  <!-- Bottom area -->
+  <div class="bottom-area">
+    <div class="miner-rack" id="minerRack"></div>
+  </div>
+
+  <!-- toast -->
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+(function(){
+  const game = document.getElementById('game');
+  const balanceNumEl = document.getElementById('balanceNum');
+  const hashValEl = document.getElementById('hashVal');
+  const minerRack = document.getElementById('minerRack');
+  const minersStage = document.getElementById('minersStage');
+  const hint = document.getElementById('hint');
+  const toastEl = document.getElementById('toast');
+  const walletBtn = document.getElementById('walletBtn');
+
+  // ===== Game state =====
+  const state = {
+    balance: 0.00000015, // BTC balance (base value)
+    miners: [],
+    minerId: 0,
+    popupShown: false,
+    guideShown: false,   // tap guide dismissed after first recruit
+  };
+
+  const MINER_TIERS = [
+    {name:'Rookie', gh:10,  color:'#9c5a28', avatar:'avatar-1001.png'},
+    {name:'Pro',    gh:25,  color:'#4a7bb5', avatar:'avatar-1002.png'},
+    {name:'Elite',  gh:60,  color:'#7a4ab5', avatar:'avatar-1003.png'},
+    {name:'Legend', gh:150, color:'#b54a7a', avatar:'avatar-1008.png'},
+  ];
+
+  const MAX_MINERS = 10;
+
+  function totalHash(){
+    return state.miners.reduce((s,m)=>s+m.gh,0);
+  }
+
+  // show BTC with 11 decimal places (satoshi-level precision), rolling digits
+  const WITHDRAW_THRESHOLD = 0.00000020;
+  let walletGuiding = false;
+  function updateWalletGuide(){
+    const should = state.balance > WITHDRAW_THRESHOLD;
+    if(should === walletGuiding) return;          // no change → skip DOM work
+    walletGuiding = should;
+    walletBtn.classList.toggle('guide-on', should);
+    if(should && !walletBtn.querySelector('.tap-guide')){
+      const f = document.createElement('div');
+      f.className = 'tap-guide';
+      f.textContent = '👆';
+      walletBtn.appendChild(f);
+    } else if(!should){
+      const f = walletBtn.querySelector('.tap-guide');
+      if(f) f.remove();
+    }
+  }
+  function renderBalance(){
+    balanceNumEl.textContent = state.balance.toFixed(11);
+    updateWalletGuide();
+  }
+
+  function renderHash(){
+    hashValEl.textContent = totalHash();
+  }
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>toastEl.classList.remove('show'), 1600);
+  }
+
+  // ===== Miner placement around ore =====
+  // Miners fan across the front of the mountain and hug the ore base.
+  // Arc goes from mid-left, down through the bottom (closest to ore), to mid-right.
+  function positionOnOre(index, total){
+    const stage = minersStage;
+    const w = stage.clientWidth, h = stage.clientHeight;
+    const cx = w/2;                       // horizontal center = mountain axis
+    const baseY = h*0.82;                 // foot of the mountain (lowest point)
+    // ellipse radii — tight to the mountain so miners hug it
+    const rx = Math.min(w*0.38, 155);
+    const ry = Math.min(h*0.13, 70);
+    if(total<=1){
+      return {x:cx, y:baseY, angle:Math.PI/2};
+    }
+    // parameter 0..1 across the front arc; middle (t=0.5) sits at the very bottom
+    const t = index / (total - 1);
+    // map t to an angle measured from the bottom (0 at bottom, ±arcHalf at the sides)
+    const arcHalf = 115 * Math.PI / 180;  // ±115° → ~230° front arc
+    const a = (t - 0.5) * 2 * arcHalf;    // -arcHalf..+arcHalf
+    return {
+      // a=0 → front-center (x=cx); sides fan out left/right
+      x: cx + Math.sin(a) * rx,
+      // bottom of arc (a=0) is lowest on screen (max y = baseY);
+      // sides rise slightly up the mountain flanks
+      y: baseY - (1 - Math.cos(a)) * ry,
+      angle: a
+    };
+  }
+
+  // ===== Sprite-sheet miner animation =====
+  // Attack.png: 1920x800, 8 cols x 4 rows = 30 frames, each 240x200
+  const SPRITE_COLS = 8;
+  const SPRITE_ROWS = 4;
+  const SPRITE_FRAMES = 30;
+  const FRAME_W = 240, FRAME_H = 200;
+  // advance one frame every N ms (mining swing speed)
+  const SPRITE_INTERVAL = 80;
+
+  function minerSpriteEl(){
+    const el = document.createElement('div');
+    el.className='miner-sprite';
+    return el;
+  }
+
+  // global frame index advances via setInterval; each miner reads its own offset
+  let globalFrame = 0;
+  // frame layout: use percentages so ANY container size shows the full frame
+  // (background-size = cols*100% by rows*100%; position in 0..100% steps)
+  function framePosition(col, row){
+    const px = SPRITE_COLS > 1 ? (col / (SPRITE_COLS - 1)) * 100 : 0;
+    const py = SPRITE_ROWS > 1 ? (row / (SPRITE_ROWS - 1)) * 100 : 0;
+    return `${px}% ${py}%`;
+  }
+
+  // ===== Mining sound effect (pooled, one per miner swing) =====
+  const SFX_URL = 'mining-sfx.mp3';
+  const SFX_POOL_SIZE = 6;          // concurrent voices to avoid clipping when many miners swing together
+  let sfxPool = [];
+  let sfxReady = false;
+  let audioUnlocked = false;
+  function initAudio(){
+    if(sfxReady) return;
+    try{
+      const holder = document.getElementById('sfxHolder') || (()=>{
+        const d = document.createElement('div'); d.id='sfxHolder';
+        d.style.cssText='position:absolute;width:0;height:0;overflow:hidden;opacity:0;';
+        document.body.appendChild(d); return d;
+      })();
+      for(let i=0;i<SFX_POOL_SIZE;i++){
+        const a = document.createElement('audio');
+        a.src = SFX_URL;
+        a.preload = 'auto';
+        a.volume = 0.5;
+        holder.appendChild(a);
+        sfxPool.push(a);
+      }
+      sfxReady = true;
+    }catch(e){ /* audio unsupported — silently ignore */ }
+  }
+  // browsers block audio until a user gesture; unlock on first interaction
+  function unlockAudio(){
+    if(audioUnlocked) return;
+    audioUnlocked = true;
+    initAudio();
+    // play a silent burst to unlock the pool
+    sfxPool.forEach(a=>{ a.volume = 0; a.play().catch(()=>{}); a.volume = 0.5; });
+  }
+  let sfxCursor = 0;
+  function playMiningSfx(){
+    if(!sfxReady || !audioUnlocked) return;
+    const a = sfxPool[sfxCursor % SFX_POOL_SIZE];
+    sfxCursor++;
+    try{
+      a.currentTime = 0;
+      a.volume = 0.35;
+      a.play().catch(()=>{});
+    }catch(e){}
+  }
+  ['click','touchstart','keydown'].forEach(ev=>{
+    document.addEventListener(ev, unlockAudio, {once:false, passive:true});
+  });
+
+  function tickSprite(){
+    globalFrame = (globalFrame + 1) % SPRITE_FRAMES;
+    const sprites = minersStage.querySelectorAll('.miner-sprite');
+    sprites.forEach((sp)=>{
+      // each miner has a data-frame offset so they don't all swing in sync
+      const offset = parseInt(sp.dataset.offset || '0', 10);
+      const f = (globalFrame + offset) % SPRITE_FRAMES;
+      // when a miner's animation wraps back to frame 0 → the pickaxe just struck
+      if(f === 0){ playMiningSfx(); }
+      const col = f % SPRITE_COLS;
+      const row = Math.floor(f / SPRITE_COLS);
+      // size the sheet to cols*100% x rows*100% so one frame fills the box
+      sp.style.backgroundSize = `${SPRITE_COLS*100}% ${SPRITE_ROWS*100}%`;
+      sp.style.backgroundPosition = framePosition(col, row);
+    });
+    // also drive the big popup miner (no offset)
+    const pm = document.getElementById('pmSprite');
+    if(pm){
+      const col = globalFrame % SPRITE_COLS;
+      const row = Math.floor(globalFrame / SPRITE_COLS);
+      pm.style.backgroundPosition = framePosition(col, row);
+    }
+  }
+
+  function renderStageMiners(){
+    minersStage.innerHTML='';
+    const total = state.miners.length;
+    const stageW = minersStage.clientWidth;
+    state.miners.forEach((m,i)=>{
+      const pos = positionOnOre(i, total);
+      const el = document.createElement('div');
+      el.className='miner-unit';
+      // sprite faces LEFT by default.
+      // Right-side miners keep default (face left → toward the mountain);
+      // left-side miners flip to face right (toward the mountain).
+      if(pos.x < stageW/2){ el.classList.add('face-right'); }
+      el.style.left = pos.x+'px';
+      el.style.top = pos.y+'px';
+      el.style.animationDelay = (i*0.15)+'s';
+      // remember each miner's screen position so coins can pop from them
+      el.dataset.cx = pos.x;
+      el.dataset.cy = pos.y;
+      const sp = minerSpriteEl();
+      sp.dataset.offset = (i*3).toString();     // stagger animation phase
+      // size the sheet to cols*100% x rows*100% so one frame fills the box
+      sp.style.backgroundSize = `${SPRITE_COLS*100}% ${SPRITE_ROWS*100}%`;
+      sp.style.backgroundPosition = '0% 0%';
+      el.appendChild(sp);
+      minersStage.appendChild(el);
+    });
+  }
+
+  function renderRack(){
+    minerRack.innerHTML='';
+    // recruit slot first (only if under the cap)
+    if(state.miners.length < MAX_MINERS){
+      const slot = document.createElement('div');
+      slot.className='recruit-slot' + (state.guideShown ? '' : ' has-guide');
+      const guide = state.guideShown ? '' : '<div class="tap-guide">👆</div>';
+      slot.innerHTML = `
+        <div class="plus-circle">+</div>
+        <div class="lbl">Recruit</div>
+        ${guide}
+      `;
+      slot.addEventListener('click', recruit);
+      minerRack.appendChild(slot);
+    }
+
+    state.miners.forEach((m,i)=>{
+      const card = document.createElement('div');
+      card.className='miner-card';
+      card.innerHTML = `
+        <div class="mc-status">LV${m.level}</div>
+        <div class="mc-mini">
+          <img class="mc-portrait" src="${m.tier.avatar}" alt="${m.tier.name}">
+        </div>
+        <div class="mc-info">
+          <div class="mc-hash">${m.gh}Gh/s</div>
+          <div class="mc-timer">⛏ 24h</div>
+        </div>
+      `;
+      minerRack.appendChild(card);
+    });
+  }
+
+  // ===== Spawn a popped gold coin floating up =====
+  // variant: 'small' | 'big' | 'spark' | '' (normal). dx/rise personalize the arc.
+  function spawnPlusBtc(x, y, variant, dx, rise){
+    const el = document.createElement('div');
+    el.className='plus-btc';
+    const cls = variant ? 'coin-pop '+variant : 'coin-pop';
+    el.innerHTML = `<div class="${cls}">${variant==='spark'?'':'₿'}</div>`;
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    if(dx!==undefined) el.style.setProperty('--dx', dx+'px');
+    if(rise!==undefined) el.style.setProperty('--rise', rise+'px');
+    game.appendChild(el);
+    setTimeout(()=>el.remove(), 1500);
+  }
+
+  // ===== Mining loop =====
+  // runs every MINING_INTERVAL ms; per-second rate = totalHash * 0.00000000015
+  const MINING_INTERVAL = 130;            // ms per tick
+  const BTC_RATE = 0.00000000015;         // BTC per Gh/s per second
+  let tick = 0;
+  function miningTick(){
+    if(state.miners.length===0){ return; }
+    const gh = totalHash();
+    // scale the per-second rate to this tick's duration
+    const gain = gh * BTC_RATE * (MINING_INTERVAL / 1000);
+    state.balance += gain;
+    renderBalance();
+    tick++;
+
+    // every few ticks, EACH miner pops a gold coin from where they stand,
+    // with a per-miner "dig signature" so they differ visually
+    if(tick % 6 === 0){
+      const stageRect = minersStage.getBoundingClientRect();
+      const gr = game.getBoundingClientRect();
+      const units = minersStage.querySelectorAll('.miner-unit');
+      units.forEach((u, i)=>{
+        const cx = parseFloat(u.dataset.cx || '0');
+        const cy = parseFloat(u.dataset.cy || '0');
+        // convert stage-local coords → game-screen coords
+        const x = (stageRect.left - gr.left) + cx + (Math.random()*16-8);
+        const y = (stageRect.top  - gr.top)  + cy - 10;
+        // deterministic-but-varied per miner: variant / drift / rise / cadence
+        const variants = ['', 'small', '', 'big', 'spark'];
+        const variant = variants[i % variants.length];
+        // horizontal drift sign flips by miner side for a natural scatter
+        const driftMag = 24 + (i % 3) * 14;            // 24 / 38 / 52 px
+        const drift = (cx > minersStage.clientWidth/2 ? -1 : 1) * driftMag;
+        const rise = -(70 + (i % 4) * 22);             // 70..136 px up
+        // some miners pop every cycle, others every other cycle
+        if(i % 2 === 0 || tick % 12 === 0){
+          spawnPlusBtc(x, y, variant, drift, rise);
+        }
+      });
+    }
+  }
+
+  // ===== Recruit =====
+  function recruit(){
+    // cap at MAX_MINERS
+    if(state.miners.length >= MAX_MINERS){
+      showToast('Max ' + MAX_MINERS + ' miners reached');
+      return;
+    }
+    // tier weighted random
+    const r = Math.random();
+    let tier;
+    if(r < 0.6) tier = MINER_TIERS[0];
+    else if(r < 0.85) tier = MINER_TIERS[1];
+    else if(r < 0.97) tier = MINER_TIERS[2];
+    else tier = MINER_TIERS[3];
+
+    const miner = {
+      id: ++state.minerId,
+      tier,
+      gh: tier.gh,
+      level: 1,
+    };
+    state.miners.push(miner);
+    state.guideShown = true;            // stop the tap guide after first recruit
+    renderStageMiners();
+    renderRack();
+    renderHash();
+    if(hint){ hint.style.display='none'; }
+    showToast('New miner recruited! +' + tier.gh + ' Gh/s');
+
+    // little burst of sparkles
+    burstSparkles();
+  }
+
+  function burstSparkles(){
+    const ore = document.querySelector('.ore-area');
+    const r = ore.getBoundingClientRect();
+    const gr = game.getBoundingClientRect();
+    for(let i=0;i<10;i++){
+      const s=document.createElement('div');
+      s.className='sparkle';
+      s.style.position='absolute';
+      s.style.width='12px';s.style.height='12px';
+      const cx = r.left - gr.left + r.width/2;
+      const cy = r.top - gr.top + r.height/2;
+      const ang = Math.random()*Math.PI*2;
+      const dist = Math.random()*60+30;
+      s.style.left=(cx+Math.cos(ang)*dist)+'px';
+      s.style.top=(cy+Math.sin(ang)*dist)+'px';
+      s.style.zIndex=30;
+      s.style.animation='twinkle 1s ease-out forwards';
+      game.appendChild(s);
+      setTimeout(()=>s.remove(),1100);
+    }
+  }
+
+  // ===== Welcome Free Miner popup =====
+  function showFreeMinerPopup(){
+    if(state.popupShown) return;
+    state.popupShown = true;
+    const ov = document.createElement('div');
+    ov.className='overlay';
+    ov.innerHTML = `
+      <div class="popup">
+        <div class="popup-banner"><div class="title">FREE MINER!</div></div>
+        <div class="ray"></div>
+        <div class="pm-stage">
+          <div class="pm-sprite" id="pmSprite"></div>
+        </div>
+        <div class="total-line">
+          <div class="mini-coin"></div>
+          <span>Total:</span>
+          <span class="gh">10 Gh/s</span>
+        </div>
+        <button class="receive-btn" id="popReceive">RECEIVE</button>
+      </div>
+    `;
+    game.appendChild(ov);
+
+    const grantFree = ()=>{
+      // the gifted miner is already in the list (added at init);
+      // receiving just dismisses the popup and starts mining
+      renderStageMiners(); renderRack(); renderHash();
+      if(hint) hint.style.display='block';
+      ov.remove();
+      burstSparkles();
+      showToast('Free miner received! ⛏');
+    };
+
+    document.getElementById('popReceive').addEventListener('click', grantFree);
+  }
+
+  // ===== withdraw wallet → external store (new tab) =====
+  walletBtn.addEventListener('click', ()=>{
+    window.open('https://play.google.com/store/apps/details?id=com.fortune.btminer', '_blank');
+  });
+
+  // ===== init =====
+  // gift one free miner by default, shown in the list from the start
+  state.miners.push({id:++state.minerId, tier:MINER_TIERS[0], gh:MINER_TIERS[0].gh, level:1});
+  renderRack();
+  renderBalance();
+  renderHash();
+  initAudio();   // preload the mining sound pool early
+  // show welcome popup shortly after load
+  setTimeout(showFreeMinerPopup, 600);
+
+  // mining loop
+  setInterval(miningTick, MINING_INTERVAL);
+  // sprite-sheet animation loop
+  setInterval(tickSprite, SPRITE_INTERVAL);
+
+  // handle resize to reposition miners on ore
+  window.addEventListener('resize', renderStageMiners);
+})();
+</script>
+</body>
+</html>
