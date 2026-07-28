@@ -99,13 +99,7 @@
     >
       <image class="grid-thumb" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
 
-      <!-- 播放次数覆盖层 -->
-      <view class="play-count" wx:if="{{!item.locked}}">
-        <view class="play-tri"></view>
-        <text class="play-count-text">{{item.plays}}</text>
-      </view>
-
-      <!-- 私密视频锁图标 -->
+      <!-- 私密视频锁图标（LuckyShort 无播放量，移除 plays 覆盖层） -->
       <view class="lock-badge" wx:if="{{item.locked}}">
         <view class="lock-icon">
           <view class="lock-body"></view>

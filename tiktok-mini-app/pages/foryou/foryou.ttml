@@ -28,22 +28,10 @@
         <!-- 暗色渐变遮罩（让文字可读） -->
         <view class="feed-mask"></view>
 
-        <!-- 右侧操作栏 -->
+        <!-- 右侧操作栏（LuckyShort 无作者体系，移除头像+关注） -->
         <view class="action-rail">
 
-          <!-- 头像 + 关注 -->
-          <view class="avatar-wrap" bindtap="onAvatarTap" data-author="{{item.author}}">
-            <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
-            <view
-              class="follow-btn {{followedMap[item.author] ? 'followed' : ''}}"
-              catchtap="onFollowTap"
-              data-author="{{item.author}}"
-            >
-              <text class="follow-icon">{{followedMap[item.author] ? '✓' : '+'}}</text>
-            </view>
-          </view>
-
-          <!-- 点赞（LuckyShort 无点赞数，用文案） -->
+          <!-- 点赞 -->
           <view class="rail-btn" catchtap="onLikeTap" data-id="{{item.id}}">
             <view class="rail-icon heart {{likedMap[item.id] ? 'liked' : ''}}">
               <text class="heart-icon">{{likedMap[item.id] ? '♥' : '♡'}}</text>
@@ -68,24 +56,13 @@
           </view>
         </view>
 
-        <!-- 底部信息 -->
+        <!-- 底部信息（LuckyShort 无作者/音乐，移除 author 和 music-bar） -->
         <view class="feed-info">
-          <text class="feed-author">{{item.author}}</text>
           <text class="feed-title">{{item.title}}</text>
           <text class="feed-desc">{{item.description}}</text>
 
           <view class="tag-row" wx:if="{{item.tags.length}}">
             <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">#{{tag}}</text>
-          </view>
-
-          <!-- 音乐条（装饰） -->
-          <view class="music-bar">
-            <view class="music-disc">
-              <view class="disc-inner"></view>
-            </view>
-            <view class="music-info">
-              <text class="music-text">🎵 Original Sound - {{item.author}}</text>
-            </view>
           </view>
         </view>
 

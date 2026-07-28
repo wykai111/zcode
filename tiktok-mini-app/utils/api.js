@@ -57,13 +57,11 @@ function toListItem(d) {
   };
 }
 
-// 推荐流（For You）
+// 推荐流（For You）— LuckyShort 无作者体系，移除 author/avatar
 function toForYou(d) {
   return {
     id: d.id,
     title: d.title,
-    author: '@luckyshort',
-    avatar: d.cover,  // 无独立头像，用封面
     cover: d.cover,
     duration: (d.episode_part && d.episode_part.duration) ? String(d.episode_part.duration) : '0:58',
     description: d.intro || d.description || d.title,
