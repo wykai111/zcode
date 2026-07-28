@@ -112,15 +112,9 @@
               <image class="trend-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
               <view class="trend-cover-overlay"></view>
 
-              <!-- NEW 标识 -->
+              <!-- 集数标识（LuckyShort 无 HOT/NEW/播放量，用集数） -->
               <view class="trend-hot-badge topshort-badge">
-                <text class="trend-hot-text topshort-badge-text">✦ {{item.tag}}</text>
-              </view>
-
-              <!-- 播放次数 -->
-              <view class="trend-plays">
-                <view class="play-tri-xs"></view>
-                <text class="trend-plays-text">{{item.views}}</text>
+                <text class="trend-hot-text topshort-badge-text">{{item.episodes}} EP</text>
               </view>
             </view>
 
@@ -181,14 +175,9 @@
               </view>
             </view>
 
-            <!-- 评分 + Play 按钮 -->
+            <!-- Play 按钮（LuckyShort 无评分，移除 ★ rating） -->
             <view class="new-bottom">
-              <view class="new-rating">
-                <text class="rating-star">★</text>
-                <text class="rating-num">{{item.rating}}</text>
-              </view>
-              <view
-                class="new-play-btn"
+              <view class="new-play-btn"
                 catchtap="onPlayTap"
                 data-id="{{item.id}}"
               >
@@ -228,15 +217,9 @@
               <image class="trend-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
               <view class="trend-cover-overlay"></view>
 
-              <!-- HOT 标识 -->
+              <!-- 集数标识（LuckyShort 无 HOT/播放量，用集数） -->
               <view class="trend-hot-badge">
-                <text class="trend-hot-text">🔥 {{item.tag}}</text>
-              </view>
-
-              <!-- 播放次数 -->
-              <view class="trend-plays">
-                <view class="play-tri-xs"></view>
-                <text class="trend-plays-text">{{item.plays}}</text>
+                <text class="trend-hot-text">🎬 {{item.episodes}} EP</text>
               </view>
             </view>
 

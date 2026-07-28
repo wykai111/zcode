@@ -70,8 +70,14 @@ Page({
         tt.setNavigationBarTitle({ title: drama.title });
         this._startAutoHide();
 
-        // 上报观看记录
-        api.reportHistory({ dramaId: id, epNumber: safeEp, progress: 0 }).catch(() => {});
+        // 上报观看记录（本地存储，冗余 title/cover 供历史页展示）
+        api.reportHistory({
+          dramaId: id,
+          epNumber: safeEp,
+          progress: 0,
+          title: drama.title,
+          cover: drama.cover,
+        }).catch(() => {});
       })
       .catch(() => {
         this.setData({ loadError: true });
@@ -102,10 +108,13 @@ Page({
 
     // 每 10 秒上报一次进度
     if (Math.floor(currentTime) % 10 === 0 && currentTime > 0) {
+      const d = this.data.drama;
       api.reportHistory({
         dramaId: this.data.id,
         epNumber: this.data.currentEp,
         progress: Math.floor(ratio),
+        title: d && d.title,
+        cover: d && d.cover,
       }).catch(() => {});
     }
   },
@@ -179,7 +188,14 @@ Page({
     });
 
     // 上报观看
-    api.reportHistory({ dramaId: this.data.id, epNumber: ep, progress: 0 }).catch(() => {});
+    const d = this.data.drama;
+    api.reportHistory({
+      dramaId: this.data.id,
+      epNumber: ep,
+      progress: 0,
+      title: d && d.title,
+      cover: d && d.cover,
+    }).catch(() => {});
   },
 
   /* =========================================

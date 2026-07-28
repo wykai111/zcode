@@ -1,14 +1,18 @@
-// utils/config.js - 全局配置
+// utils/config.js - 全局配置（对接 LuckyShort API）
 
-// 后端 API 基础地址（生产环境）
-// 上线前需改为 HTTPS + 域名
-const BASE_URL = 'http://47.239.49.251';
+// LuckyShort API 基址
+const BASE_URL = 'https://api.qlaryline.xyz';
 
-// 临时写死的测试用户 ID（种子用户 user_001）
-// 后续接入 tt.login 真登录后，由 /api/auth/login 返回真实 userId 替换
-const USER_ID = 'user_001';
+// 鉴权密钥（HMAC-SHA256 签名用）
+const AK = 'mDLr7gq2hdIQ';
+const SK = 'xQgAEVcvVf7nq0kXOJ2OlUH8kBsWl0Yq';
+
+// 默认语言（LuckyShort 所有接口需要 language 参数）
+const LANGUAGE = 'en';
 
 module.exports = {
   BASE_URL,
-  USER_ID,
+  AK,
+  SK,
+  LANGUAGE,
 };

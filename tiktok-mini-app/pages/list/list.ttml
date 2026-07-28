@@ -32,28 +32,9 @@
         <image class="cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
         <view class="cover-overlay"></view>
 
-        <!-- 标识 -->
-        <view class="badge-row" wx:if="{{item.tag}}">
-          <view class="badge {{item.tag === 'HOT' ? 'hot' : 'new'}}">
-            <text class="badge-text">{{item.tag}}</text>
-          </view>
-        </view>
-
-        <!-- 集数 -->
+        <!-- 集数标识（LuckyShort 无 tag/views/rating） -->
         <view class="cover-eps" wx:if="{{item.episodes}}">
           <text class="cover-eps-text">{{item.episodes}} EPS</text>
-        </view>
-
-        <!-- 播放次数 -->
-        <view class="cover-views" wx:if="{{item.views}}">
-          <view class="play-tri"></view>
-          <text class="cover-views-text">{{item.views}}</text>
-        </view>
-
-        <!-- 评分 -->
-        <view class="cover-rating" wx:if="{{item.rating}}">
-          <text class="rating-star">★</text>
-          <text class="rating-num">{{item.rating}}</text>
         </view>
       </view>
 

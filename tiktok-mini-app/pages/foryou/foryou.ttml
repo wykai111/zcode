@@ -43,12 +43,12 @@
             </view>
           </view>
 
-          <!-- 点赞 -->
+          <!-- 点赞（LuckyShort 无点赞数，用文案） -->
           <view class="rail-btn" catchtap="onLikeTap" data-id="{{item.id}}">
             <view class="rail-icon heart {{likedMap[item.id] ? 'liked' : ''}}">
               <text class="heart-icon">{{likedMap[item.id] ? '♥' : '♡'}}</text>
             </view>
-            <text class="rail-text">{{item.likes}}</text>
+            <text class="rail-text">Like</text>
           </view>
 
           <!-- 评论 -->
@@ -56,7 +56,7 @@
             <view class="rail-icon">
               <text class="icon-emoji">💬</text>
             </view>
-            <text class="rail-text">{{item.comments}}</text>
+            <text class="rail-text">Comment</text>
           </view>
 
           <!-- 分享 -->
@@ -64,7 +64,7 @@
             <view class="rail-icon">
               <text class="icon-emoji">↪</text>
             </view>
-            <text class="rail-text">{{item.shares}}</text>
+            <text class="rail-text">Share</text>
           </view>
         </view>
 
