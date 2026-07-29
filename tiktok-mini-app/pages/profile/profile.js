@@ -30,34 +30,17 @@ Page({
   },
 
   onShow() {
-    // 从播放页返回时刷新历史
-    if (this.data.activeTab === 0) this._loadTabData(0);
+    // 从播放页返回时，若当前在历史 Tab（1）则刷新
+    if (this.data.activeTab === 1) this._loadTabData(1);
   },
 
   /**
    * 按当前 Tab 加载数据
-   * Tab 0（♥）：本地观看历史
-   * Tab 1（▦）：LuckyShort 短剧列表
+   * Tab 0（▦）：LuckyShort 短剧列表
+   * Tab 1（♥）：本地观看历史
    */
   _loadTabData(tab) {
     if (tab === 0) {
-      // 观看历史（本地存储）
-      api.fetchHistory()
-        .then((list) => {
-          this.setData({
-            videos: list.map((h) => ({
-              id: h.drama_id,
-              cover: h.cover,
-              plays: `EP ${h.ep_number}`,
-              locked: false,
-            })),
-            emptyIcon: '📺',
-            emptyTitle: 'No Watch History',
-            emptyDesc: 'Start watching to see history here',
-          });
-        })
-        .catch(() => this._setEmpty());
-    } else if (tab === 1) {
       // 短剧列表
       api.fetchDramaList({ page: 1, pageSize: 30 })
         .then((res) => {
@@ -71,6 +54,23 @@ Page({
             emptyIcon: '🎬',
             emptyTitle: 'No Dramas',
             emptyDesc: 'Dramas will appear here',
+          });
+        })
+        .catch(() => this._setEmpty());
+    } else if (tab === 1) {
+      // 观看历史（本地存储）
+      api.fetchHistory()
+        .then((list) => {
+          this.setData({
+            videos: list.map((h) => ({
+              id: h.drama_id,
+              cover: h.cover,
+              plays: `EP ${h.ep_number}`,
+              locked: false,
+            })),
+            emptyIcon: '📺',
+            emptyTitle: 'No Watch History',
+            emptyDesc: 'Start watching to see history here',
           });
         })
         .catch(() => this._setEmpty());

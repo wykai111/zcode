@@ -205,11 +205,12 @@
   border-radius: 3rpx;
 }
 
-/* ===== 视频网格（3 列，9:16 竖版） ===== */
+/* ===== 视频网格（2 列，9:16 竖版） ===== */
 .video-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rpx;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rpx;
+  padding: 8rpx 8rpx 0;
 }
 
 .grid-cell {
