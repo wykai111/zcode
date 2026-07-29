@@ -32,22 +32,6 @@
   <text class="nickname">{{user.nickname}}</text>
   <text class="username">@{{user.username}}</text>
 
-  <!-- ===== 数据统计（3 列） ===== -->
-  <view class="stats-row">
-    <view class="stat-item">
-      <text class="stat-num">{{user.following}}</text>
-      <text class="stat-label">Following</text>
-    </view>
-    <view class="stat-item">
-      <text class="stat-num">{{user.followers}}</text>
-      <text class="stat-label">Followers</text>
-    </view>
-    <view class="stat-item">
-      <text class="stat-num">{{user.likes}}</text>
-      <text class="stat-label">Likes</text>
-    </view>
-  </view>
-
   <!-- ===== 操作按钮 ===== -->
   <view class="actions-row">
     <view class="edit-btn" bindtap="onEditTap">
@@ -58,7 +42,7 @@
     </view>
   </view>
 
-  <!-- ===== Tab 栏 ===== -->
+  <!-- ===== Tab 栏（历史 / 短剧） ===== -->
   <view class="tab-bar">
     <view
       class="tab-item {{activeTab === 0 ? 'active' : ''}}"
@@ -75,14 +59,6 @@
     >
       <text class="tab-icon">▦</text>
       <view class="tab-indicator" wx:if="{{activeTab === 1}}"></view>
-    </view>
-    <view
-      class="tab-item {{activeTab === 2 ? 'active' : ''}}"
-      data-index="2"
-      bindtap="onTabTap"
-    >
-      <text class="tab-icon">🔖</text>
-      <view class="tab-indicator" wx:if="{{activeTab === 2}}"></view>
     </view>
   </view>
 

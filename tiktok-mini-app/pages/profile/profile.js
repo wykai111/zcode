@@ -7,16 +7,13 @@ const userProfile = {
   avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=300&q=80',
   nickname: 'Drama Lover',
   username: 'luckyshort_user',
-  following: 0,
-  followers: '0',
-  likes: '0',
 };
 
 Page({
   data: {
     statusBarHeight: 20,
     user: userProfile,
-    activeTab: 0,           // 0: 历史 ♥ / 1: 短剧 ▦ / 2: 收藏 🔖
+    activeTab: 0,           // 0: 历史 ♥ / 1: 短剧 ▦
     videos: [],
     emptyIcon: '',
     emptyTitle: '',
@@ -41,7 +38,6 @@ Page({
    * 按当前 Tab 加载数据
    * Tab 0（♥）：本地观看历史
    * Tab 1（▦）：LuckyShort 短剧列表
-   * Tab 2（🔖）：本地收藏（暂复用历史）
    */
   _loadTabData(tab) {
     if (tab === 0) {
@@ -75,23 +71,6 @@ Page({
             emptyIcon: '🎬',
             emptyTitle: 'No Dramas',
             emptyDesc: 'Dramas will appear here',
-          });
-        })
-        .catch(() => this._setEmpty());
-    } else {
-      // 收藏（暂复用历史数据）
-      api.fetchHistory()
-        .then((list) => {
-          this.setData({
-            videos: list.map((h) => ({
-              id: h.drama_id,
-              cover: h.cover,
-              plays: `EP ${h.ep_number}`,
-              locked: false,
-            })),
-            emptyIcon: '🔖',
-            emptyTitle: 'No Saved Dramas',
-            emptyDesc: 'Saved dramas will appear here',
           });
         })
         .catch(() => this._setEmpty());
