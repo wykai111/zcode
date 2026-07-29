@@ -1,13 +1,6 @@
 <!-- pages/foryou/foryou.ttml -->
 <view class="page">
 
-  <!-- 顶部标题栏 -->
-  <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
-    <view class="top-tabs">
-      <text class="top-tab active">For You</text>
-    </view>
-  </view>
-
   <!-- 全屏视频流 Swiper -->
   <swiper
     class="feed-swiper"
