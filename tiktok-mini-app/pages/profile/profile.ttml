@@ -21,15 +21,16 @@
   <!-- 占位 -->
   <view style="height: {{statusBarHeight + 88}}px;"></view>
 
-  <!-- ===== 头像 ===== -->
+  <!-- ===== 头像（居中 + 渐变外圈） ===== -->
   <view class="avatar-section">
     <view class="avatar-ring" bindtap="onAvatarTap">
       <image class="avatar" src="{{user.avatar}}" mode="aspectFill" />
     </view>
   </view>
 
-  <!-- ===== 昵称 ===== -->
+  <!-- ===== 昵称 + @username ===== -->
   <text class="nickname">{{user.nickname}}</text>
+  <text class="username">@{{user.username}}</text>
 
   <!-- ===== 数据统计（3 列） ===== -->
   <view class="stats-row">
@@ -37,12 +38,10 @@
       <text class="stat-num">{{user.following}}</text>
       <text class="stat-label">Following</text>
     </view>
-    <view class="stat-divider"></view>
     <view class="stat-item">
       <text class="stat-num">{{user.followers}}</text>
       <text class="stat-label">Followers</text>
     </view>
-    <view class="stat-divider"></view>
     <view class="stat-item">
       <text class="stat-num">{{user.likes}}</text>
       <text class="stat-label">Likes</text>
@@ -55,7 +54,7 @@
       <text class="edit-text">Edit profile</text>
     </view>
     <view class="icon-btn" bindtap="onAddTap">
-      <text class="icon-btn-plus">+</text>
+      <text class="icon-btn-arrow">▾</text>
     </view>
   </view>
 
@@ -87,26 +86,35 @@
     </view>
   </view>
 
-  <!-- ===== 视频网格（3 列） ===== -->
-  <view class="video-grid">
+  <!-- ===== 视频网格（3 列，9:16 竖版） ===== -->
+  <view class="video-grid" wx:if="{{videos.length}}">
     <view
       class="grid-cell"
       wx:for="{{videos}}"
       wx:key="id"
       data-id="{{item.id}}"
-      data-locked="{{item.locked}}"
       bindtap="onVideoTap"
     >
       <image class="grid-thumb" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
 
-      <!-- 私密视频锁图标（LuckyShort 无播放量，移除 plays 覆盖层） -->
+      <!-- 播放图标覆盖层 -->
+      <view class="play-overlay">
+        <view class="play-tri-sm"></view>
+        <text class="play-text" wx:if="{{item.plays}}">{{item.plays}}</text>
+      </view>
+
+      <!-- 私密视频锁图标 -->
       <view class="lock-badge" wx:if="{{item.locked}}">
-        <view class="lock-icon">
-          <view class="lock-body"></view>
-          <view class="lock-shackle"></view>
-        </view>
+        <text class="lock-emoji">🔒</text>
       </view>
     </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">{{emptyIcon}}</text>
+    <text class="empty-title">{{emptyTitle}}</text>
+    <text class="empty-desc">{{emptyDesc}}</text>
   </view>
 
   <view class="bottom-spacer"></view>

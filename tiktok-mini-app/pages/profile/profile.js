@@ -1,13 +1,26 @@
 // pages/profile/profile.js
-const { userProfile, myVideos } = require('../../utils/mock');
+const api = require('../../utils/api');
 const util = require('../../utils/util');
+
+// 用户信息（LuckyShort 无用户体系，本地固定展示）
+const userProfile = {
+  avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=300&q=80',
+  nickname: 'Drama Lover',
+  username: 'luckyshort_user',
+  following: 0,
+  followers: '0',
+  likes: '0',
+};
 
 Page({
   data: {
     statusBarHeight: 20,
-    user: null,
-    activeTab: 0,           // 0: liked ♥ / 1: posts 🎦 / 2: saved 🔖
+    user: userProfile,
+    activeTab: 0,           // 0: 历史 ♥ / 1: 短剧 ▦ / 2: 收藏 🔖
     videos: [],
+    emptyIcon: '',
+    emptyTitle: '',
+    emptyDesc: '',
   },
 
   onLoad() {
@@ -15,7 +28,82 @@ Page({
     this.setData({
       statusBarHeight: app.globalData.statusBarHeight,
       user: userProfile,
-      videos: myVideos,
+    });
+    this._loadTabData(0);
+  },
+
+  onShow() {
+    // 从播放页返回时刷新历史
+    if (this.data.activeTab === 0) this._loadTabData(0);
+  },
+
+  /**
+   * 按当前 Tab 加载数据
+   * Tab 0（♥）：本地观看历史
+   * Tab 1（▦）：LuckyShort 短剧列表
+   * Tab 2（🔖）：本地收藏（暂复用历史）
+   */
+  _loadTabData(tab) {
+    if (tab === 0) {
+      // 观看历史（本地存储）
+      api.fetchHistory()
+        .then((list) => {
+          this.setData({
+            videos: list.map((h) => ({
+              id: h.drama_id,
+              cover: h.cover,
+              plays: `EP ${h.ep_number}`,
+              locked: false,
+            })),
+            emptyIcon: '📺',
+            emptyTitle: 'No Watch History',
+            emptyDesc: 'Start watching to see history here',
+          });
+        })
+        .catch(() => this._setEmpty());
+    } else if (tab === 1) {
+      // 短剧列表
+      api.fetchDramaList({ page: 1, pageSize: 30 })
+        .then((res) => {
+          this.setData({
+            videos: res.list.map((d) => ({
+              id: d.id,
+              cover: d.cover,
+              plays: `${d.episodes} EP`,
+              locked: false,
+            })),
+            emptyIcon: '🎬',
+            emptyTitle: 'No Dramas',
+            emptyDesc: 'Dramas will appear here',
+          });
+        })
+        .catch(() => this._setEmpty());
+    } else {
+      // 收藏（暂复用历史数据）
+      api.fetchHistory()
+        .then((list) => {
+          this.setData({
+            videos: list.map((h) => ({
+              id: h.drama_id,
+              cover: h.cover,
+              plays: `EP ${h.ep_number}`,
+              locked: false,
+            })),
+            emptyIcon: '🔖',
+            emptyTitle: 'No Saved Dramas',
+            emptyDesc: 'Saved dramas will appear here',
+          });
+        })
+        .catch(() => this._setEmpty());
+    }
+  },
+
+  _setEmpty() {
+    this.setData({
+      videos: [],
+      emptyIcon: '🎬',
+      emptyTitle: 'Nothing here yet',
+      emptyDesc: 'Content will appear here',
     });
   },
 
@@ -25,7 +113,8 @@ Page({
   onTabTap(e) {
     const { index } = e.currentTarget.dataset;
     util.vibrate();
-    this.setData({ activeTab: Number(index) });
+    this.setData({ activeTab: Number(index), videos: [] });
+    this._loadTabData(Number(index));
   },
 
   /**
@@ -33,49 +122,34 @@ Page({
    */
   onMenuTap() {
     tt.showActionSheet({
-      itemList: ['Share profile', 'Copy link', 'QR code', 'Settings', 'Privacy'],
+      itemList: ['Share profile', 'Copy link', 'Settings'],
       success: (res) => {
-        util.showToast(['Shared ✓', 'Link copied ✓', 'QR shown', 'Opening Settings', 'Privacy'][res.tapIndex], 'none');
+        util.showToast(['Shared ✓', 'Link copied ✓', 'Opening Settings'][res.tapIndex], 'none');
       },
     });
   },
 
-  /**
-   * 编辑资料
-   */
   onEditTap() {
     util.showToast('Edit profile coming soon');
   },
 
-  /**
-   * 第二个按钮（下拉切换账号 / 添加好友）
-   */
   onAddTap() {
     util.showToast('Find friends');
   },
 
-  /**
-   * 头像点击
-   */
   onAvatarTap() {
     util.showToast('View avatar');
   },
 
   /**
-   * 视频/网格项点击
+   * 视频/网格项点击 → 跳转播放器
    */
   onVideoTap(e) {
-    const { id, locked } = e.currentTarget.dataset;
-    if (locked === true || locked === 'true') {
-      util.showToast('🔒 Private video', 'none');
-      return;
-    }
-    util.showToast(`▶ Playing ${id}`, 'none');
+    const { id } = e.currentTarget.dataset;
+    util.vibrate();
+    tt.navigateTo({ url: `/pages/player/player?id=${id}&ep=1` });
   },
 
-  /**
-   * 分享
-   */
   onShareAppMessage() {
     return {
       title: `${this.data.user.nickname} (@${this.data.user.username})`,
