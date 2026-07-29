@@ -1,11 +1,9 @@
 <!-- pages/foryou/foryou.ttml -->
 <view class="page">
 
-  <!-- 顶部状态栏占位 + 顶部 Tab -->
+  <!-- 顶部标题栏 -->
   <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
     <view class="top-tabs">
-      <text class="top-tab">Following</text>
-      <view class="top-divider"></view>
       <text class="top-tab active">For You</text>
     </view>
   </view>
@@ -28,35 +26,7 @@
         <!-- 暗色渐变遮罩（让文字可读） -->
         <view class="feed-mask"></view>
 
-        <!-- 右侧操作栏（LuckyShort 无作者体系，移除头像+关注） -->
-        <view class="action-rail">
-
-          <!-- 点赞 -->
-          <view class="rail-btn" catchtap="onLikeTap" data-id="{{item.id}}">
-            <view class="rail-icon heart {{likedMap[item.id] ? 'liked' : ''}}">
-              <text class="heart-icon">{{likedMap[item.id] ? '♥' : '♡'}}</text>
-            </view>
-            <text class="rail-text">Like</text>
-          </view>
-
-          <!-- 评论 -->
-          <view class="rail-btn" catchtap="onCommentTap">
-            <view class="rail-icon">
-              <text class="icon-emoji">💬</text>
-            </view>
-            <text class="rail-text">Comment</text>
-          </view>
-
-          <!-- 分享 -->
-          <view class="rail-btn" catchtap="onShareTap">
-            <view class="rail-icon">
-              <text class="icon-emoji">↪</text>
-            </view>
-            <text class="rail-text">Share</text>
-          </view>
-        </view>
-
-        <!-- 底部信息（LuckyShort 无作者/音乐，移除 author 和 music-bar） -->
+        <!-- 底部信息 -->
         <view class="feed-info">
           <text class="feed-title">{{item.title}}</text>
           <text class="feed-desc">{{item.description}}</text>
