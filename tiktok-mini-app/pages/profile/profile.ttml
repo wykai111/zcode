@@ -71,7 +71,7 @@
       data-id="{{item.id}}"
       bindtap="onVideoTap"
     >
-      <image class="grid-thumb" src="{{item.cover}}" mode="aspectFill" lazy-load="true" />
+      <image class="grid-thumb" src="{{item.cover}}" mode="widthFix" lazy-load="true" />
 
       <!-- 播放图标覆盖层 -->
       <view class="play-overlay">
