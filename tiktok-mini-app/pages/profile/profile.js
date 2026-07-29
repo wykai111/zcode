@@ -32,6 +32,9 @@ Page({
   onShow() {
     // 从播放页返回时，若当前在历史 Tab（1）则刷新
     if (this.data.activeTab === 1) this._loadTabData(1);
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 3 });
+    }
   },
 
   /**

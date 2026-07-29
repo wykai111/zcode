@@ -20,6 +20,9 @@ Page({
   onShow() {
     // 播放页返回时刷新进度
     if (this.data.history.length) this._loadHistory();
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2 });
+    }
   },
 
   /**
