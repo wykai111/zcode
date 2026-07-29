@@ -6,7 +6,6 @@ Page({
   data: {
     statusBarHeight: 20,
     history: [],
-    filter: 'all', // all | watching | completed
     isLoading: false,
   },
 
@@ -50,15 +49,6 @@ Page({
     tt.navigateTo({
       url: `/pages/player/player?id=${dramaId}&ep=1`,
     });
-  },
-
-  /**
-   * 筛选切换
-   */
-  onFilterTap(e) {
-    const { filter } = e.currentTarget.dataset;
-    util.vibrate();
-    this.setData({ filter });
   },
 
   /**
