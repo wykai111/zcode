@@ -56,7 +56,7 @@
             <view class="gallery-info">
               <text class="gallery-title">{{item.title}}</text>
               <view class="gallery-tags">
-                <view class="gallery-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+                <view class="gallery-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:for-index="tagIdx" wx:key="*this" wx:if="{{tagIdx < 3}}">
                   <text class="gallery-tag-text">{{tag}}</text>
                 </view>
               </view>
@@ -170,7 +170,7 @@
 
             <!-- 题材标签栏 -->
             <view class="new-tags">
-              <view class="new-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+              <view class="new-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:for-index="tagIdx" wx:key="*this" wx:if="{{tagIdx < 3}}">
                 <text class="new-tag-text">{{tag}}</text>
               </view>
             </view>
