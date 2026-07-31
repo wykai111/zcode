@@ -31,13 +31,6 @@ Page({
     this._loadHome();
   },
 
-  onShow() {
-    // 同步自定义 tabBar 选中态
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 0 });
-    }
-  },
-
   /**
    * 从后端拉取首页数据
    */

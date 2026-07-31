@@ -31,9 +31,6 @@ Page({
 
   onShow() {
     this.setData({ isActive: true });
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 1 });
-    }
   },
 
   onHide() {
