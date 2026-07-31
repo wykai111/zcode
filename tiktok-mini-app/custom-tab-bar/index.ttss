@@ -12,11 +12,7 @@
   height: 110rpx;
   padding-bottom: env(safe-area-inset-bottom);
   background-color: #000000;
-  /* 彻底去除所有分隔线（顶部线 + tab 之间的线） */
-  border-top: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
+  /* 关键：彻底无顶部分隔线（不设 border-top） */
 }
 
 .tab-item {
@@ -26,10 +22,6 @@
   align-items: center;
   justify-content: center;
   gap: 6rpx;
-  /* tab 之间无竖向分隔线 */
-  border: none !important;
-  border-left: none !important;
-  border-right: none !important;
 }
 
 .tab-icon {
