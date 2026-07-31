@@ -1,7 +1,7 @@
 // utils/config.js - 全局配置（对接 LuckyShort API）
 
 // LuckyShort API 基址
-const BASE_URL = 'https://api.qlaryline.xyz';
+const BASE_URL = 'https://api.sparkeak.shop';
 
 // 鉴权密钥（HMAC-SHA256 签名用）
 const AK = 'mDLr7gq2hdIQ';
