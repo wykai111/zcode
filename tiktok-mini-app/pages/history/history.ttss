@@ -309,5 +309,5 @@
 }
 
 .bottom-spacer {
-  height: 60rpx;
+  height: 140rpx;
 }

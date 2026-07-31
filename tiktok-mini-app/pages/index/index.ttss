@@ -579,5 +579,5 @@
 
 /* 底部留白 */
 .bottom-spacer {
-  height: 40rpx;
+  height: 140rpx;
 }
