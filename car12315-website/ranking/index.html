@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>能耗榜-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<div class="container site-main">
+    <div class="block crumbs">
+        <div id="breadcrumb"></div>
+    </div>
+
+    <div class="block">
+        <div id="sec-head"></div>
+        <div class="list-view"></div>
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('ranking');
+    App.footer();
+    document.getElementById('breadcrumb').innerHTML = App.breadcrumb([
+        { name: '首页', href: 'index.html' },
+        { name: '能耗榜', href: 'ranking/index.html' },
+        { name: '列表' }
+    ]);
+    document.getElementById('sec-head').innerHTML = App.sectionHead({
+        iconCls: 'co-orange', icon: 'fa-trophy',
+        title: '续航排行榜', subtitle: '官方续航 vs 实际续航 · 每页 20 条'
+    });
+
+    var listView = document.querySelector('.list-view');
+    var index = parseInt(App.qs('index'), 10) || 1;
+
+    listView.innerHTML = App.loading();
+    App.request('/api/catalog/rank', { pageSize: 20, index: index })
+        .then(function (pi) {
+            var html = '';
+            if (!pi.data || !pi.data.length) {
+                html = App.empty('当前无排名信息，敬请期待');
+            } else {
+                html = '<div class="table-wrap"><table class="table-modern">' +
+                    '<tr><th>排名</th><th colspan="2">车型</th><th>官方续航(KM)</th><th>实际续航(KM)</th><th>续航比(%)</th></tr>';
+                pi.data.forEach(function (item, i) {
+                    var rank = (pi.index - 1) * (pi.pageSize || 20) + i + 1;
+                    var medal = rank <= 3 ? ' r' + rank : '';
+                    var rate = item.drivingRate != null ? (item.drivingRate * 100).toFixed(2) : '--';
+                    html += '<tr>' +
+                        '<td><span class="rank-badge' + medal + '">' + rank + '</span></td>' +
+                        '<td><div class="rank-car">' +
+                        '<img loading="lazy" src="' + App.esc(item.icon || App.IMG.car) + '" data-fallback="' + App.esc(App.IMG.car) + '">' +
+                        App.esc(item.name) +
+                        '</div></td>' +
+                        '<td></td>' +
+                        '<td>' + App.esc(item.drivingRange != null ? item.drivingRange : '--') + '</td>' +
+                        '<td>' + App.esc(item.actualRange != null ? item.actualRange : '--') + '</td>' +
+                        '<td><b>' + rate + '</b></td>' +
+                        '</tr>';
+                });
+                html += '</table></div>';
+            }
+            html += App.paginationLinks(pi, function (n) { return 'index.html?index=' + n; });
+            listView.innerHTML = html;
+        })
+        .catch(function (err) { listView.innerHTML = App.empty('排名加载失败：' + err.message); });
+</script>
+</body>
+</html>

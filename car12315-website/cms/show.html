@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新闻详情-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<div class="container site-main">
+    <div class="block crumbs">
+        <div id="breadcrumb"></div>
+    </div>
+
+    <div class="block content-view">
+        <!-- 新闻正文(富文本) -->
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('cms');
+    App.footer();
+    document.getElementById('breadcrumb').innerHTML = App.breadcrumb([
+        { name: '首页', href: 'index.html' },
+        { name: '新闻中心', href: 'cms/index.html' },
+        { name: '详情' }
+    ]);
+
+    var contentView = document.querySelector('.content-view');
+    var id = App.qs('id');
+
+    if (!id) {
+        contentView.innerHTML = App.empty('缺少新闻ID参数');
+    } else {
+        contentView.innerHTML = App.loading();
+        App.request('/api/cms/post/get', { postId: id })
+            .then(function (item) {
+                if (!item) { contentView.innerHTML = App.empty('信息不存在'); return; }
+                contentView.innerHTML =
+                    (item.icon
+                        ? '<div class="news-hero"><img src="' + App.esc(item.icon) + '" data-fallback="' + App.esc(App.IMG.cms) + '"></div>'
+                        : '') +
+                    '<div class="news-head">' +
+                    '<h1>' + App.esc(item.title) + '</h1>' +
+                    '<div class="news-meta">' +
+                    '<i class="fa fa-user-o"></i> ' + App.esc(item.author || '车言槽') +
+                    ' · <i class="fa fa-clock-o"></i> ' + App.fmtDate(item.created) +
+                    ' · <i class="fa fa-eye"></i> ' + (item.views || 0) + ' 次阅读' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="news-body">' + (item.content || '暂无正文') + '</div>';
+            })
+            .catch(function (err) { contentView.innerHTML = App.empty('新闻加载失败：' + err.message); });
+    }
+</script>
+</body>
+</html>

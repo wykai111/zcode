@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新闻列表-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<div class="container site-main">
+    <div class="block crumbs">
+        <div id="breadcrumb"></div>
+    </div>
+
+    <div class="block">
+        <div id="sec-head"></div>
+        <div class="cms-list-view"></div>
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('cms');
+    App.footer();
+    document.getElementById('breadcrumb').innerHTML = App.breadcrumb([
+        { name: '首页', href: 'index.html' },
+        { name: '新闻中心', href: 'cms/index.html' },
+        { name: '新闻列表' }
+    ]);
+    document.getElementById('sec-head').innerHTML = App.sectionHead({
+        iconCls: 'co-blue', icon: 'fa-newspaper-o',
+        title: '新闻列表', subtitle: '每页 10 条'
+    });
+
+    var catalogId = App.qs('id');
+    var index = parseInt(App.qs('index'), 10) || 1;
+    var listView = document.querySelector('.cms-list-view');
+    var subTitle = document.querySelector('.sec-titles p');
+    var secTitle = document.querySelector('.sec-titles h2');
+
+    if (!catalogId) {
+        listView.innerHTML = App.empty('缺少栏目ID参数');
+    } else {
+        listView.innerHTML = App.loading();
+        App.request('/api/cms/post/list', { pageSize: 10, catalogId: catalogId, index: index })
+            .then(function (pi) {
+                if (subTitle && pi.totalRecord != null) {
+                    subTitle.textContent = '共 ' + pi.totalRecord + ' 篇 · 每页 10 条';
+                }
+                var html = (pi.data && pi.data.length)
+                    ? pi.data.map(function (it) { return App.cmsItem(it, '../'); }).join('')
+                    : App.empty('当前栏目无新闻信息');
+                html += App.paginationLinks(pi, function (n) {
+                    return 'list.html?id=' + encodeURIComponent(catalogId) + '&index=' + n;
+                });
+                listView.innerHTML = html;
+            })
+            .catch(function (err) { listView.innerHTML = App.empty('新闻加载失败：' + err.message); });
+
+        // 读取栏目名称展示在标题
+        App.request('/api/cms/catalog/list', {})
+            .then(function (list) {
+                var cat = (list || []).filter(function (x) { return x.catalogId === catalogId; })[0];
+                if (cat && secTitle) secTitle.textContent = cat.name;
+            })
+            .catch(function () {});
+    }
+</script>
+</body>
+</html>

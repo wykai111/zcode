@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新闻中心-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<div class="container site-main">
+    <div class="block crumbs">
+        <div id="breadcrumb"></div>
+    </div>
+
+    <div class="content-view">
+        <!-- 栏目区块由 JS 按接口动态生成 -->
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('cms');
+    App.footer();
+    document.getElementById('breadcrumb').innerHTML = App.breadcrumb([
+        { name: '首页', href: 'index.html' },
+        { name: '新闻中心', href: 'cms/index.html' },
+        { name: '栏目' }
+    ]);
+
+    var contentView = document.querySelector('.content-view');
+    contentView.innerHTML = App.loading();
+
+    // 先加载栏目, 再为每个栏目加载10条新闻
+    App.request('/api/cms/catalog/list', {})
+        .then(function (catalogs) {
+            if (!catalogs || !catalogs.length) {
+                contentView.innerHTML = App.empty('当前无新闻栏目');
+                return;
+            }
+            contentView.innerHTML = catalogs.map(function (cat) {
+                return '<section class="block">' +
+                    App.sectionHead({
+                        iconCls: 'co-blue', icon: 'fa-newspaper-o',
+                        title: cat.name, subtitle: '',
+                        moreHref: 'cms/list.html?id=' + encodeURIComponent(cat.catalogId)
+                    }) +
+                    '<div class="cms-list-view" data-node="' + App.esc(cat.catalogId) + '">' + App.loading() + '</div>' +
+                    '</section>';
+            }).join('');
+
+            catalogs.forEach(function (cat) {
+                var node = contentView.querySelector('.cms-list-view[data-node="' + cat.catalogId + '"]');
+                App.request('/api/cms/post/list', { pageSize: 10, catalogId: cat.catalogId })
+                    .then(function (pi) {
+                        var sub = node.closest('.block').querySelector('.sec-titles p');
+                        if (sub && pi.totalRecord != null) sub.textContent = '共 ' + pi.totalRecord + ' 篇';
+                        node.innerHTML = (pi.data && pi.data.length)
+                            ? pi.data.map(function (it) { return App.cmsItem(it, '../'); }).join('')
+                            : App.empty('当前栏目无新闻信息');
+                    })
+                    .catch(function (err) { node.innerHTML = App.empty('新闻加载失败：' + err.message); });
+            });
+        })
+        .catch(function (err) { contentView.innerHTML = App.empty('栏目加载失败：' + err.message); });
+</script>
+</body>
+</html>

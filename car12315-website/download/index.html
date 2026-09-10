@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>下载中心-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<!-- 1. 标题带 -->
+<section class="dl-band">
+    <h1><i class="fa fa-mobile"></i>下载中心</h1>
+    <p>装进口袋的汽车消费维权平台 · 投诉 · 吐槽 · 资讯 · 能耗榜</p>
+</section>
+
+<!-- 2. 核心区: 功能卡 + 下载主卡 -->
+<section class="dl-core">
+    <!-- 左列功能卡 -->
+    <div class="dl-col">
+        <div class="dl-feature">
+            <span class="sec-icon co-red"><i class="fa fa-exclamation-circle"></i></span>
+            <div>
+                <h3>一键投诉</h3>
+                <p>车辆问题随时提交，品牌/车系/故障信息结构化记录，处理进度实时跟进。</p>
+            </div>
+        </div>
+        <div class="dl-feature">
+            <span class="sec-icon co-blue"><i class="fa fa-newspaper-o"></i></span>
+            <div>
+                <h3>行业资讯</h3>
+                <p>热点新闻、行业动态每日更新，掌握新能源与汽车消费领域第一手信息。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 中央下载主卡 -->
+    <div class="dl-main">
+        <span class="dl-brand"><i class="fa fa-car"></i></span>
+        <h2>车言槽 APP</h2>
+        <p class="dl-ver">版本 V1.0.0 · Android</p>
+        <img class="dl-qr" src="../assets/img/app-qrcode.png" alt="APP下载二维码">
+        <p class="dl-hint">使用手机扫一扫，下载车言槽 APP</p>
+        <button class="btn-download" id="btnApk" type="button">
+            <i class="fa fa-android"></i> Android 下载
+        </button>
+        <p class="dl-note">iOS 版本敬请期待</p>
+    </div>
+
+    <!-- 右列功能卡 -->
+    <div class="dl-col">
+        <div class="dl-feature">
+            <span class="sec-icon co-green"><i class="fa fa-comments-o"></i></span>
+            <div>
+                <h3>车友吐槽</h3>
+                <p>畅所欲言交流用车心得，与千万车友分享真实驾驶体验与避坑经验。</p>
+            </div>
+        </div>
+        <div class="dl-feature">
+            <span class="sec-icon co-orange"><i class="fa fa-trophy"></i></span>
+            <div>
+                <h3>能耗榜单</h3>
+                <p>真实续航数据排名，官方续航与实际续航一目了然，购车用车好参考。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. 使用步骤 -->
+<section class="dl-steps">
+    <div class="step-item">
+        <span class="step-num">1</span>
+        <h4>扫码下载</h4>
+        <p>使用手机浏览器扫码</p>
+    </div>
+    <div class="step-item">
+        <span class="step-num">2</span>
+        <h4>安装应用</h4>
+        <p>允许未知来源安装</p>
+    </div>
+    <div class="step-item">
+        <span class="step-num">3</span>
+        <h4>注册登录</h4>
+        <p>手机号快速注册</p>
+    </div>
+    <div class="step-item">
+        <span class="step-num">4</span>
+        <h4>发声维权</h4>
+        <p>投诉吐槽一键直达</p>
+    </div>
+</section>
+
+<!-- 4. 温馨提示 -->
+<section class="dl-tips">
+    <div class="dl-tip">
+        <b><i class="fa fa-weixin"></i>微信内下载</b>
+        微信内点击按钮无法直接下载，请点击右上角 <b style="display:inline;">[···]</b> 选择「在浏览器打开」后再下载。
+    </div>
+    <div class="dl-tip">
+        <b><i class="fa fa-shield"></i>安装提示</b>
+        Android 安装时如提示「未知来源应用」，请在系统设置中允许安装未知来源应用后继续完成安装。
+    </div>
+    <div class="dl-tip">
+        <b><i class="fa fa-certificate"></i>官方渠道</b>
+        本页面为车言槽唯一官方下载渠道，请勿通过第三方站点下载，谨防山寨应用。
+    </div>
+</section>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('app');
+    App.footer();
+
+    // 下载逻辑: 微信内提示用浏览器打开, 其余环境直接下载 APK
+    var APK_URL = 'https://carapi.12315car.com/files/app.apk';
+    document.getElementById('btnApk').addEventListener('click', function () {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf('micromessenger') > -1) {
+            var mask = document.createElement('div');
+            mask.className = 'weixin-mask';
+            mask.innerHTML =
+                '<i class="fa fa-hand-pointer-o"></i>' +
+                '<div>点击屏幕右上角 <b>[···]</b><br>选择「在浏览器打开」即可下载</div>';
+            mask.addEventListener('click', function () { mask.remove(); });
+            document.body.appendChild(mask);
+        } else {
+            location.href = APK_URL;
+        }
+    });
+</script>
+</body>
+</html>

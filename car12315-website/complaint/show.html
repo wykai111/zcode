@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>投诉详情-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<div class="container site-main">
+    <div class="block crumbs">
+        <div id="breadcrumb"></div>
+    </div>
+
+    <!-- 投诉详情 -->
+    <div class="block">
+        <div id="sec-head"></div>
+        <div class="detail-view"></div>
+    </div>
+
+    <!-- 评论 -->
+    <div class="block">
+        <div class="sec-head">
+            <span class="sec-icon co-blue"><i class="fa fa-commenting-o"></i></span>
+            <div class="sec-titles">
+                <h2>网友评论 <span class="comment-count"></span></h2>
+                <p>理性发言 · 共同维权</p>
+            </div>
+        </div>
+        <div class="comment-view"></div>
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('complaint');
+    App.footer();
+    document.getElementById('breadcrumb').innerHTML = App.breadcrumb([
+        { name: '首页', href: 'index.html' },
+        { name: '投诉', href: 'complaint/index.html' },
+        { name: '详情' }
+    ]);
+    document.getElementById('sec-head').innerHTML = App.sectionHead({
+        iconCls: 'co-red', icon: 'fa-exclamation-circle', title: '投诉详情'
+    });
+
+    var detailView = document.querySelector('.detail-view');
+    var commentView = document.querySelector('.comment-view');
+    var id = App.qs('id');
+
+    function render(item) {
+        if (!item) { detailView.innerHTML = App.empty('信息不存在'); return; }
+        var types = '';
+        if (item.detailTypes) {
+            item.detailTypes.forEach(function (dt) {
+                types += '<span class="tag"><span>' + App.esc(dt.type && dt.type.name) + '</span>' +
+                    '<span class="info">' + App.esc(dt.name) + '</span></span>';
+            });
+        }
+        var images = '';
+        if (item.detailImages && item.detailImages.length) {
+            images = '<div class="field-label">现场图片</div>' +
+                '<div class="image-list">' +
+                item.detailImages.map(function (img) {
+                    return '<a href="' + App.esc(img) + '" data-lightbox="complaint-box">' +
+                        '<img loading="lazy" src="' + App.esc(img) + '" data-fallback="' + App.esc(App.IMG.cms) + '"></a>';
+                }).join('') +
+                '</div><div class="image-tip"><i class="fa fa-search-plus"></i> 点击图片可放大查看</div>';
+        }
+        var video = item.detailVideo
+            ? '<div class="video-box"><video src="' + App.esc(item.detailVideo) + '" controls></video></div>'
+            : '';
+        var response = '';
+        if (item.state === 2 && item.responseText) {
+            response = '<div class="reply-box"><b><i class="fa fa-check-circle"></i> 平台答复：</b>' +
+                App.esc(item.responseText) + '</div>';
+        }
+
+        detailView.innerHTML =
+            '<div class="title">投诉编号：' + App.esc(item.complaintNo) + '</div>' +
+            '<div class="info">' +
+            App.avatarHtml(item.userinfo, 'avatar') +
+            '<span>' + App.esc(item.userinfo && item.userinfo.nickname) + '</span>' +
+            '<span class="flex-fill"></span>' +
+            '<span><i class="fa fa-clock-o"></i> ' + App.fmtDate(item.created) + '</span>' +
+            '<span><i class="fa fa-eye"></i> 关注 ' + (item.likes || 0) + '</span>' +
+            '<span><i class="fa fa-thumbs-o-up"></i> 点赞 ' + (item.sayGood || 0) + '</span>' +
+            '<span><i class="fa fa-commenting-o"></i> 评论 ' + (item.comments || 0) + '</span>' +
+            '</div>' +
+            '<div class="car-info">' +
+            '<div><span class="caption">品牌:</span>' + App.esc(item.brand && item.brand.name) + '</div>' +
+            '<div><span class="caption">车系:</span>' + App.esc(item.serial && item.serial.name) + '</div>' +
+            '<div><span class="caption">车型:</span>' + App.esc(item.catalog && item.catalog.name) + '</div>' +
+            '</div>' +
+            '<div class="usage-info">' +
+            '<div class="state-info">' + App.stateBadge(item.state) + '</div>' +
+            '<div><span class="caption">经销商:</span>' + App.esc(item.distributor) + '</div>' +
+            '<div><span class="caption">购车时间:</span>' + App.fmtDate(item.purchaseDate, true) + '</div>' +
+            '<div><span class="caption">行驶公里:</span>' + App.esc(item.mileage) + 'KM</div>' +
+            '<div><span class="caption">故障时间:</span>' + App.fmtDate(item.downtime, true) + '</div>' +
+            '<div><span class="caption">人员伤亡:</span>' + App.esc(item.casualties) + '</div>' +
+            '</div>' +
+            video + images +
+            '<div class="field-label">投诉类别</div>' +
+            '<div>' + (types || '<span class="text-muted">无</span>') + '</div>' +
+            '<div class="field-label">投诉详情</div>' +
+            '<div class="content">' + App.esc(item.content || item.remark || '无') + '</div>' +
+            response;
+    }
+
+    if (!id) {
+        detailView.innerHTML = App.empty('缺少投诉ID参数');
+    } else {
+        detailView.innerHTML = App.loading();
+        App.request('/api/complaint/get', { complaintId: id })
+            .then(render)
+            .catch(function (err) { detailView.innerHTML = App.empty('投诉加载失败：' + err.message); });
+
+        // 评论列表(AJAX分页)
+        App.comments(commentView, '/api/complaint/comment/list', { complaintId: id });
+    }
+</script>
+</body>
+</html>

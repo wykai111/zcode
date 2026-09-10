@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>车言槽 - 汽车消费维权平台</title>
+    <link rel="stylesheet" href="vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<!-- Hero: 品牌标语 + 实时统计 + 轮播广告 -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <h1>车言槽</h1>
+            <p class="slogan">汽车消费维权第一站 · 投诉 · 吐槽 · 资讯 · 能耗榜</p>
+            <div class="hero-stats">
+                <a class="stat-chip" href="complaint/index.html"><b id="stat-complaint">-</b><span>投诉维权</span></a>
+                <a class="stat-chip" href="topic/index.html"><b id="stat-topic">-</b><span>车友吐槽</span></a>
+                <a class="stat-chip" href="cms/index.html"><b id="stat-news">-</b><span>新闻资讯</span></a>
+                <a class="stat-chip" href="ranking/index.html"><b>续航榜</b><span>真实能耗</span></a>
+            </div>
+        </div>
+        <div class="hero-banner" id="bannerView"></div>
+    </div>
+</section>
+
+<div class="container site-main">
+    <!-- 第一行: 投诉(60%) + 新闻(40%), 等高 -->
+    <div class="row row-split">
+        <div class="col-lg-8 col-main">
+            <section class="block">
+                <div id="head-complaint"></div>
+                <div class="complaint-list-view"></div>
+            </section>
+        </div>
+        <div class="col-lg-4 col-side">
+            <section class="block">
+                <div id="head-cms"></div>
+                <div class="cms-list-view"></div>
+            </section>
+        </div>
+    </div>
+    <!-- 第二行: 吐槽(60%) + 能耗榜(40%), 比例与第一行一致 -->
+    <div class="row row-split">
+        <div class="col-lg-8 col-main">
+            <section class="block">
+                <div id="head-topic"></div>
+                <div class="topic-list-view"></div>
+            </section>
+        </div>
+        <div class="col-lg-4 col-side">
+            <section class="block">
+                <div id="head-rank"></div>
+                <div class="rank-view"></div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="assets/js/app.js"></script>
+<script>
+    App.header('home');
+    App.footer();
+
+    document.getElementById('head-complaint').innerHTML = App.sectionHead({
+        iconCls: 'co-red', icon: 'fa-exclamation-circle',
+        title: '最新投诉', subtitle: '车主真实投诉 · 平台持续跟进',
+        moreHref: 'complaint/index.html'
+    });
+    document.getElementById('head-topic').innerHTML = App.sectionHead({
+        iconCls: 'co-green', icon: 'fa-comments-o',
+        title: '最新吐槽', subtitle: '车友畅所欲言',
+        moreHref: 'topic/index.html'
+    });
+    document.getElementById('head-cms').innerHTML = App.sectionHead({
+        iconCls: 'co-blue', icon: 'fa-newspaper-o',
+        title: '新闻中心', subtitle: '行业热点速递',
+        moreHref: 'cms/index.html'
+    });
+    document.getElementById('head-rank').innerHTML = App.sectionHead({
+        iconCls: 'co-orange', icon: 'fa-trophy',
+        title: '能耗榜 TOP5', subtitle: '实际续航 / 官方续航',
+        moreHref: 'ranking/index.html'
+    });
+
+    // Hero 实时统计(取 totalRecord)
+    function stat(api, id) {
+        App.request(api, { pageSize: 1, index: 1 })
+            .then(function (pi) {
+                var el = document.getElementById(id);
+                if (el) el.textContent = pi.totalRecord != null ? pi.totalRecord : '-';
+            }).catch(function () {});
+    }
+    stat('/api/complaint/list', 'stat-complaint');
+    stat('/api/topic/list', 'stat-topic');
+    stat('/api/cms/post/list', 'stat-news');
+
+    // 轮播广告(接口无数据时自动隐藏)
+    App.carousel(document.getElementById('bannerView'), null);
+    App.request('/api/banner/list', { size: 10, typeId: '90a38f72-1e6f-456d-9b1a-5d6a776c473a' })
+        .then(function (items) { App.carousel(document.getElementById('bannerView'), items); })
+        .catch(function () {});
+
+    // 最新投诉(5条)
+    var complaintView = document.querySelector('.complaint-list-view');
+    complaintView.innerHTML = App.loading();
+    App.request('/api/complaint/list', { pageSize: 5 })
+        .then(function (pi) {
+            complaintView.innerHTML = (pi.data && pi.data.length)
+                ? pi.data.map(function (it) { return App.complaintItem(it, ''); }).join('')
+                : App.empty('当前无投诉信息');
+        })
+        .catch(function (err) { complaintView.innerHTML = App.empty('投诉加载失败：' + err.message); });
+
+    // 最新吐槽(5条)
+    var topicView = document.querySelector('.topic-list-view');
+    topicView.innerHTML = App.loading();
+    App.request('/api/topic/list', { pageSize: 5 })
+        .then(function (pi) {
+            topicView.innerHTML = (pi.data && pi.data.length)
+                ? pi.data.map(function (it) { return App.topicItem(it, ''); }).join('')
+                : App.empty('当前无吐槽信息');
+        })
+        .catch(function (err) { topicView.innerHTML = App.empty('吐槽加载失败：' + err.message); });
+
+    // 新闻中心(5条, 右侧窄栏紧凑样式)
+    var cmsView = document.querySelector('.cms-list-view');
+    cmsView.innerHTML = App.loading();
+    App.request('/api/cms/post/list', { pageSize: 5 })
+        .then(function (pi) {
+            cmsView.innerHTML = (pi.data && pi.data.length)
+                ? pi.data.map(function (it) { return App.cmsItem(it, '', true); }).join('')
+                : App.empty('当前无新闻信息');
+        })
+        .catch(function (err) { cmsView.innerHTML = App.empty('新闻加载失败：' + err.message); });
+
+    // 能耗榜 TOP5(紧凑榜)
+    var rankView = document.querySelector('.rank-view');
+    rankView.innerHTML = App.loading();
+    App.request('/api/catalog/rank', { pageSize: 5, index: 1 })
+        .then(function (pi) {
+            if (!pi.data || !pi.data.length) {
+                rankView.innerHTML = App.empty('当前无排名信息，敬请期待');
+                return;
+            }
+            rankView.innerHTML = pi.data.map(function (item, i) {
+                var medal = i < 3 ? ' r' + (i + 1) : '';
+                var rate = item.drivingRate != null ? (item.drivingRate * 100).toFixed(2) + '%' : '--';
+                var sub = '官方 ' + (item.drivingRange != null ? item.drivingRange : '--') +
+                    ' KM · 实际 ' + (item.actualRange != null ? item.actualRange : '--') + ' KM';
+                return '<div class="rank-mini-row">' +
+                    '<span class="rank-badge' + medal + '">' + (i + 1) + '</span>' +
+                    '<div class="rank-car">' +
+                    '<img loading="lazy" src="' + App.esc(item.icon || App.IMG.car) + '" data-fallback="' + App.esc(App.IMG.car) + '">' +
+                    '<div style="min-width:0;">' +
+                    '<div class="rank-mini-name">' + App.esc(item.name) + '</div>' +
+                    '<div class="rank-mini-sub">' + sub + '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<span class="rank-mini-rate">' + rate + '</span>' +
+                    '</div>';
+            }).join('');
+        })
+        .catch(function (err) { rankView.innerHTML = App.empty('排名加载失败：' + err.message); });
+</script>
+</body>
+</html>

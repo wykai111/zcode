@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>投诉列表-车言槽</title>
+    <link rel="stylesheet" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div data-header></div>
+
+<div class="container site-main">
+    <div class="block crumbs">
+        <div id="breadcrumb"></div>
+    </div>
+
+    <div class="block">
+        <div id="sec-head"></div>
+        <div class="list-view"></div>
+    </div>
+</div>
+
+<div data-footer></div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+    App.header('complaint');
+    App.footer();
+    document.getElementById('breadcrumb').innerHTML = App.breadcrumb([
+        { name: '首页', href: 'index.html' },
+        { name: '投诉', href: 'complaint/index.html' },
+        { name: '列表' }
+    ]);
+    document.getElementById('sec-head').innerHTML = App.sectionHead({
+        iconCls: 'co-red', icon: 'fa-exclamation-circle',
+        title: '投诉列表', subtitle: '每页 20 条'
+    });
+
+    var listView = document.querySelector('.list-view');
+    var subTitle = document.querySelector('.sec-titles p');
+    var index = parseInt(App.qs('index'), 10) || 1;
+
+    listView.innerHTML = App.loading();
+    App.request('/api/complaint/list', { pageSize: 20, index: index })
+        .then(function (pi) {
+            if (subTitle && pi.totalRecord != null) {
+                subTitle.textContent = '共 ' + pi.totalRecord + ' 条投诉 · 每页 20 条';
+            }
+            var html = '';
+            if (pi.data && pi.data.length) {
+                html = pi.data.map(function (it) { return App.complaintItem(it, '../'); }).join('');
+            } else {
+                html = App.empty('当前无投诉信息');
+            }
+            html += App.paginationLinks(pi, function (n) { return 'index.html?index=' + n; });
+            listView.innerHTML = html;
+        })
+        .catch(function (err) { listView.innerHTML = App.empty('投诉加载失败：' + err.message); });
+</script>
+</body>
+</html>
