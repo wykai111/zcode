@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: user-admin-backend
+  datasource:
+    # 本地开发通过 SSH 隧道连接远程 MySQL：
+    #   ssh -N -L 3306:127.0.0.1:3306 -p 15022 root@www.followman.com
+    # 数据库密码通过环境变量注入：export DB_PASSWORD=xxx
+    url: jdbc:mysql://127.0.0.1:3306/user_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: useradmin
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+app:
+  jwt:
+    secret: user-admin-center-jwt-secret-key-please-change-in-production-2026
+    # token 有效期（分钟），默认 30 分钟
+    expire-minutes: 30
+    # 滑动续期：剩余有效期小于该值时自动续期
+    renew-threshold-minutes: 10
+  auth:
+    # 连续失败次数锁定
+    max-fail-count: 5
+    # 锁定时长（分钟）
+    lock-minutes: 15
+    # 登录验证码有效期（秒）
+    captcha-expire-seconds: 60
+    # 开发模式：验证码不校验（便于自动化测试），生产必须为 false
+    captcha-dev-mode: false
+  cuser:
+    # 注销冷静期（天）
+    cancel-cooling-days: 7
+  market:
+    # 行情 API（用于码表同步）
+    base-url: https://stock.followman.vip

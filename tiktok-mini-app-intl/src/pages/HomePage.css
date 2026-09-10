@@ -1,0 +1,604 @@
+/* pages/HomePage.css - 移植 index.ttss,rpx→px */
+.home-page {
+  min-height: 100%;
+  background: #000;
+  overflow-x: hidden; /* 禁止整页横向滚动(gallery/rail 的子元素会撑宽父级) */
+}
+
+/* 首页滚动容器(承担下拉刷新 + 分页的滚动事件) */
+.home-scroll {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #000;
+}
+
+/* 下拉刷新指示区 */
+.home-refresh-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.home-refresh-text {
+  color: #8e8e93;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.home-loading,
+.home-empty {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #8e8e93;
+  gap: 12px;
+}
+
+.home-empty-icon {
+  font-size: 50px;
+  opacity: 0.4;
+}
+
+.home-empty-title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.home-retry {
+  padding: 8px 24px;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* ===== 顶部搜索栏 ===== */
+.home-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.search-box {
+  margin: 8px 12px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.search-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.icon-search-circle {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+}
+
+.icon-search-handle {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  width: 6px;
+  height: 1.5px;
+  background: #fff;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  transform-origin: right center;
+}
+
+.search-input {
+  flex: 1;
+  color: #fff;
+  font-size: 14px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.home-content {
+  padding-bottom: 16px;
+}
+
+/* ===== Section 公共 ===== */
+.section {
+  padding: 12px 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 12px;
+}
+
+.section-title-wrap {
+  position: relative;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.section-accent-line {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(90deg, #fe2c55, #25f4ee);
+  border-radius: 1.5px;
+}
+
+.trend-line {
+  background: linear-gradient(90deg, #ff9500, #ffd60a);
+}
+
+.topshort-line {
+  background: linear-gradient(90deg, #25f4ee, #fe2c55);
+}
+
+.view-all {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.view-all-text {
+  color: #8e8e93;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.view-all-arrow {
+  color: #8e8e93;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===== Gallery Cover-flow 焦点图轮播 ===== */
+.gallery-section {
+  padding: 12px 0 16px;
+  overflow: hidden;
+}
+
+/* 轮播容器:卡片绝对居中,通过 translateX 错开实现 cover-flow */
+.gallery-stack {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y; /* 允许纵向滚动(下拉刷新),横向自己处理 */
+}
+
+/* 单张卡片:absolute 居中(top/left:50%),inline transform 负责居中+错开 */
+.gallery-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 430px;
+  margin-left: 0;
+  margin-top: -215px; /* height/2,垂直居中(水平居中由 transform -50% 完成) */
+  border-radius: 22px;
+  overflow: hidden;
+  background: #1c1c1e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.gallery-card.is-active {
+  cursor: pointer;
+}
+
+.gallery-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-eps {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 3px 8px;
+}
+
+.gallery-eps-text {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.gallery-info {
+  position: absolute;
+  bottom: 20px;
+  left: 16px;
+  right: 80px; /* 右侧让出圆形播放按钮空间 */
+}
+
+.gallery-title {
+  display: block;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+  margin-bottom: 6px;
+}
+
+.gallery-slogan {
+  display: block;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* 右下角悬浮圆形播放按钮 */
+.gallery-play-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 16px;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.96);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.gallery-play-tri {
+  width: 0;
+  height: 0;
+  border-left: 15px solid #000;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin-left: 4px;
+}
+
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 0 4px;
+}
+
+.gallery-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.gallery-dot.active {
+  width: 22px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #fe2c55, #25f4ee);
+}
+
+/* ===== New Arrivals ===== */
+.new-arrivals-list {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.new-card {
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.new-cover-wrap {
+  position: relative;
+  width: 100px;
+  height: 140px;
+  flex-shrink: 0;
+  background: #1c1c1e;
+}
+
+.new-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.new-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 3px 7px;
+  background: linear-gradient(135deg, #fe2c55, #c9302c);
+  border-radius: 4px;
+}
+
+.new-badge-text {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.new-eps {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  padding: 2px 5px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+}
+
+.new-eps-text {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.new-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 10px 0;
+  min-width: 0;
+}
+
+.new-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.new-desc {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.new-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.new-tag {
+  padding: 2px 7px;
+  background: rgba(37, 244, 238, 0.12);
+  border-radius: 3px;
+  border: 0.5px solid rgba(37, 244, 238, 0.25);
+  color: #25f4ee;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.new-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.new-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  background: #fff;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.play-tri-sm {
+  width: 0;
+  height: 0;
+  border-left: 8px solid #000;
+  border-top: 5.5px solid transparent;
+  border-bottom: 5.5px solid transparent;
+  margin-left: 2px;
+}
+
+.new-play-text {
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ===== Trending / Top Shorts rail ===== */
+.trend-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.trend-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.trend-list {
+  display: inline-flex;
+  gap: 10px;
+  padding: 0 12px;
+}
+
+.trend-item {
+  display: inline-flex;
+  flex-direction: column;
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.trend-cover-wrap {
+  position: relative;
+  width: 130px;
+  height: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1c1c1e;
+}
+
+.trend-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trend-hot-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 3px 7px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  border: 0.5px solid rgba(255, 149, 0, 0.4);
+}
+
+.trend-hot-text {
+  color: #ff9500;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.topshort-badge {
+  border-color: rgba(37, 244, 238, 0.45) !important;
+}
+
+.topshort-badge-text {
+  color: #25f4ee !important;
+}
+
+.trend-title {
+  margin-top: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ===== Popular 分页网格(复用 ListPage 卡片样式)===== */
+.popular-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 12px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1c1c1e;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 35%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.cover-eps {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  padding: 2px 6px;
+}
+
+.cover-eps-text {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.item-title {
+  margin-top: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* 分页底部加载状态 */
+.list-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 8px;
+  min-height: 40px;
+}
+
+.list-footer-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8e8e93;
+  font-size: 12px;
+}
+
+.list-no-more {
+  color: #48484a;
+  font-size: 12px;
+}
+
+.bottom-spacer {
+  height: 20px;
+}

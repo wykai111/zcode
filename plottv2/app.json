@@ -1,0 +1,106 @@
+{
+  "expo": {
+    "name": "PlotTV",
+    "slug": "PlotTV",
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "plottv",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.plottv.drama",
+      "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "backgroundColor": "#040404",
+      "associatedDomains": [
+        "applinks:plottv.xyz"
+      ],
+      "infoPlist": {
+        "UIStatusBarStyle": "UIStatusBarStyleLightContent",
+        "UIViewControllerBasedStatusBarAppearance": false
+      }
+    },
+    "android": {
+      "versionCode": 21,
+      "adaptiveIcon": {
+        "backgroundColor": "#191919",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.plottv.an.drama",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "plottv.xyz",
+              "pathPrefix": "/video"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 750,
+          "backgroundColor": "#191919",
+          "dark": {
+            "backgroundColor": "#191919"
+          }
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.1"
+          },
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "shrinkResourcesInReleaseBuild": false,
+            "predictiveBackGestureEnabled": false,
+            "largeHeap": true
+          }
+        }
+      ],
+      "expo-video",
+      "expo-secure-store",
+      "react-native-iap",
+      "./plugins/withBundleEncryption.js",
+      "./plugins/withAndroidProguard.js",
+      "./plugins/withAndroidAbiSplit.js",
+      "./plugins/withInstallReferrer.js",
+      ["./plugins/withAndroidNavBarColor.js", { "color": "#040404" }],
+      "expo-localization"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true,
+      "turboModules": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "705e65d6-b92b-4455-9e4a-89d986a21856"
+      }
+    },
+    "owner": "funnyTV"
+  }
+}

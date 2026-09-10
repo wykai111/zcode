@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "_comment": "clientKey is the client key of the game. before you start to debug your game, you should replace it with real clientKey, and also replace it in your index.html TTMinis.init",
+    "clientKey": "mn4xrhzixpchpuhp",
+    "name": "{{your_game_name}}",
+    "host": "localhost",
+    "port": 3000,
+    "iconUrl": "{{your_icon_url}}",
+    "desc": "{{your_description}}",
+    "ppLink": "{{your_private_policy_url}}",
+    "tosLink": "{{your_terms_of_service_url}}"
+  },
+  "navbar": {
+    "bgColorLight": "#ffffff",
+    "bgColorDark": "#000000"
+  },
+  "build": {
+    "htmlEntry": "index.html",
+    "outputDir": "dist"
+  }
+}

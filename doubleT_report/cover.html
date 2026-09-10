@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>双T板在仓储物流厂房中的优势</title>
+<style>
+  @page { size: 794px 1123px; margin: 0; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #ffffff;
+    font-family: 'Hiragino Sans GB', 'Heiti SC', 'Songti SC', sans-serif;
+  }
+  .poster {
+    position: relative;
+    width: 794px; height: 1123px;
+    background: #ffffff;
+  }
+
+  /* ===== Layer 1: 背景水印（允许并要求 overflow hidden） ===== */
+  .layer1 {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .watermark-wrap {
+    position: absolute;
+    right: -30px; top: 0;
+    width: 200px; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .watermark {
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    font-weight: 900;
+    font-size: 118px;
+    letter-spacing: 14px;
+    color: #334650;
+    opacity: 0.04;
+    white-space: nowrap;
+    transform: rotate(90deg);
+  }
+
+  /* ===== Layer 2: 结构线（不裁剪） ===== */
+  .layer2 { position: absolute; inset: 0; z-index: 2; }
+  .dash {
+    position: absolute;
+    left: 95px; top: 168px;
+    width: 66px; height: 6px;
+    background: #334650;
+  }
+  .meta-line {
+    position: absolute;
+    left: 95px; top: 806px;
+    width: 3px; height: 108px;
+    background: #334650;
+    opacity: 0.5;
+  }
+
+  /* ===== Layer 3: 文字内容（不裁剪） ===== */
+  .layer3 { position: absolute; inset: 0; z-index: 3; }
+  .kicker {
+    position: absolute;
+    left: 95px; top: 224px;
+    font-size: 16pt;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: #6f7578;
+  }
+  .hero {
+    position: absolute;
+    left: 95px; top: 292px;
+    max-width: 480px;
+    font-size: 46pt;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #1a1b1c;
+  }
+  .hero .hero-accent { color: #334650; }
+  .summary {
+    position: absolute;
+    left: 95px; top: 560px;
+    max-width: 437px;
+    font-size: 13.5pt;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #1a1b1c;
+    opacity: 0.85;
+  }
+  .meta {
+    position: absolute;
+    left: 140px; top: 806px;
+    font-size: 15pt;
+    line-height: 2.0;
+    color: #1a1b1c;
+  }
+  .meta .m-label { color: #6f7578; }
+  .footer {
+    position: absolute;
+    right: 95px; top: 1010px;
+    font-size: 12pt;
+    letter-spacing: 3px;
+    color: #6f7578;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="layer1">
+    <div class="watermark-wrap"><span class="watermark">DOUBLE-T</span></div>
+  </div>
+  <div class="layer2">
+    <div class="dash"></div>
+    <div class="meta-line"></div>
+  </div>
+  <div class="layer3">
+    <div class="kicker">装配式建筑应用系列研究 · 技术分析报告</div>
+    <div class="hero"><span class="hero-accent">双T板</span><br>在仓储物流厂房<br>中的应用优势</div>
+    <div class="summary">双T板以板梁合一的截面效率与工厂预制的建造方式，为仓储物流厂房提供大跨度无柱空间、更强承载、更快工期与更低的全寿命成本。本报告结合高标仓、自动化立体库、冷链物流与屋顶光伏等当前典型场景，系统梳理其核心优势、技术参数与选型实施要点。</div>
+    <div class="meta">
+      <span class="m-label">编制单位</span>&nbsp;&nbsp;Z.ai 技术研究<br>
+      <span class="m-label">编制日期</span>&nbsp;&nbsp;2026 年 9 月
+    </div>
+    <div class="footer">DOUBLE-T PANEL IN WAREHOUSE &amp; LOGISTICS</div>
+  </div>
+</div>
+</body>
+</html>

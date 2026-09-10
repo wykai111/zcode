@@ -1,0 +1,36 @@
+/* components/TabBar.css */
+.tabbar {
+  flex-shrink: 0;
+  height: calc(50px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  display: flex;
+  background: #000000;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.tabbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  padding-top: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabbar-item svg {
+  display: block;
+}
+
+.tabbar-text {
+  color: #8a8a8e;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.tabbar-text.active {
+  color: #ffffff;
+  font-weight: 600;
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1180px;
+    font-family: 'Hiragino Sans GB', 'Heiti SC', 'Songti SC', sans-serif;
+    color: #1a1b1c;
+  }
+  .canvas { width: 1180px; padding: 26px 30px 16px 30px; background: #ffffff; }
+  .fig-title { font-size: 25px; font-weight: 700; color: #334650; }
+  .fig-sub { font-size: 17px; color: #6f7578; margin-top: 4px; margin-bottom: 18px; }
+  svg text { font-family: 'Hiragino Sans GB', 'Heiti SC', 'Songti SC', sans-serif; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="fig-title">仓储空间效率对比：常规柱网 vs 双T板大跨度屋盖</div>
+  <div class="fig-sub">以 24 m 进深仓库剖面为例（俯视货架排布逻辑相同）</div>
+  <svg width="1120" height="360" viewBox="0 0 1120 360">
+    <!-- ================= 左：常规柱网 ================= -->
+    <text x="80" y="30" font-size="24" font-weight="700" fill="#334650">常规小柱网方案</text>
+    <text x="80" y="56" font-size="17" fill="#6f7578">柱距约 6~9 m，内柱密布</text>
+
+    <!-- 屋盖线 -->
+    <line x1="80" y1="110" x2="530" y2="110" stroke="#334650" stroke-width="3"/>
+    <!-- 次梁（密布） -->
+    <g stroke="#8fa6b0" stroke-width="2">
+      <line x1="147" y1="110" x2="147" y2="128"/>
+      <line x1="214" y1="110" x2="214" y2="128"/>
+      <line x1="281" y1="110" x2="281" y2="128"/>
+      <line x1="348" y1="110" x2="348" y2="128"/>
+      <line x1="415" y1="110" x2="415" y2="128"/>
+    </g>
+    <line x1="80" y1="128" x2="530" y2="128" stroke="#334650" stroke-width="1.6"/>
+
+    <!-- 地面 -->
+    <line x1="70" y1="280" x2="540" y2="280" stroke="#334650" stroke-width="3"/>
+
+    <!-- 内柱（阻断货架） -->
+    <g fill="#a63648">
+      <rect x="143" y="128" width="16" height="152"/>
+      <rect x="310" y="128" width="16" height="152"/>
+    </g>
+    <!-- 边柱 -->
+    <rect x="84" y="128" width="14" height="152" fill="#52798c"/>
+    <rect x="516" y="128" width="14" height="152" fill="#52798c"/>
+
+    <!-- 货架（被柱打断） -->
+    <g stroke="#7a8a92" stroke-width="1.6" fill="#eef2f4">
+      <!-- 段1: 110~140 -->
+      <rect x="110" y="180" width="30" height="100"/>
+      <!-- 段2: 165~305 -->
+      <rect x="165" y="180" width="30" height="100"/>
+      <rect x="203" y="180" width="30" height="100"/>
+      <rect x="241" y="180" width="30" height="100"/>
+      <rect x="279" y="180" width="26" height="100"/>
+      <!-- 段3: 332~510 -->
+      <rect x="332" y="180" width="30" height="100"/>
+      <rect x="370" y="180" width="30" height="100"/>
+      <rect x="408" y="180" width="30" height="100"/>
+      <rect x="446" y="180" width="30" height="100"/>
+      <rect x="480" y="180" width="28" height="100"/>
+    </g>
+    <!-- 层板线 -->
+    <g stroke="#b8c8cf" stroke-width="1.2">
+      <line x1="110" y1="213" x2="508" y2="213"/>
+      <line x1="110" y1="246" x2="508" y2="246"/>
+    </g>
+
+    <!-- 柱位警示 -->
+    <circle cx="151" cy="140" r="24" fill="none" stroke="#a63648" stroke-width="2" stroke-dasharray="5,4"/>
+    <circle cx="318" cy="140" r="24" fill="none" stroke="#a63648" stroke-width="2" stroke-dasharray="5,4"/>
+    <text x="172" y="173" font-size="20" font-weight="700" fill="#a63648">内柱阻断货架</text>
+
+    <!-- 净高标注 -->
+    <line x1="556" y1="128" x2="556" y2="280" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="550" y1="128" x2="562" y2="128" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="550" y1="280" x2="562" y2="280" stroke="#6f7578" stroke-width="1.2"/>
+    <text x="564" y="208" font-size="17" fill="#334650">净高受</text>
+    <text x="564" y="230" font-size="17" fill="#334650">次梁压缩</text>
+
+    <!-- ================= 分隔 ================= -->
+    <line x1="600" y1="40" x2="600" y2="310" stroke="#d5dadc" stroke-width="1.5" stroke-dasharray="6,6"/>
+
+    <!-- ================= 右：双T板大跨 ================= -->
+    <text x="650" y="30" font-size="24" font-weight="700" fill="#334650">双T板大跨度方案</text>
+    <text x="650" y="56" font-size="17" fill="#6f7578">跨度 12~24 m，屋盖下无内柱</text>
+
+    <!-- 双T板屋盖（肋纹） -->
+    <g>
+      <line x1="650" y1="118" x2="1100" y2="118" stroke="#334650" stroke-width="3"/>
+      <!-- 双T肋 -->
+      <g stroke="#52798c" stroke-width="2.4">
+        <line x1="700" y1="118" x2="700" y2="134"/>
+        <line x1="770" y1="118" x2="770" y2="134"/>
+        <line x1="840" y1="118" x2="840" y2="134"/>
+        <line x1="910" y1="118" x2="910" y2="134"/>
+        <line x1="980" y1="118" x2="980" y2="134"/>
+        <line x1="1050" y1="118" x2="1050" y2="134"/>
+      </g>
+    </g>
+
+    <!-- 地面 -->
+    <line x1="640" y1="280" x2="1110" y2="280" stroke="#334650" stroke-width="3"/>
+
+    <!-- 边柱 -->
+    <rect x="654" y="118" width="14" height="162" fill="#52798c"/>
+    <rect x="1086" y="118" width="14" height="162" fill="#52798c"/>
+
+    <!-- 货架连续布置 -->
+    <g stroke="#7a8a92" stroke-width="1.6" fill="#eef2f4">
+      <rect x="680" y="180" width="30" height="100"/>
+      <rect x="718" y="180" width="30" height="100"/>
+      <rect x="756" y="180" width="30" height="100"/>
+      <rect x="794" y="180" width="30" height="100"/>
+      <rect x="832" y="180" width="30" height="100"/>
+      <rect x="870" y="180" width="30" height="100"/>
+      <rect x="908" y="180" width="30" height="100"/>
+      <rect x="946" y="180" width="30" height="100"/>
+      <rect x="984" y="180" width="30" height="100"/>
+      <rect x="1022" y="180" width="30" height="100"/>
+      <rect x="1060" y="180" width="22" height="100"/>
+    </g>
+    <g stroke="#b8c8cf" stroke-width="1.2">
+      <line x1="680" y1="213" x2="1082" y2="213"/>
+      <line x1="680" y1="246" x2="1082" y2="246"/>
+    </g>
+
+    <text x="790" y="165" font-size="20" font-weight="700" fill="#334650">货架连续 · 库容利用最大化</text>
+
+    <!-- 净高标注 -->
+    <line x1="1126" y1="118" x2="1126" y2="280" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="1120" y1="118" x2="1132" y2="118" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="1120" y1="280" x2="1132" y2="280" stroke="#6f7578" stroke-width="1.2"/>
+    <text x="652" y="102" font-size="17" fill="#334650">板底平整，净高更高</text>
+
+    <!-- 底部跨度标注 -->
+    <line x1="84" y1="316" x2="524" y2="316" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="84" y1="310" x2="84" y2="322" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="524" y1="310" x2="524" y2="322" stroke="#6f7578" stroke-width="1.2"/>
+    <text x="230" y="344" font-size="18" fill="#334650" font-weight="600">单跨约 6~9 m 需设内柱</text>
+
+    <line x1="654" y1="316" x2="1096" y2="316" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="654" y1="310" x2="654" y2="322" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="1096" y1="310" x2="1096" y2="322" stroke="#6f7578" stroke-width="1.2"/>
+    <text x="790" y="344" font-size="18" fill="#334650" font-weight="600">单跨 24 m 无内柱</text>
+  </svg>
+</div>
+</body>
+</html>

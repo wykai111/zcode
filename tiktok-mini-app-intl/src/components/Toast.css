@@ -1,0 +1,54 @@
+/* components/Toast.css */
+.toast-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast-box {
+  max-width: 70%;
+  padding: 20px 28px;
+  background: rgba(0, 0, 0, 0.82);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(12px);
+  animation: toast-in 0.2s ease-out;
+}
+
+.toast-check {
+  font-size: 40px;
+  color: #25f4ee;
+  line-height: 1;
+}
+
+.toast-x {
+  font-size: 40px;
+  color: #fe2c55;
+  line-height: 1;
+}
+
+.toast-text {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  word-break: break-word;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

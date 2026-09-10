@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1100px;
+    font-family: 'Hiragino Sans GB', 'Heiti SC', 'Songti SC', sans-serif;
+    color: #1a1b1c;
+  }
+  .canvas { width: 1100px; padding: 26px 30px 18px 30px; background: #ffffff; }
+  .fig-title { font-size: 25px; font-weight: 700; color: #334650; }
+  .fig-sub { font-size: 17px; color: #6f7578; margin-top: 4px; }
+  .panel-label {
+    font-size: 18px; font-weight: 700; color: #334650;
+    margin: 20px 0 6px 0; padding-left: 10px;
+    border-left: 4px solid #52798c;
+  }
+  svg text { font-family: 'Hiragino Sans GB', 'Heiti SC', 'Songti SC', sans-serif; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="fig-title">双T板截面构造与屋面布置示意</div>
+  <div class="fig-sub">图中尺寸为常用规格范围，具体以工程设计为准</div>
+
+  <!-- (a) 横截面 -->
+  <div class="panel-label">(a) 单板横截面：双T形 · 板梁合一</div>
+  <svg width="1040" height="330" viewBox="0 0 1040 330">
+    <!-- ===== 左侧标注文字区 ===== -->
+    <!-- 翼缘板标注 (左上) -->
+    <text x="70" y="52" font-size="20" font-weight="700" fill="#334650">翼缘板（面板）</text>
+    <text x="70" y="76" font-size="16" fill="#6f7578">厚 40~60 mm，板面可直接找坡</text>
+    <line x1="212" y1="86" x2="330" y2="118" stroke="#52798c" stroke-width="1.4"/>
+
+    <!-- 预应力筋标注 (左下) -->
+    <text x="30" y="205" font-size="20" font-weight="700" fill="#334650">预应力钢绞线</text>
+    <text x="30" y="229" font-size="16" fill="#6f7578">先张法张拉，提高承载力与抗裂性</text>
+    <line x1="222" y1="234" x2="423" y2="254" stroke="#52798c" stroke-width="1.4"/>
+    <circle cx="425" cy="254" r="3.5" fill="#52798c"/>
+
+    <!-- 肋梁标注 (右下) -->
+    <text x="800" y="205" font-size="20" font-weight="700" fill="#334650">肋梁（梁肋）</text>
+    <text x="775" y="229" font-size="16" fill="#6f7578">高 400~700 mm 随跨度调整</text>
+    <line x1="790" y1="212" x2="695" y2="200" stroke="#52798c" stroke-width="1.4"/>
+
+    <!-- ===== 双T截面图 (居中偏右) ===== -->
+    <g transform="translate(330, 92)">
+      <!-- 翼缘板：梯形，边缘薄中间厚 -->
+      <path d="M 0,0 L 380,0 L 380,16 L 190,34 L 0,16 Z" fill="#e4e7e8" stroke="#334650" stroke-width="2.5"/>
+      <!-- 左肋：上窄下略宽梯形 -->
+      <path d="M 78,30 L 112,30 L 118,176 L 72,176 Z" fill="#e4e7e8" stroke="#334650" stroke-width="2.5"/>
+      <!-- 右肋 -->
+      <path d="M 268,30 L 302,30 L 308,176 L 262,176 Z" fill="#e4e7e8" stroke="#334650" stroke-width="2.5"/>
+      <!-- 端部示意（腹板底部） -->
+      <line x1="72" y1="176" x2="118" y2="176" stroke="#334650" stroke-width="2.5"/>
+      <line x1="262" y1="176" x2="308" y2="176" stroke="#334650" stroke-width="2.5"/>
+      <!-- 预应力钢绞线 -->
+      <circle cx="95" cy="158" r="7" fill="none" stroke="#a63648" stroke-width="2.5"/>
+      <circle cx="285" cy="158" r="7" fill="none" stroke="#a63648" stroke-width="2.5"/>
+      <circle cx="95" cy="140" r="5.5" fill="none" stroke="#a63648" stroke-width="1.8" opacity="0.55"/>
+      <circle cx="285" cy="140" r="5.5" fill="none" stroke="#a63648" stroke-width="1.8" opacity="0.55"/>
+
+      <!-- 尺寸线：板宽 -->
+      <line x1="0" y1="-24" x2="380" y2="-24" stroke="#6f7578" stroke-width="1.2"/>
+      <line x1="0" y1="-30" x2="0" y2="-18" stroke="#6f7578" stroke-width="1.2"/>
+      <line x1="380" y1="-30" x2="380" y2="-18" stroke="#6f7578" stroke-width="1.2"/>
+      <text x="128" y="-33" font-size="17" fill="#334650" font-weight="600">标准板宽 2.4 m</text>
+
+      <!-- 尺寸线：肋高 -->
+      <line x1="410" y1="0" x2="410" y2="176" stroke="#6f7578" stroke-width="1.2"/>
+      <line x1="404" y1="0" x2="416" y2="0" stroke="#6f7578" stroke-width="1.2"/>
+      <line x1="404" y1="176" x2="416" y2="176" stroke="#6f7578" stroke-width="1.2"/>
+      <text x="420" y="90" font-size="17" fill="#334650" font-weight="600">肋高</text>
+      <text x="420" y="114" font-size="17" fill="#334650" font-weight="600">400~700 mm</text>
+    </g>
+  </svg>
+
+  <!-- (b) 屋面布置 -->
+  <div class="panel-label">(b) 屋面布置：双T板横向排列搁置于屋面梁上</div>
+  <svg width="1040" height="300" viewBox="0 0 1040 300">
+    <!-- 3 块双T板并排（透视为简化立面），搁置在两端屋面梁上 -->
+    <!-- 屋面梁（左） -->
+    <rect x="150" y="150" width="34" height="90" fill="#cbd5da" stroke="#334650" stroke-width="2"/>
+    <!-- 屋面梁（右） -->
+    <rect x="856" y="150" width="34" height="90" fill="#cbd5da" stroke="#334650" stroke-width="2"/>
+    <!-- 双T板：简化为带双肋的板 -->
+    <g stroke="#334650" stroke-width="2.2" fill="#e4e7e8">
+      <!-- 板1 -->
+      <rect x="184" y="118" width="224" height="26"/>
+      <rect x="220" y="144" width="22" height="34"/>
+      <rect x="350" y="144" width="22" height="34"/>
+      <!-- 板2 -->
+      <rect x="408" y="118" width="224" height="26"/>
+      <rect x="444" y="144" width="22" height="34"/>
+      <rect x="574" y="144" width="22" height="34"/>
+      <!-- 板3 -->
+      <rect x="632" y="118" width="224" height="26"/>
+      <rect x="668" y="144" width="22" height="34"/>
+      <rect x="798" y="144" width="22" height="34"/>
+    </g>
+    <!-- 板缝嵌缝标注 -->
+    <rect x="400" y="118" width="16" height="26" fill="#a63648" opacity="0.75"/>
+    <rect x="624" y="118" width="16" height="26" fill="#a63648" opacity="0.75"/>
+    <line x1="408" y1="106" x2="408" y2="90" stroke="#a63648" stroke-width="1.4"/>
+    <text x="330" y="74" font-size="19" font-weight="700" fill="#a63648">板缝现场嵌缝 + 防水</text>
+    <line x1="452" y1="80" x2="410" y2="88" stroke="#a63648" stroke-width="1.2"/>
+
+    <!-- 屋面梁标注 -->
+    <text x="80" y="230" font-size="19" font-weight="700" fill="#334650">屋面梁</text>
+    <text x="60" y="254" font-size="15" fill="#6f7578">(混凝土梁/钢梁)</text>
+    <line x1="160" y1="222" x2="166" y2="200" stroke="#52798c" stroke-width="1.4"/>
+
+    <!-- 跨度标注 -->
+    <line x1="167" y1="266" x2="873" y2="266" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="167" y1="260" x2="167" y2="272" stroke="#6f7578" stroke-width="1.2"/>
+    <line x1="873" y1="260" x2="873" y2="272" stroke="#6f7578" stroke-width="1.2"/>
+    <text x="440" y="290" font-size="18" fill="#334650" font-weight="600">跨度 12 ~ 24 m（常规）· 最大可达 30 m</text>
+
+    <!-- 双T板标注 -->
+    <text x="700" y="60" font-size="19" font-weight="700" fill="#334650">双T板（横向连续排列）</text>
+    <line x1="790" y1="68" x2="760" y2="110" stroke="#52798c" stroke-width="1.4"/>
+  </svg>
+</div>
+</body>
+</html>

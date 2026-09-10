@@ -1,0 +1,325 @@
+/* pages/MyListPage.css - 我的收藏夹(第 2 个 tab) */
+.mylist-page {
+  min-height: 100%;
+  background: #000;
+  position: relative;
+}
+
+.mylist-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.mylist-header-content {
+  height: 44px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mylist-header-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.mylist-edit-btn,
+.mylist-cancel-btn {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.mylist-edit-btn span,
+.mylist-cancel-btn span {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mylist-count {
+  color: #25f4ee;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===== 收藏列表 ===== */
+.mylist-list {
+  margin-top: -20px;
+  padding: 0 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mylist-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.mylist-item.selected {
+  border-color: rgba(37, 244, 238, 0.6);
+  background: rgba(37, 244, 238, 0.08);
+}
+
+.mylist-cover-wrap {
+  position: relative;
+  width: 96px;
+  height: 132px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #1c1c1e;
+}
+
+.mylist-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mylist-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.mylist-eps {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+}
+
+.mylist-eps span {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* 多选勾选框 */
+.mylist-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mylist-check.checked {
+  background: #25f4ee;
+  border-color: #25f4ee;
+}
+
+.mylist-check-mark {
+  color: #000;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mylist-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.mylist-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.mylist-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.mylist-tag {
+  padding: 2px 7px;
+  background: rgba(37, 244, 238, 0.12);
+  border-radius: 3px;
+  border: 0.5px solid rgba(37, 244, 238, 0.25);
+  color: #25f4ee;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.mylist-remove-btn {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 5px 12px;
+  background: rgba(254, 44, 85, 0.12);
+  border: 0.5px solid rgba(254, 44, 85, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.mylist-remove-btn span {
+  color: #fe2c55;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== 空状态(复用 HistoryPage 灰色时钟插画)===== */
+.mylist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 32px;
+}
+
+.mylist-empty-illustration {
+  margin-bottom: 24px;
+}
+
+/* 灰色时钟插画(结构同 HistoryPage,复制以解耦) */
+.empty-clock {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.clock-ring {
+  position: absolute;
+  inset: 0;
+  border: 4px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.clock-hand-h {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 1.5px;
+  transform: translate(-50%, -100%) rotate(45deg);
+  transform-origin: bottom center;
+}
+
+.clock-hand-m {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 1.5px;
+  transform: translate(-50%, -100%) rotate(-30deg);
+  transform-origin: bottom center;
+}
+
+.clock-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.clock-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 11px solid rgba(255, 255, 255, 0.22);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  transform: translate(-40%, -50%);
+  margin-left: 2px;
+}
+
+.mylist-empty-title {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.mylist-empty-desc {
+  color: #8e8e93;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mylist-watch-now-btn {
+  padding: 12px 36px;
+  background: linear-gradient(90deg, #fe2c55, #25f4ee);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(254, 44, 85, 0.4);
+}
+
+.mylist-watch-now-text {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ===== 批量操作底栏 ===== */
+.mylist-batch-bar {
+  position: fixed;
+  bottom: calc(60px + var(--safe-bottom));
+  left: 12px;
+  right: 12px;
+  z-index: 200;
+}
+
+.mylist-batch-remove {
+  width: 100%;
+  height: 46px;
+  background: #fe2c55;
+  border: none;
+  border-radius: 23px;
+  box-shadow: 0 4px 16px rgba(254, 44, 85, 0.5);
+  cursor: pointer;
+}
+
+.mylist-batch-remove:disabled {
+  opacity: 0.4;
+}
+
+.mylist-batch-remove span {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.bottom-spacer {
+  height: 30px;
+}

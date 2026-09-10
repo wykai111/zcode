@@ -21,5 +21,41 @@ drama-admin/web/.vite/
 
 # ===== 构建产物 / 大文件 =====
 *.apk
+*.apk*
 *.ipa
+*.aab
+*.zip
+*.jar
+*.war
+target/
+dist/
+out/
+build/
 
+# ===== Java / Gradle / Android =====
+.gradle/
+**/android/.gradle/
+**/android/app/build/
+**/android/build/
+*.jks
+*.keystore
+local.properties
+
+# ===== React Native / Expo =====
+.expo/
+.expo-shared/
+
+# ===== Python =====
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.iml
+
+# ===== 环境与密钥（绝不提交） =====
+.env
+**/prod.yml

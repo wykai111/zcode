@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1180px;
+    font-family: 'Hiragino Sans GB', 'Heiti SC', 'Songti SC', sans-serif;
+    color: #1a1b1c;
+  }
+  .canvas { width: 1180px; padding: 26px 30px 20px 30px; background: #ffffff; }
+  .fig-title { font-size: 25px; font-weight: 700; color: #334650; }
+  .fig-sub { font-size: 17px; color: #6f7578; margin-top: 4px; margin-bottom: 22px; }
+
+  .flow { display: flex; align-items: stretch; justify-content: space-between; }
+  .node {
+    width: 164px;
+    border: 1.6px solid #b8c8cf;
+    border-top: 4px solid #52798c;
+    border-radius: 6px;
+    background: #f0f3f5;
+    padding: 12px 10px 12px 10px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .node.hot { border-top-color: #a63648; }
+  .step {
+    font-size: 15px; font-weight: 700; color: #ffffff;
+    background: #334650; border-radius: 10px;
+    padding: 2px 12px; margin-bottom: 8px;
+  }
+  .node.hot .step { background: #a63648; }
+  .node-title { font-size: 21px; font-weight: 700; color: #1a1b1c; text-align: center; line-height: 1.25; }
+  .node-desc { font-size: 15.5px; color: #6f7578; text-align: center; line-height: 1.45; margin-top: 7px; }
+  .arrow {
+    align-self: center;
+    width: 0; height: 0; position: relative;
+  }
+  .arrow::before {
+    content: ''; position: absolute;
+    right: 12px; top: -2px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid #52798c;
+  }
+  .arrow::after {
+    content: ''; position: absolute;
+    right: 24px; top: -1.4px;
+    width: 13px; height: 3px; background: #52798c;
+  }
+
+  .compare { display: flex; margin-top: 24px; gap: 20px; }
+  .col {
+    flex: 1; border-radius: 6px; padding: 14px 18px 12px 18px;
+  }
+  .col.dt { background: #f0f3f5; border: 1.4px solid #52798c; }
+  .col.xj { background: #f5f2f0; border: 1.4px dashed #a5968a; }
+  .col-title { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .col.dt .col-title { color: #334650; }
+  .col.xj .col-title { color: #7a6a5c; }
+  .tag {
+    display: inline-block; font-size: 15px; line-height: 1.5;
+    margin: 2px 4px 2px 0; color: #4a5459;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="fig-title">双T板屋面装配式施工流程</div>
+  <div class="fig-sub">构件工厂化预制、现场机械化吊装，免除现场支模与漫长养护</div>
+
+  <div class="flow">
+    <div class="node">
+      <div class="step">1</div>
+      <div class="node-title">工厂预制</div>
+      <div class="node-desc">预应力张拉<br>蒸汽养护</div>
+    </div>
+    <div class="arrow" style="width:30px"></div>
+    <div class="node">
+      <div class="step">2</div>
+      <div class="node-title">运输进场</div>
+      <div class="node-desc">平板车运输<br>随吊随运</div>
+    </div>
+    <div class="arrow" style="width:30px"></div>
+    <div class="node hot">
+      <div class="step">3</div>
+      <div class="node-title">吊装就位</div>
+      <div class="node-desc">吊车一次起吊<br>搁置于屋面梁</div>
+    </div>
+    <div class="arrow" style="width:30px"></div>
+    <div class="node">
+      <div class="step">4</div>
+      <div class="node-title">连接锚固</div>
+      <div class="node-desc">焊接/螺栓固定<br>保证整体性</div>
+    </div>
+    <div class="arrow" style="width:30px"></div>
+    <div class="node">
+      <div class="step">5</div>
+      <div class="node-title">嵌缝防水</div>
+      <div class="node-desc">板缝灌缝<br>防水层施工</div>
+    </div>
+    <div class="arrow" style="width:30px"></div>
+    <div class="node hot">
+      <div class="step">6</div>
+      <div class="node-title">快速交付</div>
+      <div class="node-desc">吊装完成约24小时<br>即可承载作业</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col dt">
+      <div class="col-title">双T板装配方案</div>
+      <span class="tag">免支模 · 免现场浇筑 · 免28天养护</span><br>
+      <span class="tag">主体工期缩短约 30% 以上</span><br>
+      <span class="tag">现场湿作业少，受雨季影响小</span>
+    </div>
+    <div class="col xj">
+      <div class="col-title">现浇混凝土屋面对照</div>
+      <span class="tag">满堂支模架搭设与拆除量大</span><br>
+      <span class="tag">浇筑后需 28 天标准养护方可承载</span><br>
+      <span class="tag">大跨度需增设次梁，压缩净高</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

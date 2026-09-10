@@ -1,0 +1,86 @@
+/* pages/ForYouPage.css - 移植 foryou.ttss,优化竖滑跟手 */
+.foryou-page {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: #000;
+  overflow: hidden;
+  /* 禁止默认滚动,手势由 JS 接管 */
+  touch-action: none;
+  position: relative;
+}
+
+.foryou-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8e8e93;
+}
+
+/* track:宽高铺满,transform 由 JS 实时设置(跟手)或带过渡(松手回弹) */
+.foryou-track {
+  width: 100%;
+  height: 100%;
+  will-change: transform; /* 提示浏览器开启 GPU 合成,滑动更流畅 */
+}
+
+.feed-item {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+}
+
+.feed-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feed-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 25%, transparent 60%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+.feed-info {
+  position: absolute;
+  bottom: 70px;
+  left: 12px;
+  right: 80px;
+  z-index: 10;
+}
+
+.feed-title {
+  display: block;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.feed-desc {
+  display: block;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feed-tag {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}

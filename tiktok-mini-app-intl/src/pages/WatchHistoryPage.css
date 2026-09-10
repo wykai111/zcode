@@ -1,0 +1,250 @@
+/* pages/WatchHistoryPage.css - 播放历史子页 */
+/* 全屏页(不在 App 的 TabBar 布局内),需自带滚动容器 */
+.wh-page {
+  height: 100vh;
+  height: 100dvh;
+  background: #000;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wh-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.wh-top-row {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.wh-back-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.wh-back-arrow {
+  width: 11px;
+  height: 11px;
+  border-left: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(45deg);
+  margin-left: 3px;
+}
+
+.wh-top-title {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.wh-top-right {
+  min-width: 70px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wh-clear-btn {
+  padding: 6px 12px;
+  background: rgba(254, 44, 85, 0.12);
+  border-radius: 12px;
+  border: 0.5px solid rgba(254, 44, 85, 0.3);
+  cursor: pointer;
+}
+
+.wh-clear-btn span {
+  color: #fe2c55;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== 列表 ===== */
+.wh-list {
+  padding: 8px 12px;
+}
+
+.wh-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.wh-thumb-box {
+  position: relative;
+  width: 110px;
+  height: 150px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #1c1c1e;
+  cursor: pointer;
+}
+
+.wh-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wh-thumb-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.wh-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.wh-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #fe2c55, #ff6b9d);
+}
+
+.wh-completed-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 3px 7px;
+  background: rgba(37, 244, 238, 0.9);
+  border-radius: 4px;
+}
+
+.wh-completed-badge span {
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.wh-resume-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.wh-play-tri {
+  width: 0;
+  height: 0;
+  border-left: 12px solid #fff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  margin-left: 3px;
+}
+
+.wh-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.wh-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.wh-episode {
+  color: #25f4ee;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.wh-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  color: #8e8e93;
+  font-size: 11px;
+}
+
+.wh-dot {
+  color: #48484a;
+}
+
+.wh-progress-text {
+  color: #fe2c55;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.wh-delete-btn {
+  align-self: center;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.wh-delete-btn:active svg {
+  stroke: #fff;
+}
+
+/* ===== 空状态 ===== */
+.wh-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 32px;
+}
+
+.wh-empty-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+  opacity: 0.35;
+}
+
+.wh-empty-title {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.wh-empty-desc {
+  color: #8e8e93;
+  font-size: 13px;
+  text-align: center;
+}
+
+.wh-bottom-spacer {
+  height: 30px;
+}

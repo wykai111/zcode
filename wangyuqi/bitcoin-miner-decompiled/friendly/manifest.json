@@ -1,0 +1,331 @@
+{
+  "images": {
+    "13300433": {
+      "name": "T_Miner_portrait",
+      "role": "矿工头像/角色 (63×49, 含_a)",
+      "group": "char",
+      "variants": [
+        "13300433-c80c-4f91-ab74-2f684ca9d96b.png.png",
+        "13300433-c80c-4f91-ab74-2f684ca9d96b_a.png"
+      ]
+    },
+    "57520716-48c8-4a19-8acf-41c9f8777fb0": {
+      "name": "default_btn_disabled",
+      "role": "引擎默认按钮-禁用 (40²)",
+      "group": "ui",
+      "variants": [
+        "57520716-48c8-4a19-8acf-41c9f8777fb0.png"
+      ]
+    },
+    "71304163-d1df-4539-bf33-ba433225fc26": {
+      "name": "T_BitcoinLogo",
+      "role": "比特币金币 Logo (512²)",
+      "group": "icon",
+      "variants": [
+        "71304163-d1df-4539-bf33-ba433225fc26.png"
+      ]
+    },
+    "79615220-1d97-4341-ad66-965c448e24dd": {
+      "name": "T_Miner_03",
+      "role": "矿工角色帧 3 (63×49)",
+      "group": "char",
+      "variants": [
+        "79615220-1d97-4341-ad66-965c448e24dd.png"
+      ]
+    },
+    "039f661e-e9a2-4a65-85fa-579d14ba7c79": {
+      "name": "T_Thumbnail_Hills",
+      "role": "场景缩略图/背景预览 (128²)",
+      "group": "bg",
+      "variants": [
+        "039f661e-e9a2-4a65-85fa-579d14ba7c79.png",
+        "039f661e-e9a2-4a65-85fa-579d14ba7c79_a.png"
+      ]
+    },
+    "1bb7cdcd-7991-413f-b5cf-d2d3f8305232": {
+      "name": "T_Miner_01",
+      "role": "矿工角色帧 1 (63×49)",
+      "group": "char",
+      "variants": [
+        "1bb7cdcd-7991-413f-b5cf-d2d3f8305232.png",
+        "1bb7cdcd-7991-413f-b5cf-d2d3f8305232_a.png"
+      ]
+    },
+    "20835ba4-6145-4fbc-a58a-051ce700aa3e": {
+      "name": "default_btn_normal",
+      "role": "引擎默认按钮-常态 (40²)",
+      "group": "ui",
+      "variants": [
+        "20835ba4-6145-4fbc-a58a-051ce700aa3e.png"
+      ]
+    },
+    "2557ff53-e2f0-4576-a657-5d74b8efb63d": {
+      "name": "T_Pig_Side_01",
+      "role": "小猪存钱罐-侧面 1 (101×84)",
+      "group": "char",
+      "variants": [
+        "2557ff53-e2f0-4576-a657-5d74b8efb63d.png"
+      ]
+    },
+    "26f0698e-4cc0-4062-8c8a-2863701ac419": {
+      "name": "T_Icon_Pointer",
+      "role": "手指引导指针 (24²)",
+      "group": "ui",
+      "variants": [
+        "26f0698e-4cc0-4062-8c8a-2863701ac419.png"
+      ]
+    },
+    "28463a74-17ef-44fc-9b91-dd5cc0dae836": {
+      "name": "T_Miner_avatar",
+      "role": "矿工立绘/头像 (127×126, 含_a)",
+      "group": "char",
+      "variants": [
+        "28463a74-17ef-44fc-9b91-dd5cc0dae836.png",
+        "28463a74-17ef-44fc-9b91-dd5cc0dae836_a.png"
+      ]
+    },
+    "2cb10f3a-aa5f-4ee3-a9dc-47e19c9a3809": {
+      "name": "T_Coin_icon",
+      "role": "比特币小图标 (32²)",
+      "group": "icon",
+      "variants": [
+        "2cb10f3a-aa5f-4ee3-a9dc-47e19c9a3809.png"
+      ]
+    },
+    "43938fbd-107f-4348-afdd-be1c8082af89": {
+      "name": "T_Button_01a_CTA",
+      "role": "下载CTA按钮-橙 1 (1024², 含压缩)",
+      "group": "ui",
+      "variants": [
+        "43938fbd-107f-4348-afdd-be1c8082af89.astc",
+        "43938fbd-107f-4348-afdd-be1c8082af89.pkm",
+        "43938fbd-107f-4348-afdd-be1c8082af89.png",
+        "43938fbd-107f-4348-afdd-be1c8082af89.pvr"
+      ]
+    },
+    "4463a0b9-8203-47c8-88c6-6790540af505": {
+      "name": "T_Platform_01",
+      "role": "木板/平台纹理 (16²)",
+      "group": "prop",
+      "variants": [
+        "4463a0b9-8203-47c8-88c6-6790540af505.png"
+      ]
+    },
+    "44b181bf-d459-477a-9611-e8e94c7cac46": {
+      "name": "Icon1_rounded",
+      "role": "应用图标/Logo 圆角 (512²)",
+      "group": "icon",
+      "variants": [
+        "44b181bf-d459-477a-9611-e8e94c7cac46.png"
+      ]
+    },
+    "4bd475f5-fdeb-4c07-bfce-810a038197e1": {
+      "name": "T_Dirt_01_comp",
+      "role": "泥土纹理 (16², 含压缩)",
+      "group": "prop",
+      "variants": [
+        "4bd475f5-fdeb-4c07-bfce-810a038197e1.astc",
+        "4bd475f5-fdeb-4c07-bfce-810a038197e1.pkm",
+        "4bd475f5-fdeb-4c07-bfce-810a038197e1.png",
+        "4bd475f5-fdeb-4c07-bfce-810a038197e1.pvr"
+      ]
+    },
+    "544e49d6-3f05-4fa8-9a9e-091f98fc2ce8": {
+      "name": "default_btn_pressed",
+      "role": "引擎默认按钮-按下 (40²)",
+      "group": "ui",
+      "variants": [
+        "544e49d6-3f05-4fa8-9a9e-091f98fc2ce8.png"
+      ]
+    },
+    "5a7efef3-974d-4983-8fd9-7d5ce3b4cc6f": {
+      "name": "T_Miner_02",
+      "role": "矿工角色帧 2 (63×49)",
+      "group": "char",
+      "variants": [
+        "5a7efef3-974d-4983-8fd9-7d5ce3b4cc6f.png"
+      ]
+    },
+    "5cfb3e65-1111-4fad-8a73-c1ff5979e726": {
+      "name": "T_Mask_02_Wide_02",
+      "role": "遮罩/裁切条 2 (64×16)",
+      "group": "ui",
+      "variants": [
+        "5cfb3e65-1111-4fad-8a73-c1ff5979e726.png"
+      ]
+    },
+    "66fbcd42-d182-4144-b1c5-7ce274fcde8d": {
+      "name": "T_Mask_01_Wide",
+      "role": "遮罩/裁切条 1 (128×16)",
+      "group": "ui",
+      "variants": [
+        "66fbcd42-d182-4144-b1c5-7ce274fcde8d.png"
+      ]
+    },
+    "747e9fe2-4e32-4dff-b1e4-9157882ce7ea": {
+      "name": "T_Button_02b_CTA",
+      "role": "下载CTA按钮-橙 2 (1024²)",
+      "group": "ui",
+      "variants": [
+        "747e9fe2-4e32-4dff-b1e4-9157882ce7ea.png"
+      ]
+    },
+    "75e69599-2ab7-4ba0-854f-bfc9ad07776b": {
+      "name": "T_Wire",
+      "role": "金币轨道/电线 (8², 含压缩)",
+      "group": "prop",
+      "variants": [
+        "75e69599-2ab7-4ba0-854f-bfc9ad07776b.astc",
+        "75e69599-2ab7-4ba0-854f-bfc9ad07776b.pkm",
+        "75e69599-2ab7-4ba0-854f-bfc9ad07776b.png",
+        "75e69599-2ab7-4ba0-854f-bfc9ad07776b.pvr"
+      ]
+    },
+    "7ddd1139-606d-46fa-8a69-4fc870f6c260": {
+      "name": "T_Hills_Tree_02",
+      "role": "树 2 (38×40)",
+      "group": "prop",
+      "variants": [
+        "7ddd1139-606d-46fa-8a69-4fc870f6c260.png"
+      ]
+    },
+    "829e7fdd-566b-406b-972b-359e16a73d46": {
+      "name": "T_Hills_Tree_01",
+      "role": "树 1 (52×44)",
+      "group": "icon",
+      "variants": [
+        "829e7fdd-566b-406b-972b-359e16a73d46.png"
+      ]
+    },
+    "8e68a8f5-994d-4aa3-9547-3e3ba0fc7b1b": {
+      "name": "T_Burst_Gold",
+      "role": "金色爆炸/星光特效 (512²)",
+      "group": "fx",
+      "variants": [
+        "8e68a8f5-994d-4aa3-9547-3e3ba0fc7b1b.png"
+      ]
+    },
+    "951249e0-9f16-456d-8b85-a6ca954da16b": {
+      "name": "default_btn_normal_2",
+      "role": "引擎默认按钮 (40²)",
+      "group": "ui",
+      "variants": [
+        "951249e0-9f16-456d-8b85-a6ca954da16b.png"
+      ]
+    },
+    "b3eee01a-85e3-4c33-a5a5-b2bcfbeb246d": {
+      "name": "T_Icon_GoldCoin",
+      "role": "金币小图标 (22×24)",
+      "group": "icon",
+      "variants": [
+        "b3eee01a-85e3-4c33-a5a5-b2bcfbeb246d.png"
+      ]
+    },
+    "c8ce7985-e288-49bb-8fe0-39c3f29cb78c": {
+      "name": "T_Dirt_02",
+      "role": "泥土纹理 2 (16²)",
+      "group": "prop",
+      "variants": [
+        "c8ce7985-e288-49bb-8fe0-39c3f29cb78c.png"
+      ]
+    },
+    "caa2fd1a-574e-412c-8e36-5bce9bbf1f0d": {
+      "name": "T_Square_1by1",
+      "role": "1×1 占位图 (不可见)",
+      "group": "prop",
+      "variants": [
+        "caa2fd1a-574e-412c-8e36-5bce9bbf1f0d.png"
+      ]
+    },
+    "cb3aee13-b07b-4816-bb47-298514aeadb9": {
+      "name": "T_Power",
+      "role": "电力/连接点 (8², 含压缩)",
+      "group": "prop",
+      "variants": [
+        "cb3aee13-b07b-4816-bb47-298514aeadb9.astc",
+        "cb3aee13-b07b-4816-bb47-298514aeadb9.pkm",
+        "cb3aee13-b07b-4816-bb47-298514aeadb9.png",
+        "cb3aee13-b07b-4816-bb47-298514aeadb9.pvr"
+      ]
+    },
+    "d661fe23-9bdf-435f-ad78-415fe5ea638d": {
+      "name": "T_Button_03_CTA",
+      "role": "下载CTA按钮-绿 (1024²)",
+      "group": "ui",
+      "variants": [
+        "d661fe23-9bdf-435f-ad78-415fe5ea638d.png"
+      ]
+    },
+    "d9002f1b-013d-49c9-aede-7de2ba527652": {
+      "name": "T_Panelling",
+      "role": "镶板/平台贴图 (256²)",
+      "group": "prop",
+      "variants": [
+        "d9002f1b-013d-49c9-aede-7de2ba527652.png"
+      ]
+    },
+    "d91e89b6-134f-46f2-aeb4-63e86b92661f": {
+      "name": "T_Pig_Side_02",
+      "role": "小猪存钱罐-侧面 2 (101×84)",
+      "group": "char",
+      "variants": [
+        "d91e89b6-134f-46f2-aeb4-63e86b92661f.png"
+      ]
+    },
+    "e0e9fc8e-ea98-49db-940a-8028ba4575c2": {
+      "name": "T_Hills_Barrel",
+      "role": "木桶 (27×31)",
+      "group": "prop",
+      "variants": [
+        "e0e9fc8e-ea98-49db-940a-8028ba4575c2.png"
+      ]
+    },
+    "fd90e441-4c13-454d-ba4d-2dbbdbc270dc": {
+      "name": "T_Miner_04",
+      "role": "矿工角色帧 4 (63×49)",
+      "group": "char",
+      "variants": [
+        "fd90e441-4c13-454d-ba4d-2dbbdbc270dc.png"
+      ]
+    }
+  },
+  "audio": {
+    "53438407-5d6f-4490-ae6e-82649b9531c1": {
+      "name": "SFX_03",
+      "role": "音效 (wav, 23K)",
+      "ext": "wav"
+    },
+    "b0f0bb33-2427-41e0-8dbc-ecc1d4d94152": {
+      "name": "BGM_background",
+      "role": "背景音乐 (mp3, 484K)",
+      "ext": "mp3"
+    },
+    "c29907b4-4854-42e8-8f9d-ba03a11dff43": {
+      "name": "SFX_mining_01",
+      "role": "音效-挖矿 (wav, 107K)",
+      "ext": "wav"
+    },
+    "39d19996-9c37-49ed-8033-9544b7d0b526": {
+      "name": "SFX_02",
+      "role": "音效 (wav, 80K)",
+      "ext": "wav"
+    },
+    "9dce07d6-2b7d-40f8-b525-c8205bdc51ba": {
+      "name": "SFX_click",
+      "role": "音效-点击/轻 (wav, 28K)",
+      "ext": "wav"
+    },
+    "b1abb801-9e2f-4062-b1db-f412148a9212": {
+      "name": "SFX_short",
+      "role": "短音效 (wav, 12K)",
+      "ext": "wav"
+    }
+  },
+  "font": {
+    "0a8bc9ae": {
+      "name": "FT_NotoSerif_Regular",
+      "role": "字体 Noto Serif Regular (ttf, 96K)",
+      "ext": "ttf"
+    }
+  }
+}
