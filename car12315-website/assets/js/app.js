@@ -74,7 +74,7 @@
     function header(active) {
         var html = '<header class="site-header"><div class="header-inner">' +
             '<a class="brand" href="' + BASE_PREFIX + 'index.html">' +
-            '<span class="brand-icon"><i class="fa fa-car"></i></span>' +
+            '<img class="brand-logo" src="' + BASE_PREFIX + 'assets/img/logo.png" alt="车言槽logo">' +
             '<span class="brand-text"><b>车言槽</b><small>汽车消费维权平台</small></span>' +
             '</a><nav class="site-nav">';
         for (var i = 0; i < NAV_ITEMS.length; i++) {
@@ -233,6 +233,15 @@
     function avatarUrl(user) {
         return (user && user.avatar) ? user.avatar : IMG.avatar;
     }
+
+    // 注入站点favicon(全站统一)
+    (function initFavicon() {
+        var link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/png';
+        link.href = BASE_PREFIX + 'assets/img/logo.png';
+        document.head.appendChild(link);
+    })();
     // 无头像时生成彩色首字头像: 按用户ID稳定取暖色系背景
     var AVATAR_PALETTE = ['#f08200', '#e06c3d', '#d4a017', '#c97d10', '#e63946', '#b35400', '#dd8b62', '#c98514'];
     function avatarColor(user) {
